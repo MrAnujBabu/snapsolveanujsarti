@@ -60,7 +60,7 @@ use the editor.
 - Agent memory lives in Cloud table memory_items, editable only by admins (has_role); /api/chat ranks active chapter outlines against bounded recent context, excludes unmatched chapters, injects size-capped memory so follow-ups keep context.
 - Chat exports Obsidian markdown/zipped notes; attachments stay placeholders, never data URLs. Voice .md: Obsidian callouts/folds, Word/PDF plain.
 - `web_search` (Perplexity + Parallel, URL-deduped) exists only when the client sends `search: true`; quiz mode gets a stricter search note.
-- Student links use Parallel extraction with Firecrawl fallback and explicit empty/truncated results, so answers never claim to have read an unavailable page.
+- Web reads/search: Crawl4AI port in src/lib/crawl4ai (see docs/crawl4ai-integration.md); free reads, Lovable AI search, connectors as fallback, explicit empty results, TLS checks always on.
 - Browser quota failures keep prior threads and report a save failure; media cleanup swaps attachments for markers, clearing IndexedDB only after thread cleanup (answers/cards kept).
 - Admin link reads reuse the bounded student reader; files are content-addressed and memory saves dedupe by content/normalized URL.
 - Admin imports share parsers/Sheets auth; MIME puts linked PDFs in PDF view. Drive needs authorization; PYQs require sourced evidence. PPTX reads text only; scanned PDFs use explicit lazy browser OCR without silent truncation. Admin/quiz share a device label preference; submissions stay A–D to preserve grading.

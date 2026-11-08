@@ -102,10 +102,14 @@ function LiveVoicePage() {
   const batchToken = useRef('');
   useEffect(() => {
     let alive = true;
-    void supabase.auth.getSession().then(({ data }) => { if (alive) batchToken.current = data.session?.access_token ?? ''; });
-    const { data } = supabase.auth.onAuthStateChange((_event, session) => { batchToken.current = session?.access_token ?? ''; });
-    return () => { alive = false; data.subscription.unsubscribe(); };
-
+    // Sign-in is optional for calls: a host without the database must still open Voice mode.
+    try {
+      void supabase.auth.getSession().then(({ data }) => { if (alive) batchToken.current = data.session?.access_token ?? ''; }).catch(() => undefined);
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => { batchToken.current = session?.access_token ?? ''; });
+      return () => { alive = false; data.subscription.unsubscribe(); };
+    } catch {
+      return () => { alive = false; };
+    }
   }, []);
   const [speechVoice, setSpeechVoice] = useSpeechVoice();
   const [sarvamVoice, setSarvamVoice] = useState<SarvamVoice>(SARVAM_VOICE);
@@ -484,7 +488,7 @@ function LiveVoicePage() {
           <label className="flex items-center justify-between gap-2 text-sm">Assertion–Reason<Switch checked={assertionQ} disabled={teachingLocked} onCheckedChange={(assertionQ) => changeTeaching({ assertionQ })} aria-label="Assertion Reason questions" /></label>
           <label className="flex items-center justify-between gap-2 text-sm">Advanced · deep NCERT Biology<Switch checked={deep} disabled={teachingLocked} onCheckedChange={(deep) => changeTeaching({ deep })} aria-label="Advanced deep NCERT questions" /></label>
         </div>}
-        <label className="flex items-center justify-between gap-2"><Globe className="size-4 text-muted-foreground" />Search<Switch checked={search} disabled={teachingLocked} onCheckedChange={(search) => changeTeaching({ search })} aria-label="Voice live search" /></label>
+        <label className="flex items-center justify-between gap-2"><Globe className="size-4 text-muted-foreground" />Web search<Switch checked={search} disabled={teachingLocked} onCheckedChange={(search) => changeTeaching({ search })} aria-label="Voice live search" /></label>
         <label className="flex items-center justify-between gap-2"><MessageSquare className="size-4 text-muted-foreground" />Chat<Switch checked={chat} onCheckedChange={changeChat} aria-label="Voice chat box" /></label>
         <p className="-mt-3 text-xs text-muted-foreground">Call ke dauraan likh kar bhi sawal bhejo — tutor bol kar jawab dega aur transcript me dikhega.</p>
         <div className="flex items-center justify-between gap-2"><span>Bolne ki speed</span>{speedSelect("w-28")}</div>

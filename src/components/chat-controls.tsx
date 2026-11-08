@@ -16,9 +16,9 @@ export function ChatControls({ model, effort, onModel, onEffort, quiz, onQuiz, s
           <span>Quiz</span>
           <Switch checked={quiz} onCheckedChange={onQuiz} aria-label="Quiz mode" />
         </label>
-        <label className="flex cursor-pointer items-center gap-1.5 text-xs" title="Search live web sources">
+        <label className="flex cursor-pointer items-center gap-1.5 text-xs" title="Web search: the tutor searches the web and reads pages while teaching">
           <Globe className={search ? "size-3.5 text-primary" : "size-3.5 text-muted-foreground"} />
-          <span>Search</span>
+          <span className="whitespace-nowrap">Web search</span>
           <Switch checked={search} onCheckedChange={onSearch} aria-label="Web search" />
         </label>
       </div>

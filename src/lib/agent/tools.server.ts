@@ -2,6 +2,7 @@ import { tool } from "ai";
 import { z } from "zod";
 import { isNcertUrl, MAX_TOOL_CALLS, NCERT_BOOKS, bookKey, textbookUrl, trim } from "./ncert";
 import { earlyFallback } from "./fallback";
+import { aiSearchForTool, crawlRead } from "@/lib/crawl4ai/agent-bridge.server";
 
 const GW = "https://connector-gateway.lovable.dev";
 
@@ -34,7 +35,8 @@ async function gw(connector: string, keyName: string, path: string, body: unknow
 }
 
 /** Tools for one request; a shared counter caps paid calls per answer. */
-export function createAgentTools(opts?: { webSearch?: boolean }) {
+/** fastSearch skips reading the found pages (voice calls need answers within seconds). */
+export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: boolean }) {
   let calls = 0;
   const guard = () => {
     calls += 1;
@@ -43,12 +45,15 @@ export function createAgentTools(opts?: { webSearch?: boolean }) {
 
   const webSearchTool = tool({
     description:
-      "Search the live web for real, current information (news, facts, dates, stats, anything beyond NCERT). Only available when the student turned Search on. Returns titled results with links and snippets — cite the links you use.",
+      "Search the live web for real, current information (news, facts, dates, stats, anything beyond NCERT). Only available when the student turned Web search on. Returns titled results with links and snippets — cite the links you use.",
     inputSchema: z.object({
       query: z.string().describe("Short search keywords, e.g. 'NEET 2027 exam date NTA'"),
     }),
-    execute: async ({ query }) => {
+    execute: async ({ query }, { abortSignal }) => {
       guard();
+      // Crawl4AI search on Lovable AI first: AI web search, then the best pages are read for real.
+      const ai = await aiSearchForTool(query, { crawlPages: opts?.fastSearch ? 0 : 3, maxResults: 6, ...(abortSignal ? { signal: abortSignal } : {}) });
+      if (ai.results.length) return { summary: ai.summary, results: ai.results };
       const seen = new Set<string>();
       const results: { title?: string; url?: string; snippet: string }[] = [];
       const push = (r: any) => {
@@ -73,8 +78,24 @@ export function createAgentTools(opts?: { webSearch?: boolean }) {
     },
   });
 
+  // Web teacher: after web_search, open the best result and teach from what the page actually says.
+  const openWebPageTool = tool({
+    description:
+      "Open and read one public web page or PDF (usually a web_search result) to teach from its exact content. Use when the search snippets are not enough — prefer official sources (NTA, NCERT, government, universities). Returns the passages that match `focus`.",
+    inputSchema: z.object({
+      url: z.string().describe("Full https:// link from web_search results"),
+      focus: z.string().describe("What to look for on the page, e.g. 'NEET 2026 exam date'"),
+    }),
+    execute: async ({ url, focus }, { abortSignal }) => {
+      if (!/^https?:\/\//i.test(url)) return { error: "Not a web link." };
+      guard();
+      const page = await crawlRead(url, { focus, maxChars: 5000, ...(abortSignal ? { signal: abortSignal } : {}) });
+      return page.text ? page : { url, error: `${page.error ?? "This page could not be read."} Use the search snippets instead and do not guess the page's contents.` };
+    },
+  });
+
   return {
-    ...(opts?.webSearch ? { web_search: webSearchTool } : {}),
+    ...(opts?.webSearch ? { web_search: webSearchTool, open_web_page: openWebPageTool } : {}),
     ncert_search: tool({
       description:
         "Search the official NCERT Class 11/12 textbooks (ncert.nic.in) for the chapter and exact lines covering a concept. Call this first for every new question.",
@@ -83,7 +104,7 @@ export function createAgentTools(opts?: { webSearch?: boolean }) {
         classNum: z.number().describe("11 or 12"),
         subject: z.string().describe("physics, chemistry or biology"),
       }),
-      execute: async ({ query, classNum, subject }) => {
+      execute: async ({ query, classNum, subject }, { abortSignal }) => {
         guard();
         const book = NCERT_BOOKS[bookKey(classNum, subject)];
         try {
@@ -102,10 +123,23 @@ export function createAgentTools(opts?: { webSearch?: boolean }) {
             url: r.url,
             excerpt: trim((r.excerpts ?? []).join(" … "), 900),
           }));
-          return { book: book?.label, bookUrl: textbookUrl(classNum, subject), results };
-        } catch (e) {
-          return { book: book?.label, bookUrl: textbookUrl(classNum, subject), results: [], error: String(e) };
+          if (results.length) return { book: book?.label, bookUrl: textbookUrl(classNum, subject), results };
+        } catch {
+          /* fall through to Lovable AI search restricted to ncert.nic.in */
         }
+        const ai = await aiSearchForTool(`NCERT class ${classNum} ${subject} ${query}`, {
+          allowedDomains: ["ncert.nic.in"],
+          maxResults: 4,
+          extraInstructions: `Find the NCERT ${book?.label ?? ""} chapter and section that explains this. Quote the NCERT wording when the search shows it.`,
+          ...(abortSignal ? { signal: abortSignal } : {}),
+        });
+        return {
+          book: book?.label,
+          bookUrl: textbookUrl(classNum, subject),
+          ...(ai.summary ? { summary: ai.summary } : {}),
+          results: ai.results.map((r) => ({ title: r.title, url: r.url, excerpt: trim(r.snippet, 900) })),
+          ...(ai.results.length ? {} : { error: ai.error ?? "NCERT search found nothing." }),
+        };
       },
     }),
 
@@ -115,7 +149,7 @@ export function createAgentTools(opts?: { webSearch?: boolean }) {
         url: z.string(),
         focus: z.string().describe("What to look for in the page"),
       }),
-      execute: async ({ url, focus }) => {
+      execute: async ({ url, focus }, { abortSignal }) => {
         if (!isNcertUrl(url)) return { error: "Only ncert.nic.in pages can be read." };
         guard();
         const parallelExtract = async (): Promise<{ url: string; title?: string; text?: string; error?: string }> => {
@@ -145,8 +179,13 @@ export function createAgentTools(opts?: { webSearch?: boolean }) {
             return { url, error: String(e) };
           }
         };
+        // Crawl4AI reads the page/PDF directly for free and keeps the lines about `focus`;
+        // the paid readers only run when that fails (e.g. NCERT's certificate chain is rejected).
+        const local = await crawlRead(url, { focus, maxChars: 3000, ...(abortSignal ? { signal: abortSignal } : {}) });
+        if (local.text) return local;
         // Parallel extracts faster; if it is slow, Firecrawl starts too and the first usable text wins.
-        return earlyFallback(parallelExtract(), firecrawlScrape, 4000, (r) => !!r.text);
+        const remote = await earlyFallback(parallelExtract(), firecrawlScrape, 4000, (r) => !!r.text);
+        return remote.text ? remote : { url, error: local.error ?? remote.error ?? "No readable text found on this page." };
       },
     }),
 
@@ -154,7 +193,7 @@ export function createAgentTools(opts?: { webSearch?: boolean }) {
       description:
         "Read a web page or PDF link the STUDENT pasted (their notes, a chapter PDF, an article) so you can teach or quiz from it. Only for links the student gave.",
       inputSchema: z.object({ url: z.string() }),
-      execute: async ({ url }) => {
+      execute: async ({ url }, { abortSignal }) => {
         if (!/^https?:\/\//i.test(url)) return { error: "Not a web link." };
         guard();
         const parallelRead = async (): Promise<{ url: string; title?: string; text?: string; truncated?: boolean; error?: string }> => {
@@ -185,16 +224,27 @@ export function createAgentTools(opts?: { webSearch?: boolean }) {
             return { url, error: String(e) };
           }
         };
+        // Crawl4AI first: free direct read of the page or PDF (no AI, no connector credits).
+        const local = await crawlRead(url, { maxChars: 12000, ...(abortSignal ? { signal: abortSignal } : {}) });
+        if (local.text) return local;
         // Public PDF extraction is faster via Parallel; if it is slow, Firecrawl starts too and the first usable text wins.
-        return earlyFallback(parallelRead(), firecrawlRead, 4000, (r) => !!r.text);
+        const remote = await earlyFallback(parallelRead(), firecrawlRead, 4000, (r) => !!r.text);
+        if (remote.text) return remote;
+        return { url, error: local.error && !/not configured/.test(remote.error ?? "") ? `${local.error} This link returned no readable text. Upload the PDF instead; do not guess its contents.` : remote.error ?? "This link returned no readable text. Upload the PDF instead; do not guess its contents." };
       },
     }),
 
     neet_pyq_search: tool({
       description: "Find NEET previous-year questions and exam trends on a topic. Use once at most, only for new questions.",
       inputSchema: z.object({ topic: z.string() }),
-      execute: async ({ topic }) => {
+      execute: async ({ topic }, { abortSignal }) => {
         guard();
+        const ai = await aiSearchForTool(`NEET previous year questions ${topic}`, {
+          maxResults: 5,
+          extraInstructions: "Focus on actual NEET (AIPMT) previous-year questions on this topic: list the years asked, question patterns and how often the topic appears. Never invent questions or years.",
+          ...(abortSignal ? { signal: abortSignal } : {}),
+        });
+        if (ai.results.length) return { summary: ai.summary, results: ai.results.map((r) => ({ title: r.title, url: r.url, snippet: trim(r.snippet, 500) })) };
         try {
           const data = await gw("perplexity", "PERPLEXITY_API_KEY", "/search", {
             query: `NEET previous year questions ${topic}`,
