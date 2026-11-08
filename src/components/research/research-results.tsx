@@ -129,7 +129,7 @@ export function SearchHits({ state }: { state: ResearchState }) {
             </li>
           );
         })}
-        {!s.hits.length && <li className="py-2 text-sm text-muted-foreground">No web pages were found for this search.</li>}
+        {!s.hits.length && <li className="py-2 text-sm text-muted-foreground">No web pages were found. Try a more specific question, for example name the exam, class or topic.</li>}
       </ul>
     </section>
   );
@@ -160,14 +160,22 @@ export function PageCard({ page, defaultOpen }: { page: PageView; defaultOpen: b
             {page.success ? <span>{page.wordCount.toLocaleString()} words</span> : <span className="text-destructive">Not read</span>}
             {page.kind !== "html" && <span className="uppercase">{page.kind}</span>}
             {page.cached && <span>from memory</span>}
+            {page.via === "browser" && <span className="text-primary">read with browser</span>}
+            {page.via === "archive" && <span className="text-primary">web archive copy{page.archivedAt ? ` (${page.archivedAt})` : ""}</span>}
           </span>
         </span>
       </summary>
       {open && <div className="border-t px-4 pb-4 pt-3">
+        {page.screenshotUrl && (
+          <a href={page.screenshotUrl} target="_blank" rel="noreferrer" className="mb-3 block overflow-hidden rounded-lg border">
+            <img src={page.screenshotUrl} alt={`Screenshot of ${page.title}`} loading="lazy" className="max-h-96 w-full object-cover object-top" />
+          </a>
+        )}
         {!page.success ? (
           <p className="text-sm text-muted-foreground">{page.error ?? "This page could not be read."}</p>
         ) : (
           <>
+            {page.via === "archive" && <p className="mb-2 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">The website blocked readers, so this is the Internet Archive's saved copy{page.archivedAt ? ` from ${page.archivedAt}` : ""}. It may be older than the live page.</p>}
             {page.needsBrowser && <p className="mb-2 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">This site builds most of its text with JavaScript, so only part of the page could be read.</p>}
             {page.truncated && <p className="mb-2 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">This page was very large; only the first part was read.</p>}
             <div className="flex flex-wrap items-center gap-1">
@@ -333,7 +341,7 @@ export function UsageNote({ state }: { state: ResearchState }) {
   if (!u && !st && state.elapsedMs === null) return null;
   return (
     <p className="text-xs text-muted-foreground">
-      {st && <>Crawled {st.crawled} pages{st.failed ? ` · ${st.failed} failed` : ""} · {st.discovered} links queued · {st.skippedByFilter} filtered{st.skippedByRobots ? ` · ${st.skippedByRobots} blocked by robots.txt` : ""} · deepest level {st.depthReached}. </>}
+      {st && <>Crawled {st.crawled} pages{st.failed ? ` · ${st.failed} failed` : ""} · {st.discovered} links queued · {st.skippedByFilter} filtered{st.skippedByRobots ? ` · ${st.skippedByRobots} blocked by robots.txt` : ""} · deepest level {st.depthReached}{st.seeded ? ` · ${st.seeded} pages from sitemap` : ""}{st.browserReads ? ` · ${st.browserReads} read with browser` : ""}{st.archiveReads ? ` · ${st.archiveReads} from web archive` : ""}. {st.stoppedEarly ? `Stopped early: ${st.stoppedEarly}${st.confidence !== undefined ? ` (keyword coverage ${Math.round(st.confidence * 100)}%)` : ""}. ` : ""}</>}
       {u ? <>Lovable AI: {u.calls} {u.calls === 1 ? "step" : "steps"}{u.webSearches ? ` · ${u.webSearches} web ${u.webSearches === 1 ? "search" : "searches"}` : ""} · {u.totalTokens.toLocaleString()} tokens. </> : <>No AI credits used. </>}
       {state.elapsedMs !== null && <>Took {(state.elapsedMs / 1000).toFixed(1)} s.</>}
     </p>

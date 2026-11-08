@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createAnthropic } from "@ai-sdk/anthropic";
-import { convertToModelMessages, stepCountIs, streamText, type UIMessage } from "ai";
+import { convertToModelMessages, createUIMessageStream, createUIMessageStreamResponse, stepCountIs, streamText, type UIMessage } from "ai";
+import type { ReadOutcome } from "@/lib/crawl4ai/read-outcome";
 import { createAgentTools } from "@/lib/agent/tools.server";
 import {
   createLovableAiGatewayRunIdFetch,
@@ -185,13 +186,17 @@ export const Route = createFileRoute("/api/chat")({
         const systemPrompt = memory
           ? `${basePrompt}\n\n## Teacher memory (from the admin — follow it: syllabus scope, known mistake patterns, habits to reinforce or correct)\n${memory}`
           : basePrompt;
+        // Page-read outcomes go to the browser as transient data parts (reliability tracking only:
+        // never saved in the conversation, never shown to the model). Reads before the stream opens wait here.
+        const pendingReads: ReadOutcome[] = [];
+        let sendRead = (o: ReadOutcome) => { pendingReads.push(o); };
         const result = streamText({
           model: anthropic(selected.id),
           ...(selected.effort ? { providerOptions: { anthropic: { thinking: { type: 'adaptive' }, effort: resolveEffort(body.effort ?? 'high') } } } : {}),
           // Cache the large stable prefix (rules + memory) and the conversation so far; later turns re-read it cheaply.
           system: [{ role: 'system', content: systemPrompt, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' } } } }],
           messages: markLastForCache(await convertToModelMessages(body.mode === 'quiz' ? trimQuizHistory(messages) : messages)),
-          tools: { ...createAgentTools({ webSearch: searchOn }), ...batchTools },
+          tools: { ...createAgentTools({ webSearch: searchOn, onRead: (o) => sendRead(o) }), ...batchTools },
           stopWhen: stepCountIs(50),
           maxOutputTokens: selected.id === DEFAULT_MODEL ? CLAUDE_OUTPUT_BUDGET : 12000,
           maxRetries: 0,
@@ -228,10 +233,7 @@ export const Route = createFileRoute("/api/chat")({
         } finally {
           void handshake.cancel().catch(() => {}).finally(() => handshake.releaseLock());
         }
-        const response = result.toUIMessageStreamResponse({
-          originalMessages: messages,
-          sendReasoning: true,
-          onError: (error) => {
+        const onStreamError = (error: unknown) => {
             if (isAiCancellation(error, request.signal)) return 'Response stopped.';
             console.error("Tutor request failed", error instanceof Error ? error.message : "Unknown error");
             if (error instanceof Error && error.message.startsWith("[AI_")) return error.message;
@@ -239,8 +241,18 @@ export const Route = createFileRoute("/api/chat")({
             if (status === 429) return "Too many requests right now — please wait a moment and try again.";
             if (status === 402 || status === 403) return encodeAiFailure(classifyAiFailure(status, {}));
             return "Something went wrong while solving. Please try again.";
+        };
+        const stream = createUIMessageStream({
+          onError: onStreamError,
+          execute: ({ writer }) => {
+            sendRead = (o) => {
+              try { writer.write({ type: 'data-reader', data: o, transient: true }); } catch { /* stream already closed */ }
+            };
+            for (const o of pendingReads.splice(0)) sendRead(o);
+            writer.merge(result.toUIMessageStream({ originalMessages: messages, sendReasoning: true, onError: onStreamError }));
           },
         });
+        const response = createUIMessageStreamResponse({ stream });
         return withLovableAiGatewayRunIdHeader(response, gateway);
         } catch (error) {
           if (isAiCancellation(error, request.signal)) return new Response(null, { status: 499 });

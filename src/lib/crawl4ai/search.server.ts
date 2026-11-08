@@ -3,7 +3,7 @@
  * search (gpt-6-astra + web_search tool, billed to Lovable AI credits). The found pages are then
  * crawled for free and BM25-filtered against the query, so answers rest on text actually read.
  */
-import { crawlMany, type CrawlResult } from "./crawler.server";
+import { crawlMany, looksBlocked, type CrawlResult } from "./crawler.server";
 import { rankPassages } from "./filters";
 import { runResponse, type UsageMeter } from "./llm.server";
 import { normalizeUrl, parseHttpUrl, urlContentType } from "./url";
@@ -13,7 +13,8 @@ export type WebSearchResult = { query: string; summary: string; hits: SearchHit[
 
 const SEARCH_INSTRUCTIONS = `You are the search step of a study research tool for Indian NEET/JEE/board students.
 Search the live web for the user's query. Prefer official and authoritative sources (NTA, NCERT, CBSE, government sites, universities, journals, reputable publications) over coaching blogs and forums.
-Then write a short factual summary (at most 120 words) of what the sources say, citing them inline. Use plain sentences, include exact dates, numbers and names when found. If sources disagree, say so. Do not invent anything not found in the sources.`;
+Then write a short factual summary (at most 120 words) of what the sources say, citing them inline. Use plain sentences, include exact dates, numbers and names when found. If sources disagree, say so. Do not invent anything not found in the sources.
+Always run at least one web search, even for short or vague queries. Never reply with a clarifying question instead of searching: pick the most likely meaning for an Indian NEET/JEE student (for example, an unnamed exam usually means NEET), search for it, and state the assumption in one short sentence. The summary must report facts from the sources and must never be a question back to the user.`;
 
 /** Removes markdown links/images and citation wrappers, leaving readable text. */
 export function plainText(md: string): string {
@@ -110,12 +111,16 @@ export function pageExcerpt(r: CrawlResult, maxChars = 1200, query = ""): string
   return body.length > maxChars ? `${body.slice(0, maxChars)}…` : body;
 }
 
+export { looksBlocked } from "./crawler.server";
+
 /** Search → crawl the best hits → BM25 excerpts about the query. */
 export async function searchAndCrawl(
   query: string,
   opts: {
     allowedDomains?: string[];
     maxPages?: number;
+    /** Extra hits read in the same batch so blocked or unreadable pages can be replaced. */
+    sparePages?: number;
     maxResults?: number;
     excerptChars?: number;
     pageTimeoutMs?: number;
@@ -133,24 +138,28 @@ export async function searchAndCrawl(
   });
   opts.onSearch?.(search);
   const readable = search.hits.filter((h) => ["text/html", "application/pdf", "text/plain", "unknown"].includes(urlContentType(h.url)));
-  const targets = [...readable.filter((h) => h.cited), ...readable.filter((h) => !h.cited)].slice(0, opts.maxPages ?? 4);
+  const targets = [...readable.filter((h) => h.cited), ...readable.filter((h) => !h.cited)].slice(0, (opts.maxPages ?? 4) + (opts.sparePages ?? 0));
   const pages: SearchPage[] = [];
+  const passageQuery = [query, ...search.queries.slice(0, 3)].join(" ").slice(0, 600);
   const results = await crawlMany(
     targets.map((t) => t.url),
-    { query, fetch: { timeoutMs: opts.pageTimeoutMs ?? 10000 } },
+    // Rank passages with the search's own queries too: they use the sources' wording
+    // (e.g. "peripheral neuropathy prevalence") when the student's words differ ("nerve fibre cases").
+    { query: passageQuery, fetch: { timeoutMs: opts.pageTimeoutMs ?? 10000 } },
     {
       concurrency: 4,
       ...(opts.signal ? { signal: opts.signal } : {}),
       onResult: (r, i) => {
         const hit = targets[i]!;
+        const blocked = looksBlocked(r);
         const page: SearchPage = {
           ...hit,
           title: hit.title || r.metadata.title || hit.url,
-          excerpt: r.success ? pageExcerpt(r, opts.excerptChars ?? 1200, query) : "",
-          crawled: r.success,
+          excerpt: r.success && !blocked ? pageExcerpt(r, opts.excerptChars ?? 1200, passageQuery) : "",
+          crawled: r.success && !blocked,
           words: r.wordCount,
           kind: r.kind,
-          ...(r.success ? {} : { error: r.error ?? "Could not read this page." }),
+          ...(r.success && !blocked ? {} : { error: blocked ? "The website showed a bot check instead of the page." : (r.error ?? "Could not read this page.") }),
         };
         pages[i] = page;
         opts.onPage?.(page, r);

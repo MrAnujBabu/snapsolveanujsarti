@@ -55,7 +55,7 @@ describe("saving web research", () => {
 
   it("a page read without an AI question saves its focused notes, capped", () => {
     const long = "x".repeat(SAVED_NOTES_CHARS + 500);
-    const snap = researchSnapshot({ ...base, request: { mode: "read", url: "https://example.org/a", filter: "auto", aiClean: false }, pages: [page({ fitMarkdown: long })] })!;
+    const snap = researchSnapshot({ ...base, request: { mode: "read", url: "https://example.org/a", filter: "auto", aiClean: false, browser: "auto", screenshot: false }, pages: [page({ fitMarkdown: long })] })!;
     expect(snap.question).toBe("Notes: Mitosis");
     expect(snap.answer.length).toBeLessThan(SAVED_NOTES_CHARS + 50);
     expect(snap.sources).toEqual([{ n: 1, url: "https://example.org/a", title: "Mitosis" }]);
@@ -67,6 +67,6 @@ describe("saving web research", () => {
   });
 
   it("a failed read with no answer cannot be saved", () => {
-    expect(researchSnapshot({ ...base, request: { mode: "read", url: "https://example.org/a", filter: "auto", aiClean: false }, pages: [page({ success: false })] })).toBeNull();
+    expect(researchSnapshot({ ...base, request: { mode: "read", url: "https://example.org/a", filter: "auto", aiClean: false, browser: "auto", screenshot: false }, pages: [page({ success: false })] })).toBeNull();
   });
 });

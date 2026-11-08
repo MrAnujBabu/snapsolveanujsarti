@@ -448,7 +448,7 @@ function createLiveVoice(options: LiveOptions) {
   function pulse() {
     if (state !== "active") return;
     const now = Date.now();
-    if (now - lastAck >= ACK_GRACE_MS) return fail("Voice control connection lost");
+    if (now - lastAck >= ACK_GRACE_MS) return fail("Voice server se 15 second tak jawab nahi aaya, isliye call kat gayi. Internet check karke Start dabao. Preview mein app update hote waqt aisa ho sakta hai; published app par yeh nahi hota.");
     if (mediaReady()) {
       if (mediaLostAt) options.onEvent({ type: "app.media", state: "restored" });
       mediaLostAt = 0;
@@ -670,7 +670,7 @@ function createLiveVoice(options: LiveOptions) {
     socket.onerror = () => fail("Voice connection failed");
     socket.onclose = () => {
       if (state !== "stopping" && state !== "closed") {
-        options.onEvent({ type: "app.error", error: { message: "Voice control connection closed" } });
+        options.onEvent({ type: "app.error", error: { message: "Voice server ka connection band ho gaya, isliye call kat gayi. Start dabakar nayi call shuru karo." } });
         options.onEvent({ type: "app.dropped" });
       }
       release();

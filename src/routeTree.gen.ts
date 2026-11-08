@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BatchRouteImport } from './routes/batch'
 import { Route as PracticeRouteImport } from './routes/practice'
+import { Route as ReaderReportRouteImport } from './routes/reader-report'
 import { Route as ResearchRouteImport } from './routes/research'
 import { Route as StudioRouteImport } from './routes/studio'
 import { Route as VoiceRouteImport } from './routes/voice'
@@ -56,6 +57,11 @@ const BatchRoute = BatchRouteImport.update({
 const PracticeRoute = PracticeRouteImport.update({
   id: '/practice',
   path: '/practice',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReaderReportRoute = ReaderReportRouteImport.update({
+  id: '/reader-report',
+  path: '/reader-report',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResearchRoute = ResearchRouteImport.update({
@@ -184,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/batch': typeof BatchRoute
   '/practice': typeof PracticeRoute
+  '/reader-report': typeof ReaderReportRoute
   '/research': typeof ResearchRoute
   '/studio': typeof StudioRoute
   '/voice': typeof VoiceRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/batch': typeof BatchRoute
   '/practice': typeof PracticeRoute
+  '/reader-report': typeof ReaderReportRoute
   '/research': typeof ResearchRoute
   '/studio': typeof StudioRoute
   '/voice': typeof VoiceRoute
@@ -245,6 +253,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/batch': typeof BatchRoute
   '/practice': typeof PracticeRoute
+  '/reader-report': typeof ReaderReportRoute
   '/research': typeof ResearchRoute
   '/studio': typeof StudioRoute
   '/voice': typeof VoiceRoute
@@ -277,6 +286,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/batch'
     | '/practice'
+    | '/reader-report'
     | '/research'
     | '/studio'
     | '/voice'
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/batch'
     | '/practice'
+    | '/reader-report'
     | '/research'
     | '/studio'
     | '/voice'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/batch'
     | '/practice'
+    | '/reader-report'
     | '/research'
     | '/studio'
     | '/voice'
@@ -368,6 +380,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   BatchRoute: typeof BatchRoute
   PracticeRoute: typeof PracticeRoute
+  ReaderReportRoute: typeof ReaderReportRoute
   ResearchRoute: typeof ResearchRoute
   StudioRoute: typeof StudioRoute
   VoiceRoute: typeof VoiceRoute
@@ -422,6 +435,13 @@ declare module '@tanstack/react-router' {
       path: '/practice'
       fullPath: '/practice'
       preLoaderRoute: typeof PracticeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reader-report': {
+      id: '/reader-report'
+      path: '/reader-report'
+      fullPath: '/reader-report'
+      preLoaderRoute: typeof ReaderReportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/research': {
@@ -600,6 +620,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   BatchRoute: BatchRoute,
   PracticeRoute: PracticeRoute,
+  ReaderReportRoute: ReaderReportRoute,
   ResearchRoute: ResearchRoute,
   StudioRoute: StudioRoute,
   VoiceRoute: VoiceRoute,

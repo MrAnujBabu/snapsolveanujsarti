@@ -89,7 +89,17 @@ function upgradeRequest(request: IncomingMessage): Request {
   }
   const host = request.headers.host;
   if (!host) throw new Error("Missing voice request host");
-  const protocol = (request.socket as TLSSocket).encrypted ? "https:" : "http:";
+  // The preview proxy ends HTTPS before this dev server, so the socket looks plain even though the
+  // browser page is https. Use the forwarded protocol (or the page's own protocol for the same host).
+  const forwarded = String(request.headers["x-forwarded-proto"] ?? "").split(",")[0]?.trim().toLowerCase();
+  let pageProtocol = "";
+  try {
+    const origin = request.headers.origin ? new URL(request.headers.origin) : null;
+    if (origin && origin.host === host) pageProtocol = origin.protocol;
+  } catch {
+    pageProtocol = "";
+  }
+  const protocol = pageProtocol || (forwarded === "https" || forwarded === "http" ? `${forwarded}:` : (request.socket as TLSSocket).encrypted ? "https:" : "http:");
   const origin = new URL(`${protocol}//${host}`).origin;
   const url = new URL(request.url ?? "/", origin);
   if (url.origin !== origin) throw new Error("Invalid voice request URL");

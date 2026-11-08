@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { logRead } from "@/lib/reader-log";
 import { createNdjsonParser, type PageView, type ResearchEvent, type ResearchRequest, type SourceRef, type UsageView } from "@/lib/crawl4ai/research-protocol";
 
 type SearchEvent = Extract<ResearchEvent, { type: "search" }>;
@@ -60,7 +61,13 @@ export function useResearch() {
     return () => clearInterval(t);
   }, [cooldownUntil]);
 
+  const runRef = useRef("");
   const onEvent = useCallback((e: ResearchEvent) => {
+    if (e.type === "page" && e.page.outcome) {
+      const o = e.page.outcome;
+      logRead("web_research", o, runRef.current);
+      window.__lovableEvents?.track?.("project.page_read", { mode: "web_research", reader: o.reader, ok: o.ok, reason: o.reason ?? "none", site: o.site, pages: o.pages, words: o.words });
+    }
     if (e.type === "answer-delta") {
       pendingDelta.current += e.delta;
       flushTimer.current ??= setTimeout(flush, 80);
@@ -93,6 +100,7 @@ export function useResearch() {
     const controller = new AbortController();
     ctrl.current = controller;
     pendingDelta.current = "";
+    runRef.current = `research-${request.mode}-${Date.now()}`;
     setState({ ...EMPTY, running: true, status: "Starting…", request });
     try {
       const res = await fetch("/api/crawl", {

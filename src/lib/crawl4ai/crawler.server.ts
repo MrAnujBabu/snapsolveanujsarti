@@ -2,6 +2,7 @@
  * AsyncWebCrawler port: arun() = fetch → scrape → markdown + citations → fit markdown (Pruning or
  * BM25) with caching; arunMany() = semaphore dispatcher with a per-site polite delay.
  */
+import { fetchArchived, fetchRendered, rendererAvailable } from "./browser-reader.server";
 import { canRead, canWrite, LruCache, type CacheMode } from "./cache";
 import { CrawlError, fetchPage, type FetchedPage, type FetchOptions } from "./fetcher.server";
 import { bm25Filter, pruningFilter, rankPassages } from "./filters";
@@ -28,7 +29,15 @@ export type CrawlConfig = {
   fetch?: FetchOptions;
   /** Keep the original HTML on the result (CSS-schema extraction needs classes and ids). */
   keepHtml?: boolean;
+  /**
+   * Browser rescue: "auto" re-reads JavaScript-only, bot-check and refused pages with the free
+   * browser renderer and then the web archive; "always" renders every HTML page; "never" = direct only.
+   */
+  browser?: "auto" | "always" | "never";
 };
+
+/** How the text was obtained: a direct read, the free browser renderer, or the web archive's copy. */
+export type ReadVia = "direct" | "browser" | "archive";
 
 export type CrawlResult = {
   url: string;
@@ -53,6 +62,9 @@ export type CrawlResult = {
   redirects: string[];
   truncated: boolean;
   html?: string;
+  via: ReadVia;
+  /** Date of the web archive copy when via = "archive". */
+  archivedAt?: string;
 };
 
 const EMPTY_MD: MarkdownResult = { rawMarkdown: "", markdownWithCitations: "", referencesMarkdown: "", fitMarkdown: "", fitHtml: "" };
@@ -61,7 +73,7 @@ const MAX_MARKDOWN_CHARS = 250_000;
 const cache = new LruCache<CrawlResult>(150);
 
 function cacheKey(url: string, c: CrawlConfig) {
-  return JSON.stringify([normalizeUrl(url) ?? url, c.query ?? "", c.contentFilter ?? "auto", c.bm25Threshold ?? null, c.pruningThreshold ?? null, c.thresholdType ?? null, c.scrape ?? null, !!c.ignoreLinks, !!c.ignoreImages, c.citations !== false, !!c.keepHtml]);
+  return JSON.stringify([normalizeUrl(url) ?? url, c.query ?? "", c.contentFilter ?? "auto", c.bm25Threshold ?? null, c.pruningThreshold ?? null, c.thresholdType ?? null, c.scrape ?? null, !!c.ignoreLinks, !!c.ignoreImages, c.citations !== false, !!c.keepHtml, c.browser ?? "auto"]);
 }
 
 export function failedResult(url: string, error: unknown, elapsedMs = 0): CrawlResult {
@@ -69,7 +81,7 @@ export function failedResult(url: string, error: unknown, elapsedMs = 0): CrawlR
   return {
     url, finalUrl: url, success: false, status: e.status ?? 0, error: e.message, errorCode: e.code, kind: "html", metadata: { title: "" },
     markdown: EMPTY_MD, links: { internal: [], external: [] }, media: { images: [], videos: [], audios: [] }, tables: [], wordCount: 0,
-    fitWordCount: 0, needsBrowser: false, cached: false, elapsedMs, redirects: [], truncated: false,
+    fitWordCount: 0, needsBrowser: false, cached: false, elapsedMs, redirects: [], truncated: false, via: "direct",
   };
 }
 
@@ -98,7 +110,7 @@ function fromHtml(page: FetchedPage, config: CrawlConfig): CrawlResult {
     markdown: { ...md, rawMarkdown: cap(md.rawMarkdown), markdownWithCitations: cap(md.markdownWithCitations), fitMarkdown: cap(md.fitMarkdown), fitHtml: md.fitHtml.slice(0, MAX_MARKDOWN_CHARS) },
     links: scraped.links, media: scraped.media, tables: scraped.tables, wordCount: words, fitWordCount: wordCount(md.fitMarkdown),
     needsBrowser: words < 40 && shell, cached: false, elapsedMs: page.elapsedMs, redirects: page.redirects, truncated: page.truncated,
-    ...(config.keepHtml ? { html: page.text ?? "" } : {}),
+    ...(config.keepHtml ? { html: page.text ?? "" } : {}), via: "direct",
   };
 }
 
@@ -119,7 +131,7 @@ async function fromPdf(page: FetchedPage, config: CrawlConfig): Promise<CrawlRes
     markdown: { rawMarkdown: cap(raw), markdownWithCitations: cap(raw), referencesMarkdown: "", fitMarkdown: cap(fit), fitHtml: "" },
     links: { internal: [], external: [] }, media: { images: [], videos: [], audios: [] }, tables: [], pages: pdf.pages,
     wordCount: words, fitWordCount: wordCount(fit), needsBrowser: false, cached: false, elapsedMs: page.elapsedMs, redirects: page.redirects,
-    truncated: pdf.truncatedPages,
+    truncated: pdf.truncatedPages, via: "direct",
   };
 }
 
@@ -139,8 +151,92 @@ function fromText(page: FetchedPage, config: CrawlConfig): CrawlResult {
     kind: "text", metadata: { title: page.url.split("/").pop() || page.url },
     markdown: { rawMarkdown: cap(text), markdownWithCitations: cap(text), referencesMarkdown: "", fitMarkdown: cap(fit), fitHtml: "" },
     links: { internal: [], external: [] }, media: { images: [], videos: [], audios: [] }, tables: [], wordCount: wordCount(text),
-    fitWordCount: wordCount(fit), needsBrowser: false, cached: false, elapsedMs: page.elapsedMs, redirects: page.redirects, truncated: page.truncated,
+    fitWordCount: wordCount(fit), needsBrowser: false, cached: false, elapsedMs: page.elapsedMs, redirects: page.redirects, truncated: page.truncated, via: "direct",
   };
+}
+
+async function fromPage(page: FetchedPage, config: CrawlConfig): Promise<CrawlResult> {
+  if (page.kind === "html" || page.kind === "xml" && /<html/i.test(page.text ?? "")) return fromHtml(page, config);
+  if (page.kind === "pdf") return fromPdf(page, config);
+  if (page.kind === "text" || page.kind === "json" || page.kind === "xml") return fromText(page, config);
+  throw new CrawlError("unsupported", "This link is a file type that cannot be read as text.");
+}
+
+const BLOCK_PAGE = /access denied|client challenge|just a moment|attention required|are you a robot|verify you are human|captcha|enable javascript|request blocked|forbidden|security check|unusual (?:activity|traffic)|temporarily unavailable/i;
+/** Unmistakable challenge wording: counts even on long pages (a captcha page can carry a big footer). */
+const STRONG_BLOCK = /are you a robot|verify (?:that )?you are (?:a )?human|confirm you are a human|captcha challenge|checking your browser|client challenge|just a moment\.\.\.|access to this page has been denied|security check required|detected unusual (?:activity|traffic)/i;
+
+/** Bot-check and "access denied" pages; they are not readable sources. */
+export function looksBlocked(r: CrawlResult): boolean {
+  if (!r.success) return false;
+  if (STRONG_BLOCK.test(r.metadata.title ?? "") || STRONG_BLOCK.test(plainHead(r.markdown.rawMarkdown))) return true;
+  if (r.wordCount >= 80) return false;
+  return BLOCK_PAGE.test(r.metadata.title ?? "") || BLOCK_PAGE.test(r.markdown.rawMarkdown.slice(0, 1500)) || r.wordCount < 25;
+}
+
+const MISSING_TITLE = /\b(?:page not found|not found|404|page unavailable|page (?:does not|doesn't) exist|no longer available|content unavailable)\b/i;
+const MISSING_HEAD = /^(?:#+\s*)?(?:skip to (?:main )?content\s+#*\s*)?(?:page not found|404\b|not found\b|sorry,? (?:the|this) page|the page you (?:were looking for|requested))/i;
+
+/**
+ * Soft "page not found" pages: the site (or the browser reader, which always answers 200) shows a
+ * 404 page instead of an error. They are dead links, never sources.
+ */
+export function looksMissing(r: CrawlResult): boolean {
+  if (!r.success || r.kind !== "html" || r.wordCount >= 400) return false;
+  return MISSING_TITLE.test(r.metadata.title ?? "") || MISSING_HEAD.test(plainHead(r.markdown.rawMarkdown).trim());
+}
+
+function hasBlockWording(r: CrawlResult): boolean {
+  const title = r.metadata.title ?? "";
+  return STRONG_BLOCK.test(title) || BLOCK_PAGE.test(title) || BLOCK_PAGE.test(r.markdown.rawMarkdown.slice(0, 1500));
+}
+
+/** The first ~60 words of the page text (links and images stripped). */
+function plainHead(md: string): string {
+  return md.replace(/!\[[^\]]*\]\([^)]*\)/g, "").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").split(/\s+/).slice(0, 60).join(" ");
+}
+
+/** True when a real browser (or an archived copy) could plausibly read more than the direct read did. */
+export function needsRescue(r: CrawlResult): boolean {
+  if (!r.success) {
+    if (r.errorCode === "http") return ![404, 410].includes(r.status);
+    return r.errorCode === "network" || r.errorCode === "timeout";
+  }
+  if (r.kind !== "html") return false;
+  return r.needsBrowser || looksBlocked(r) || r.wordCount < 40;
+}
+
+/** The rescue result replaces the direct one only when it is clearly more readable. */
+export function isBetterRead(candidate: CrawlResult | null, current: CrawlResult): candidate is CrawlResult {
+  if (!candidate?.success || looksBlocked(candidate)) return false;
+  if (!current.success || looksBlocked(current)) return true;
+  return candidate.wordCount > current.wordCount * 1.2 + 20;
+}
+
+async function rescue(url: string, current: CrawlResult, config: CrawlConfig): Promise<CrawlResult> {
+  const signal = config.fetch?.signal;
+  const timeoutMs = Math.max(8000, config.fetch?.timeoutMs ?? 20000);
+  let best = current;
+  if (rendererAvailable()) {
+    const rendered = await fetchRendered(url, { timeoutMs, ...(signal ? { signal } : {}) })
+      .then((page) => ({ ...fromHtml(page, config), via: "browser" as const }))
+      .catch((e: unknown) => {
+        if (e instanceof CrawlError && e.code === "cancelled") throw e;
+        return null;
+      });
+    // A browser-rendered "page not found" is the definitive answer: the link is dead.
+    if (rendered && looksMissing(rendered)) return rendered;
+    if (config.browser === "always" ? !!rendered?.success && !looksBlocked(rendered) : isBetterRead(rendered, best)) best = rendered!;
+  }
+  if (needsRescue(best)) {
+    const archived = await fetchArchived(url, { timeoutMs, ...(signal ? { signal } : {}) });
+    if (archived) {
+      const r = await fromPage(archived.page, config).catch(() => null);
+      const fromArchive = r ? { ...r, via: "archive" as const, archivedAt: archived.archivedAt } : null;
+      if (isBetterRead(fromArchive, best)) best = fromArchive;
+    }
+  }
+  return best;
 }
 
 /** arun(): one URL through the whole pipeline. Never throws for page problems — see success/error. */
@@ -154,14 +250,34 @@ export async function crawl(url: string, config: CrawlConfig = {}): Promise<Craw
   const started = Date.now();
   let result: CrawlResult;
   try {
-    const page = await fetchPage(url, config.fetch);
-    if (page.kind === "html" || page.kind === "xml" && /<html/i.test(page.text ?? "")) result = fromHtml(page, config);
-    else if (page.kind === "pdf") result = await fromPdf(page, config);
-    else if (page.kind === "text" || page.kind === "json" || page.kind === "xml") result = fromText(page, config);
-    else throw new CrawlError("unsupported", "This link is a file type that cannot be read as text.");
+    result = await fromPage(await fetchPage(url, config.fetch), config);
   } catch (error) {
     if (error instanceof CrawlError && error.code === "cancelled") throw error;
-    return failedResult(url, error, Date.now() - started);
+    result = failedResult(url, error, Date.now() - started);
+  }
+  const browser = config.browser ?? "auto";
+  if (browser !== "never" && (needsRescue(result) || (browser === "always" && result.success && result.kind === "html"))) {
+    result = await rescue(url, result, config);
+    result = { ...result, elapsedMs: Date.now() - started };
+    if (looksMissing(result)) {
+      // Marked as a dead link below.
+    } else if (result.success && result.kind === "html" && result.wordCount < 25 && !hasBlockWording(result)) {
+      result = {
+        ...result, success: false, errorCode: "empty",
+        error: "This page shows almost no text, even in a browser (it may be an app, a video or images). Try a different source.",
+      };
+    } else if (looksBlocked(result) || (!result.success && result.errorCode === "http" && [401, 403, 429, 503].includes(result.status))) {
+      result = {
+        ...result, success: false, errorCode: "blocked_site",
+        error: "This website blocks automatic readers. A browser and the web archive were tried too. Open the link yourself, or try a different source.",
+      };
+    }
+  }
+  if (looksMissing(result)) {
+    result = {
+      ...result, success: false, status: 404, errorCode: "http",
+      error: "This page no longer exists on the website (page not found). Try a different source.",
+    };
   }
   if (result.success && canWrite(mode)) cache.set(key, result);
   return result;

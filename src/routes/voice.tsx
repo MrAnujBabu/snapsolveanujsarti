@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
-import { ArrowLeft, Download, Eye, EyeOff, FileDown, FileText, FileType, Gauge, GraduationCap, Globe, Maximize2, MessageSquare, Mic, MicOff, Minimize2, Paperclip, Pause, PhoneOff, Phone, SendHorizontal, Upload, Volume2, X, SlidersHorizontal, Timer, Play } from "lucide-react";
+import { ArrowLeft, Copy, Download, Eye, EyeOff, FileDown, FileText, FileType, Gauge, GraduationCap, Globe, Maximize2, MessageSquare, Mic, MicOff, Minimize2, Paperclip, Pause, PhoneOff, Phone, SendHorizontal, Upload, Volume2, X, SlidersHorizontal, Timer, Play } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -11,6 +11,8 @@ import { useLiveVoice, PLAYBACK_SPEEDS, type LiveEvent, type LiveStage } from "@
 import { useBatchContext, useVoiceChoice, useStudyTextSize, STUDY_TEXT_SIZES, VOICE_CHOICES, type VoiceChoiceId, type StudyTextSize } from "@/lib/quiz-label-preference";
 import { extractLocally } from "@/lib/file-extract";
 import { cn } from "@/lib/utils";
+import { isReadOutcome } from "@/lib/crawl4ai/read-outcome";
+import { logRead } from "@/lib/reader-log";
 import { parseVoiceSession, voiceTranscriptMarkdown, type VoiceQuizEntry, type VoiceRow } from "@/lib/voice-transcript";
 import { prewarmLiveRelay } from "@/lib/live-endpoint";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -207,12 +209,14 @@ function LiveVoicePage() {
     try { window.localStorage.setItem(VOICE_CHAT_KEY, on ? "1" : "0"); } catch { /* storage unavailable */ }
   };
 
+  const voiceRunRef = useRef(String(Date.now()));
   const onEvent = useCallback((event: LiveEvent) => {
     // The muted live stream is not the speech the student hears in TTS mode.
     if (event.type === 'app.quiz.playback.ready' && ttsVoice.current) return;
     dispatchQuiz(event);
     if (event.type === 'app.settings.rejected') toast.error(event.error?.message ?? 'Settings apply nahi hui.');
     if (event.type === 'app.call.record') {
+      voiceRunRef.current = typeof event['callId'] === 'string' ? event['callId'] : String(Date.now());
       setCallId(typeof event['callId'] === 'string' ? event['callId'] : '');
       setCreated(false); setUsage(null); setFinalUsage(false);
     }
@@ -220,6 +224,11 @@ function LiveVoicePage() {
     if (event.type === 'session.usage.updated' || event.type === 'session.closed') {
       const seconds = confirmedSeconds(event.usage?.seconds);
       if (seconds !== null) { setUsage(seconds); setFinalUsage(event.type === 'session.closed'); }
+    }
+    if (event.type === 'app.reader' && isReadOutcome(event['outcome'])) {
+      const o = event['outcome'];
+      logRead('voice', o, `voice-${voiceRunRef.current}`);
+      window.__lovableEvents?.track?.('project.page_read', { mode: 'voice', reader: o.reader, ok: o.ok, reason: o.reason ?? 'none', site: o.site, pages: o.pages, words: o.words });
     }
     if (event.type === 'app.history.error') toast.error(event.error?.message ?? 'Call history save failed.');
     if (event.type === "app.quiz.question" && typeof event.questionId === "string" && event.labels && typeof event.labels === "object") {
@@ -436,6 +445,32 @@ function LiveVoicePage() {
     URL.revokeObjectURL(a.href);
   };
 
+  const copyText = async (text: string, done: string) => {
+    const value = text.trim();
+    if (!value) return;
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      // Embedded previews can refuse the clipboard API; a hidden textarea still copies.
+      const area = document.createElement("textarea");
+      area.value = value;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.select();
+      const ok = document.execCommand("copy");
+      area.remove();
+      if (!ok) { toast.error("Copy nahi ho paya — text ko daba kar select karo."); return; }
+    }
+    toast.success(done);
+  };
+  const copyCall = () => {
+    if (nothingToExport()) return;
+    const text = rows.map((r) => (r.role === "user" ? `Me: ${r.text.trim()}` : `SnapSolve:\n${formatVoiceReply(r.text).trim()}`)).join("\n\n");
+    void copyText(text, "Poori baat-cheet copy ho gayi.");
+  };
+
   const exportCallWord = () => {
     if (nothingToExport()) return;
     exportTranscriptWord(voiceTranscriptMarkdown(rows, quizLog, { embedData: false, style: "plain" }));
@@ -536,7 +571,8 @@ function LiveVoicePage() {
         <VoiceSamples disabled={locked} />
         <Select value={textSize} onValueChange={(v) => setTextSize(v as StudyTextSize)}><SelectTrigger aria-label="Voice transcript text size"><SelectValue /></SelectTrigger><SelectContent>{STUDY_TEXT_SIZES.map((size) => <SelectItem key={size} value={size}>{size} px</SelectItem>)}</SelectContent></Select>
         <QuizTimerSettings />
-        <div className="flex gap-2 border-t pt-3">        <Button variant="ghost" size="icon" className="size-9" aria-label="Export conversation" title="Export conversation (.md)" onClick={exportCall}><Download className="size-4" /></Button>
+        <div className="flex gap-2 border-t pt-3">        <Button variant="ghost" size="icon" className="size-9" aria-label="Copy conversation" title="Poori baat-cheet copy karo" onClick={copyCall}><Copy className="size-4" /></Button>
+        <Button variant="ghost" size="icon" className="size-9" aria-label="Export conversation" title="Export conversation (.md)" onClick={exportCall}><Download className="size-4" /></Button>
         <Button variant="ghost" size="icon" className="size-9" aria-label="Export as Word" title="Export conversation (Word .doc — tables aur lists intact)" onClick={exportCallWord}><FileType className="size-4" /></Button>
         <Button variant="ghost" size="icon" className="size-9" aria-label="Export as PDF" title="Export conversation (PDF — print dialog me Save as PDF chuno)" onClick={exportCallPdf}><FileDown className="size-4" /></Button>
         <Button variant="ghost" size="icon" className="size-9" aria-label="Import conversation" title="Import conversation (.md / .json)" disabled={locked} onClick={() => importInput.current?.click()}><Upload className="size-4" /></Button>
@@ -558,6 +594,7 @@ function LiveVoicePage() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="size-11" aria-label="Export quiz with options" title="Quiz + options export (MD / Word / PDF)"><Download className="size-4" /></Button></DropdownMenuTrigger>
           <DropdownMenuContent align="end">
+            <DropdownMenuItem onSelect={copyCall}><Copy className="size-4" />Copy all</DropdownMenuItem>
             <DropdownMenuItem onSelect={exportCall}><Download className="size-4" />Markdown (.md)</DropdownMenuItem>
             <DropdownMenuItem onSelect={exportCallWord}><FileType className="size-4" />Word (.doc)</DropdownMenuItem>
             <DropdownMenuItem onSelect={exportCallPdf}><FileDown className="size-4" />PDF</DropdownMenuItem>
@@ -587,6 +624,11 @@ function LiveVoicePage() {
               <p className="voice-caption whitespace-pre-wrap break-words rounded-lg border border-primary/15 bg-user-bubble px-3 py-2 text-foreground">{r.text}</p>
             ) : (
               <div className="voice-caption break-words text-foreground"><AssistantAnswer text={formatVoiceReply(r.text)} isAnimating={false} compact /></div>
+            )}
+            {r.text.trim() && (
+              <div className={cn("mt-1 flex", r.role === "user" && "justify-end")}>
+                <Button variant="ghost" size="sm" className="h-8 gap-1.5 px-2 text-xs text-muted-foreground" aria-label={r.role === "user" ? "Copy your message" : "Copy answer"} onClick={() => void copyText(r.role === "user" ? r.text : formatVoiceReply(r.text), "Copy ho gaya.")}><Copy className="size-3.5" />Copy</Button>
+              </div>
             )}
           </div>
         ))}

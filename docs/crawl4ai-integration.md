@@ -84,3 +84,36 @@ URL(s) ──► safe fetch (redirect + private-network guard, size caps, robots
 * Web Research results (cited answers, page notes, crawl summaries) save as a doubt thread or a practice card on the device, free; the same question updates one doubt/card.
 * Voice answers with Web search were looping (each step only saw the first tool result) — fixed in the call relay; the real Claude + search + open-page step answers in ~23 s.
 * A fully spoken call could not be completed from the sandbox: its browser cannot open the call's audio link. Try it once on a phone.
+
+## 6. Browser features without a paid server (Nov 2026)
+
+The user chose not to pay for an always-on Crawl4AI/Playwright machine. The app's own server now reaches browser-level coverage with free helpers:
+
+| Crawl4AI feature | How it works here | Module |
+| --- | --- | --- |
+| Browser rendering (JS pages, many bot checks) | When a direct read fails (403/429/5xx, network, TLS), is a bot check, or is a JS shell (< 40 words), `crawl()` asks the free renderer `r.jina.ai` for the rendered HTML and runs it through the same scrape → markdown → BM25 pipeline. A 429 pauses the renderer for 60 s. | `browser-reader.server.ts`, `crawler.server.ts` |
+| Blocked sites | If the browser read is still blocked, the Internet Archive's latest saved copy is read raw (marked "web archive copy" with its date). | same |
+| Honest failure | Pages that stay blocked fail with "This website blocks automatic readers…", never count as sources. | `crawler.server.ts` (`looksBlocked`) |
+| Screenshots | Read mode "Take a screenshot" → renderer screenshot link (temporary, a few hours). | `screenshotPage` |
+| URL seeding (AsyncUrlSeeder) | robots.txt `Sitemap:` lines or `/sitemap.xml`, sitemap indexes, gzip; same-site URLs ranked by keywords + lastmod; ≤ 8 files, ≤ 5000 URLs. | `seeder.server.ts` |
+| Adaptive crawling | Stops when every keyword appears in ≥ 2 pages (coverage ≥ 0.9) or two pages in a row add < 10 % new terms. | `deep-crawl.server.ts` |
+| DFS strategy | Stack order, one path deep first. | `deep-crawl.server.ts` |
+
+Every reader (Web Research, tutor `read_link`/`open_web_page`/`web_search` page reads, NCERT reads, voice) uses `crawl()`, so all get the rescue automatically.
+
+Still not possible: pages behind a login, sites that also block the renderer and have no archive copy (e.g. some Wiley pages), clicking/scrolling scripts, and Crawl4AI's own Python extras. The renderer's free tier is rate limited; heavy use may see "browser reader is busy" for a minute.
+
+## Reader reliability tracking
+
+Every page the reader tries to open produces one `ReadOutcome` (`src/lib/crawl4ai/read-outcome.ts`): URL, site, reader
+(`direct` / `browser` / `archive` / `none`), success, failure reason (blocked site, dead link, no text, timeout, network,
+website error, unsupported, too large, stopped), words and PDF page count.
+
+- Web research: `PageView.outcome` on each NDJSON `page` event.
+- Chat: `/api/chat` writes transient `data-reader` parts (not saved in the thread, not sent to the model).
+- Voice: the live relay emits `app.reader` events from the delegated tutor's page tools.
+
+The browser keeps the last 300 outcomes on the device (`src/lib/reader-log.ts`) and shows them at `/reader-report`
+(per-mode totals, reader mix, failure reasons, per-URL list, Copy report). Each outcome is also tracked as
+`project.page_read` (no full URLs; site host only). Known gap: ncert_read/read_link remote (Firecrawl) fallbacks are not
+counted, and sites that serve their homepage for unknown paths (e.g. springer.com) still count as opened.

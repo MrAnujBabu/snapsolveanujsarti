@@ -47,6 +47,7 @@ function Research() {
       <div className="mt-6">
         <h1 className="font-display text-3xl font-semibold">Web Research</h1>
         <p className="mt-1 text-sm text-muted-foreground">{active.hint}</p>
+        <Link to="/reader-report" className="mt-2 inline-block text-sm text-primary underline-offset-2 hover:underline">Reader report: which pages opened in Web research, Chat and Voice</Link>
       </div>
       <div role="tablist" aria-label="Research tools" className="mt-5 grid grid-cols-4 gap-1 rounded-2xl bg-muted p-1.5">
         {MODES.map(({ id, label, icon: Icon }) => (

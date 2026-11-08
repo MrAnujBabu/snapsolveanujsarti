@@ -1,5 +1,13 @@
 # Roadmap
 
+## Crawl4AI full power without a paid server (Nov 8)
+- [x] Browser-rendered fallback reader (free) for JavaScript pages and bot-check / Access Denied pages, plus web-archive copy
+- [x] Screenshots of pages in Read mode
+- [x] Find pages from sitemaps (URL seeding) in Deep crawl
+- [x] Adaptive crawling (stop when enough is found) and DFS strategy
+- [x] Test in Web research (search, read, deep crawl) and the tutor page reader used by Chat/Voice; full chat answer and spoken call not re-run
+- [x] Jugaad (user, Nov 8): no paid server — run everything from the app's own Lovable server plus free browser/archive readers
+
 ## Current checks (Nov 8)
 - [x] Diagnose the workspace-owner credits error: real tutor UI/request returns 402 "Not enough credits" despite aggregate balance showing 4.37; not a cached pause. Funding/access discrepancy remains unresolved; owner must review Plans & credit usage before another attempt.
 - [x] Verify latest commit via nb's GitHub API: upstream is still 3136758 (Nov 6); latest app work is locally committed as 5b799cb, not synced to that repo.
@@ -68,3 +76,14 @@
 - [x] Reconnect Perplexity, Firecrawl, Parallel in new workspace and test
 - [x] Fix label check blocked by "Ek AI request shuru ho rahi hai"
 - [ ] Git commit request (Lovable saves automatically; GitHub push needs reconnect)
+- [x] Fix chat web search returning 'No web pages were found' (search no longer asks a question back)
+- [x] Verify/rate nerve-fibre research answer; test web search in Voice, Chat, Web research modes
+- [x] Answer: is Crawl4AI running at full (top-level) capability?
+- [x] Re-test free browser-reader + web archive reader end to end (dead-link and security-check fixes)
+- [x] Fix voice "connection failed/lost" in preview (relay refused the https page; clearer drop messages)
+- [x] Voice mode: Copy option for answers (per message + copy all)
+- [ ] Voice: call connects but drops ("Network bahut der tak gayab raha") — audio link phone↔voice service lost 15 s; likely switching away from preview mid-call. Waiting on user retest in its own tab
+- [x] Track page-read outcomes (direct / browser / archive / failed) in Web research, Chat and Voice
+- [x] Per-mode reliability report: each URL's reader source, page count and failure reason (Reader report page)
+
+- [ ] Connect GitHub API in the new workspace, then finish saving this session's changes to main on MrAnujBabu/snapsolveanujsarti

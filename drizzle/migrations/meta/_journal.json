@@ -5,71 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1792324277775,
-      "tag": "0000_study_profiles_and_ai_pause",
+      "when": 1794101997868,
+      "tag": "0000_restore_snapsolve_schema_v2",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1792327989557,
-      "tag": "0001_agent_memory_admin",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1792328647380,
-      "tag": "0002_agent_settings",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1792330806018,
-      "tag": "0003_agent_settings_default_mode",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1792374859377,
-      "tag": "0004_restore_snapsolve_schema",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1792374891540,
-      "tag": "0005_owner_admin_role",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1792389984655,
-      "tag": "0006_study_kinds",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1792412109914,
-      "tag": "0007_restore_snapsolve_schema_v2",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1793618778050,
-      "tag": "0008_study_profiles_roles_memory",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1793618823646,
-      "tag": "0009_grants_voice_vedantu_ncert",
+      "when": 1794102094557,
+      "tag": "0001_grants_voice_vedantu_ncert",
       "breakpoints": true
     }
   ]

@@ -2,6 +2,7 @@
  * Browser-safe contract between the Web Research page and /api/crawl (NDJSON events).
  */
 import { z } from "zod";
+import type { ReadOutcome } from "./read-outcome";
 
 export const RESEARCH_LIMITS = { searchPages: 6, deepDepth: 3, deepPages: 15, fields: 20, pageMarkdownChars: 60000 } as const;
 
@@ -28,17 +29,22 @@ export const researchRequestSchema = z.discriminatedUnion("mode", [
     filter: z.enum(["auto", "pruning", "bm25", "none"]).default("auto"),
     aiClean: z.boolean().default(false),
     question: z.string().trim().max(500).optional(),
+    /** "auto" uses the free browser reader only when the direct read fails or is too thin. */
+    browser: z.enum(["auto", "always", "never"]).default("auto"),
+    screenshot: z.boolean().default(false),
   }),
   z.object({
     mode: z.literal("deep"),
     url,
-    strategy: z.enum(["bfs", "best-first"]).default("best-first"),
+    strategy: z.enum(["bfs", "dfs", "best-first"]).default("best-first"),
     maxDepth: z.number().int().min(1).max(RESEARCH_LIMITS.deepDepth).default(2),
     maxPages: z.number().int().min(1).max(RESEARCH_LIMITS.deepPages).default(8),
     keywords: z.string().trim().max(200).optional(),
     include: z.string().trim().max(300).optional(),
     exclude: z.string().trim().max(300).optional(),
     includeExternal: z.boolean().default(false),
+    sitemap: z.boolean().default(false),
+    adaptive: z.boolean().default(false),
     summarize: z.boolean().default(false),
   }),
   z.object({
@@ -84,6 +90,10 @@ export type PageView = {
   needsBrowser: boolean;
   cached: boolean;
   truncated: boolean;
+  /** direct read, free browser reader, or the web archive's saved copy */
+  via?: "direct" | "browser" | "archive";
+  archivedAt?: string;
+  screenshotUrl?: string;
   rawMarkdown: string;
   citedMarkdown: string;
   fitMarkdown: string;
@@ -92,6 +102,8 @@ export type PageView = {
   links: { internal: number; external: number; sample: { href: string; text: string }[] };
   images: { src: string; alt: string }[];
   tables: number;
+  /** Reader reliability record for this URL (reader source, page count, failure reason). */
+  outcome?: ReadOutcome;
 };
 
 export type SourceRef = { n: number; url: string; title: string };
@@ -106,7 +118,7 @@ export type ResearchEvent =
   | { type: "answer-delta"; delta: string }
   | { type: "answer"; text: string; sources: SourceRef[] }
   | { type: "extracted"; method: string; data: unknown; schema?: unknown; count: number; note?: string }
-  | { type: "stats"; stats: { crawled: number; failed: number; skippedByFilter: number; skippedByRobots: number; discovered: number; depthReached: number } }
+  | { type: "stats"; stats: { crawled: number; failed: number; skippedByFilter: number; skippedByRobots: number; discovered: number; depthReached: number; seeded?: number; stoppedEarly?: string; confidence?: number; browserReads?: number; archiveReads?: number } }
   | { type: "usage"; usage: UsageView }
   | { type: "error"; message: string; kind?: string; status?: number }
   | { type: "done"; elapsedMs: number };

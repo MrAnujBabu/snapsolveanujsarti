@@ -84,7 +84,7 @@ function decode(bytes: Uint8Array, contentType: string): string {
   }
 }
 
-async function readCapped(res: Response, max: number, signal: AbortSignal): Promise<{ bytes: Uint8Array; truncated: boolean }> {
+export async function readCapped(res: Response, max: number, signal: AbortSignal): Promise<{ bytes: Uint8Array; truncated: boolean }> {
   const declared = Number(res.headers.get("content-length") ?? "0");
   if (declared && declared > max * 1.5) {
     await res.body?.cancel().catch(() => {});

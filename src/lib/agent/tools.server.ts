@@ -2,7 +2,7 @@ import { tool } from "ai";
 import { z } from "zod";
 import { isNcertUrl, MAX_TOOL_CALLS, NCERT_BOOKS, bookKey, textbookUrl, trim } from "./ncert";
 import { earlyFallback } from "./fallback";
-import { aiSearchForTool, crawlRead } from "@/lib/crawl4ai/agent-bridge.server";
+import { aiSearchForTool, crawlRead, type OnRead } from "@/lib/crawl4ai/agent-bridge.server";
 
 const GW = "https://connector-gateway.lovable.dev";
 
@@ -36,7 +36,9 @@ async function gw(connector: string, keyName: string, path: string, body: unknow
 
 /** Tools for one request; a shared counter caps paid calls per answer. */
 /** fastSearch skips reading the found pages (voice calls need answers within seconds). */
-export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: boolean }) {
+/** onRead reports every page the tools tried to open (reader reliability tracking). */
+export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: boolean; onRead?: OnRead }) {
+  const track = opts?.onRead ? { onRead: opts.onRead } : {};
   let calls = 0;
   const guard = () => {
     calls += 1;
@@ -52,7 +54,7 @@ export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: bool
     execute: async ({ query }, { abortSignal }) => {
       guard();
       // Crawl4AI search on Lovable AI first: AI web search, then the best pages are read for real.
-      const ai = await aiSearchForTool(query, { crawlPages: opts?.fastSearch ? 0 : 3, maxResults: 6, ...(abortSignal ? { signal: abortSignal } : {}) });
+      const ai = await aiSearchForTool(query, { crawlPages: opts?.fastSearch ? 0 : 3, maxResults: 6, ...track, ...(abortSignal ? { signal: abortSignal } : {}) });
       if (ai.results.length) return { summary: ai.summary, results: ai.results };
       const seen = new Set<string>();
       const results: { title?: string; url?: string; snippet: string }[] = [];
@@ -89,7 +91,7 @@ export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: bool
     execute: async ({ url, focus }, { abortSignal }) => {
       if (!/^https?:\/\//i.test(url)) return { error: "Not a web link." };
       guard();
-      const page = await crawlRead(url, { focus, maxChars: 5000, ...(abortSignal ? { signal: abortSignal } : {}) });
+      const page = await crawlRead(url, { focus, maxChars: 5000, ...track, ...(abortSignal ? { signal: abortSignal } : {}) });
       return page.text ? page : { url, error: `${page.error ?? "This page could not be read."} Use the search snippets instead and do not guess the page's contents.` };
     },
   });
@@ -181,7 +183,7 @@ export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: bool
         };
         // Crawl4AI reads the page/PDF directly for free and keeps the lines about `focus`;
         // the paid readers only run when that fails (e.g. NCERT's certificate chain is rejected).
-        const local = await crawlRead(url, { focus, maxChars: 3000, ...(abortSignal ? { signal: abortSignal } : {}) });
+        const local = await crawlRead(url, { focus, maxChars: 3000, ...track, ...(abortSignal ? { signal: abortSignal } : {}) });
         if (local.text) return local;
         // Parallel extracts faster; if it is slow, Firecrawl starts too and the first usable text wins.
         const remote = await earlyFallback(parallelExtract(), firecrawlScrape, 4000, (r) => !!r.text);
@@ -225,7 +227,7 @@ export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: bool
           }
         };
         // Crawl4AI first: free direct read of the page or PDF (no AI, no connector credits).
-        const local = await crawlRead(url, { maxChars: 12000, ...(abortSignal ? { signal: abortSignal } : {}) });
+        const local = await crawlRead(url, { maxChars: 12000, ...track, ...(abortSignal ? { signal: abortSignal } : {}) });
         if (local.text) return local;
         // Public PDF extraction is faster via Parallel; if it is slow, Firecrawl starts too and the first usable text wins.
         const remote = await earlyFallback(parallelRead(), firecrawlRead, 4000, (r) => !!r.text);

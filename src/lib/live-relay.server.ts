@@ -3,6 +3,7 @@ import { stepCountIs, streamText, tool, type ModelMessage } from "ai";
 import process from "node:process";
 import { z } from "zod";
 import { createAgentTools } from "@/lib/agent/tools.server";
+import type { OnRead } from "@/lib/crawl4ai/agent-bridge.server";
 import { validVoiceAnswer, voiceQuizOptions, VOICE_SKIP } from "@/lib/voice-quiz";
 import { createVoiceTracking } from '@/lib/voice-tracking.server';
 import { confirmedSeconds, documentMetadata, type VoiceDocument } from '@/lib/voice-usage';
@@ -261,6 +262,7 @@ export async function answerQuestion(
   onSearch: () => void = () => {},
   ncertPrompt = "",
   batch: BatchCallContext | null = null,
+  onRead: OnRead = () => {},
 ) {
   signal.throwIfAborted();
   const paused = await currentPause(config.backendModel);
@@ -337,7 +339,7 @@ export async function answerQuestion(
     tools: {
       ...(() => {
         // Web teacher in voice: quick Lovable AI search, then optional free page reading; links the student shares are read directly.
-        const web = createAgentTools({ webSearch: prefs.search, fastSearch: true });
+        const web = createAgentTools({ webSearch: prefs.search, fastSearch: true, onRead });
         return { read_link: web.read_link, ...(web.web_search && web.open_web_page ? { web_search: web.web_search, open_web_page: web.open_web_page } : {}) };
       })(),
       ...(batch ? createBatchTools() : {}),
@@ -741,6 +743,7 @@ export function bindLiveConnection(
         () => { searchCount++; },
         ncertDeck ? ncertDeckPrompt(ncertDeck.next(), ncertDeck.pending()) : "",
         batchLoad ? await Promise.race([batchLoad, new Promise<null>((r) => setTimeout(() => r(null), 25_000))]) : null,
+        (outcome) => emit({ type: "app.reader", outcome }),
       );
       if (closing || controller.signal.aborted) return;
       if (taskRevision !== revision) return;

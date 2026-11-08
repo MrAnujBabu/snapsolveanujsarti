@@ -101,7 +101,11 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
   const [focus, setFocus] = useState("");
   const [aiClean, setAiClean] = useState(false);
   const [question, setQuestion] = useState("");
-  const [strategy, setStrategy] = useState<"best-first" | "bfs">("best-first");
+  const [browserMode, setBrowserMode] = useState<"auto" | "always">("auto");
+  const [screenshot, setScreenshot] = useState(false);
+  const [strategy, setStrategy] = useState<"best-first" | "bfs" | "dfs">("best-first");
+  const [sitemap, setSitemap] = useState(false);
+  const [adaptive, setAdaptive] = useState(false);
   const [depth, setDepth] = useState(2);
   const [maxPages, setMaxPages] = useState(8);
   const [keywords, setKeywords] = useState("");
@@ -127,8 +131,8 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
     e.preventDefault();
     let raw: unknown;
     if (mode === "search") raw = { mode, query, ...(site.trim() ? { site: site.trim().replace(/^https?:\/\//, "").replace(/\/.*$/, "") } : {}), pages, answer };
-    else if (mode === "read") raw = { mode, url, ...(focus.trim() ? { focus } : {}), aiClean, ...(question.trim() ? { question } : {}) };
-    else if (mode === "deep") raw = { mode, url, strategy, maxDepth: depth, maxPages, ...(keywords.trim() ? { keywords } : {}), ...(include.trim() ? { include } : {}), ...(exclude.trim() ? { exclude } : {}), includeExternal: external, summarize };
+    else if (mode === "read") raw = { mode, url, ...(focus.trim() ? { focus } : {}), aiClean, ...(question.trim() ? { question } : {}), browser: browserMode, screenshot };
+    else if (mode === "deep") raw = { mode, url, strategy, maxDepth: depth, maxPages, ...(keywords.trim() ? { keywords } : {}), ...(include.trim() ? { include } : {}), ...(exclude.trim() ? { exclude } : {}), includeExternal: external, sitemap, adaptive, summarize };
     else raw = { mode, url, method, ...(instruction.trim() ? { instruction } : {}), ...(method === "ai-fields" ? { fields: fields.filter((f) => f.name.trim()) } : {}), ...(method === "css-schema" ? { schema } : {}) };
     const parsed = researchRequestSchema.safeParse(raw);
     if (!parsed.success) {
@@ -148,7 +152,7 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
   };
 
   const urlField = (
-    <Field label="Web page link" htmlFor="research-url" hint={mode === "extract" ? undefined : "Web pages, PDFs and text files. Pages that need a login cannot be read."}>
+    <Field label="Web page link" htmlFor="research-url" hint={mode === "extract" ? undefined : "Web pages, PDFs and text files. JavaScript and bot-check pages are retried with a free browser reader. Pages that need a login cannot be read."}>
       <Input id="research-url" type="url" inputMode="url" required placeholder="https://…" value={url} onChange={(e) => {
         setUrl(e.target.value);
         if (mode === "extract" && method === "css-schema" && !schema) setSchema(savedSchemaFor(e.target.value));
@@ -188,6 +192,8 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
           <Field label="Focus words (optional)" htmlFor="research-focus" hint="Keeps the parts of the page about these words (free, no AI).">
             <Input id="research-focus" placeholder="e.g. photosynthesis light reaction" value={focus} onChange={(e) => setFocus(e.target.value)} autoComplete="off" />
           </Field>
+          <Toggle id="research-browser" label="Always open in a browser" hint="Reads the page as Chrome shows it, even when a direct read works. Slower." checked={browserMode === "always"} onChange={(v) => setBrowserMode(v ? "always" : "auto")} />
+          <Toggle id="research-shot" label="Take a screenshot" hint="A picture of the page as it looks in a browser. Free." checked={screenshot} onChange={setScreenshot} />
           <Toggle id="research-clean" label="Clean up with AI" hint="AI removes menus and clutter and keeps the study content." checked={aiClean} onChange={setAiClean} ai />
           <Field label={<span className="flex items-center gap-2">Ask about this page (optional) <AiBadge /></span>} htmlFor="research-question">
             <Input id="research-question" placeholder="e.g. What are the key dates?" value={question} onChange={(e) => setQuestion(e.target.value)} autoComplete="off" />
@@ -198,8 +204,8 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
       {mode === "deep" && (
         <>
           {urlField}
-          <div role="radiogroup" aria-label="Crawl order" className="grid grid-cols-2 gap-1.5 rounded-xl bg-muted p-1">
-            {([["best-first", "Best links first", "Follows links that match your words"], ["bfs", "Level by level", "Every link on each level"]] as const).map(([id, label, hint]) => (
+          <div role="radiogroup" aria-label="Crawl order" className="grid grid-cols-3 gap-1.5 rounded-xl bg-muted p-1">
+            {([["best-first", "Best links first", "Follows links that match your words"], ["bfs", "Level by level", "Every link on each level"], ["dfs", "Deep first", "Follows one path to the end"]] as const).map(([id, label, hint]) => (
               <button key={id} type="button" role="radio" aria-checked={strategy === id} onClick={() => setStrategy(id)}
                 className={cn("rounded-lg px-2 py-2 text-left transition-colors", strategy === id ? "bg-card shadow-sm" : "text-muted-foreground hover:text-foreground")}>
                 <span className="block text-sm font-medium">{label}</span>
@@ -218,6 +224,8 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
               <input id="research-max" type="range" min={1} max={RESEARCH_LIMITS.deepPages} value={maxPages} onChange={(e) => setMaxPages(Number(e.target.value))} className="w-full accent-primary" />
             </Field>
           </div>
+          <Toggle id="research-sitemap" label="Find pages from the sitemap" hint="Reads the website's page list, so pages with no link from the start page are found too. Free." checked={sitemap} onChange={setSitemap} />
+          <Toggle id="research-adaptive" label="Stop when enough is found" hint="Stops early once your keywords are well covered or new pages only repeat. Saves time." checked={adaptive} onChange={setAdaptive} />
           <details className="rounded-xl border bg-background px-3 py-2">
             <summary className="cursor-pointer text-sm font-medium">Link filters</summary>
             <div className="mt-3 space-y-3 pb-1">

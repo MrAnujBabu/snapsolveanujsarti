@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
+import { isReadOutcome } from "@/lib/crawl4ai/read-outcome";
+import { logRead } from "@/lib/reader-log";
 import { ArrowLeft, FileDown, FileText, PanelBottomOpen, Pause, Play, ScanText } from "lucide-react";
 import { RESUME_TEXT, isConnectionError, isResumeText, pausedKey } from "@/lib/chat-resume";
 import { useEffect, useRef, useState } from "react";
@@ -125,6 +127,12 @@ function ChatWindow({ threadId, initialMessages }: { threadId: string; initialMe
     experimental_throttle: 50,
     messages: initialMessages,
     transport: new DefaultChatTransport({ api: "/api/chat", headers: batchRequestHeaders }),
+    onData: (part) => {
+      if (part.type !== "data-reader" || !isReadOutcome(part.data)) return;
+      const o = part.data;
+      logRead("chat", o, `chat-${threadId}`);
+      window.__lovableEvents?.track?.("project.page_read", { mode: "chat", reader: o.reader, ok: o.ok, reason: o.reason ?? "none", site: o.site, pages: o.pages, words: o.words });
+    },
     onError: (e) => toast.error(displayAiError(e.message) || "Couldn't reach the tutor. Check your connection and try again."),
   });
   const [autoVerify] = useAutoVerify();
