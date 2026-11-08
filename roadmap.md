@@ -86,4 +86,7 @@
 - [x] Track page-read outcomes (direct / browser / archive / failed) in Web research, Chat and Voice
 - [x] Per-mode reliability report: each URL's reader source, page count and failure reason (Reader report page)
 
-- [ ] Connect GitHub API in the new workspace, then finish saving this session's changes to main on MrAnujBabu/snapsolveanujsarti
+- [x] Connect GitHub API in the new workspace and save this session's changes to main (commit 335f8b5)
+
+- [x] Backend: verified signed-in admin loads 84 notes + settings from the connected Supabase (first 0 was slow loading)
+- [x] Voice: sniffs/coughs/sneezes ignored; read-aloud textbook lines get explained (not "khud padh lo")
