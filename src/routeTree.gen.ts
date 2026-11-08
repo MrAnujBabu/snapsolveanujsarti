@@ -13,10 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BatchRouteImport } from './routes/batch'
 import { Route as PracticeRouteImport } from './routes/practice'
+import { Route as ResearchRouteImport } from './routes/research'
 import { Route as StudioRouteImport } from './routes/studio'
 import { Route as VoiceRouteImport } from './routes/voice'
 import { Route as YoutubeRouteImport } from './routes/youtube'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiCrawlRouteImport } from './routes/api/crawl'
 import { Route as ApiMediaListenRouteImport } from './routes/api/media-listen'
 import { Route as ApiMediaProxyRouteImport } from './routes/api/media-proxy'
 import { Route as ApiNcertDiagramRouteImport } from './routes/api/ncert-diagram'
@@ -56,6 +58,11 @@ const PracticeRoute = PracticeRouteImport.update({
   path: '/practice',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResearchRoute = ResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StudioRoute = StudioRouteImport.update({
   id: '/studio',
   path: '/studio',
@@ -74,6 +81,11 @@ const YoutubeRoute = YoutubeRouteImport.update({
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCrawlRoute = ApiCrawlRouteImport.update({
+  id: '/api/crawl',
+  path: '/api/crawl',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiMediaListenRoute = ApiMediaListenRouteImport.update({
@@ -172,10 +184,12 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/batch': typeof BatchRoute
   '/practice': typeof PracticeRoute
+  '/research': typeof ResearchRoute
   '/studio': typeof StudioRoute
   '/voice': typeof VoiceRoute
   '/youtube': typeof YoutubeRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/crawl': typeof ApiCrawlRoute
   '/api/media-listen': typeof ApiMediaListenRoute
   '/api/media-proxy': typeof ApiMediaProxyRoute
   '/api/ncert-diagram': typeof ApiNcertDiagramRoute
@@ -200,10 +214,12 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/batch': typeof BatchRoute
   '/practice': typeof PracticeRoute
+  '/research': typeof ResearchRoute
   '/studio': typeof StudioRoute
   '/voice': typeof VoiceRoute
   '/youtube': typeof YoutubeRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/crawl': typeof ApiCrawlRoute
   '/api/media-listen': typeof ApiMediaListenRoute
   '/api/media-proxy': typeof ApiMediaProxyRoute
   '/api/ncert-diagram': typeof ApiNcertDiagramRoute
@@ -229,10 +245,12 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/batch': typeof BatchRoute
   '/practice': typeof PracticeRoute
+  '/research': typeof ResearchRoute
   '/studio': typeof StudioRoute
   '/voice': typeof VoiceRoute
   '/youtube': typeof YoutubeRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/crawl': typeof ApiCrawlRoute
   '/api/media-listen': typeof ApiMediaListenRoute
   '/api/media-proxy': typeof ApiMediaProxyRoute
   '/api/ncert-diagram': typeof ApiNcertDiagramRoute
@@ -259,10 +277,12 @@ export interface FileRouteTypes {
     | '/admin'
     | '/batch'
     | '/practice'
+    | '/research'
     | '/studio'
     | '/voice'
     | '/youtube'
     | '/api/chat'
+    | '/api/crawl'
     | '/api/media-listen'
     | '/api/media-proxy'
     | '/api/ncert-diagram'
@@ -287,10 +307,12 @@ export interface FileRouteTypes {
     | '/admin'
     | '/batch'
     | '/practice'
+    | '/research'
     | '/studio'
     | '/voice'
     | '/youtube'
     | '/api/chat'
+    | '/api/crawl'
     | '/api/media-listen'
     | '/api/media-proxy'
     | '/api/ncert-diagram'
@@ -315,10 +337,12 @@ export interface FileRouteTypes {
     | '/admin'
     | '/batch'
     | '/practice'
+    | '/research'
     | '/studio'
     | '/voice'
     | '/youtube'
     | '/api/chat'
+    | '/api/crawl'
     | '/api/media-listen'
     | '/api/media-proxy'
     | '/api/ncert-diagram'
@@ -344,10 +368,12 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   BatchRoute: typeof BatchRoute
   PracticeRoute: typeof PracticeRoute
+  ResearchRoute: typeof ResearchRoute
   StudioRoute: typeof StudioRoute
   VoiceRoute: typeof VoiceRoute
   YoutubeRoute: typeof YoutubeRoute
   ApiChatRoute: typeof ApiChatRoute
+  ApiCrawlRoute: typeof ApiCrawlRoute
   ApiMediaListenRoute: typeof ApiMediaListenRoute
   ApiMediaProxyRoute: typeof ApiMediaProxyRoute
   ApiNcertDiagramRoute: typeof ApiNcertDiagramRoute
@@ -398,6 +424,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PracticeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/research': {
+      id: '/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof ResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/studio': {
       id: '/studio'
       path: '/studio'
@@ -424,6 +457,13 @@ declare module '@tanstack/react-router' {
       path: '/api/chat'
       fullPath: '/api/chat'
       preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/crawl': {
+      id: '/api/crawl'
+      path: '/api/crawl'
+      fullPath: '/api/crawl'
+      preLoaderRoute: typeof ApiCrawlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/media-listen': {
@@ -560,10 +600,12 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   BatchRoute: BatchRoute,
   PracticeRoute: PracticeRoute,
+  ResearchRoute: ResearchRoute,
   StudioRoute: StudioRoute,
   VoiceRoute: VoiceRoute,
   YoutubeRoute: YoutubeRoute,
   ApiChatRoute: ApiChatRoute,
+  ApiCrawlRoute: ApiCrawlRoute,
   ApiMediaListenRoute: ApiMediaListenRoute,
   ApiMediaProxyRoute: ApiMediaProxyRoute,
   ApiNcertDiagramRoute: ApiNcertDiagramRoute,

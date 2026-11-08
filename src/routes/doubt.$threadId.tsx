@@ -421,7 +421,7 @@ function ChatWindow({ threadId, initialMessages }: { threadId: string; initialMe
               : quiz
                 ? "Type your answer — A, B, C or D (or 'hint', 'skip', 'stop quiz')…"
                 : search
-                  ? "Ask anything — Search is on, I'll fetch live web data…"
+                  ? "Ask anything — Web search is on, I'll search and read web pages…"
                   : "Ask a follow-up — 'why is option C wrong?', 'explain step 3'…"
           }
 

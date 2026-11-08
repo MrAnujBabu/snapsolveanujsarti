@@ -1,7 +1,7 @@
 /**
- * NCERT Deep Scan (server): Perplexity finds the chapter pages, Firecrawl reads them,
- * Gemini validates the extracted lines, and results cache in Supabase (ncert_snippets).
- * Both connectors are Lovable-managed and gateway-backed — keys stay server-side.
+ * NCERT Deep Scan (server): Lovable AI web search finds the chapter pages (Perplexity as backup),
+ * the Crawl4AI engine reads them for free (Firecrawl as backup), Gemini validates the extracted
+ * lines, and results cache in Supabase (ncert_snippets). Keys stay server-side.
  */
 import { chapterLabel, ncertChapter } from "./ncert-biology";
 import { dedupeSnippets, extractSnippets, MAX_SNIPPETS_PER_CHAPTER, type NcertSnippet } from "./ncert-snippets";
@@ -51,6 +51,44 @@ async function firecrawlMarkdown(url: string): Promise<string> {
   }
   const j = (await res.json()) as { markdown?: string; data?: { markdown?: string } };
   return (j.markdown ?? j.data?.markdown ?? '').slice(0, 60000);
+}
+
+/** Lovable AI search first; Perplexity only when it is paused, fails or finds nothing. */
+async function findPages(query: string): Promise<Array<{ title?: string; url: string }>> {
+  const { aiWebSearch } = await import('./crawl4ai/search.server');
+  const { CrawlAiError, assertAiAvailable } = await import('./crawl4ai/llm.server');
+  let aiError: unknown = null;
+  try {
+    await assertAiAvailable();
+    const s = await aiWebSearch(query, { maxResults: 8, extraInstructions: 'Find web pages (not PDFs) that explain this NCERT chapter in full text: NCERT-based notes or the chapter itself.' });
+    if (s.hits.length) return s.hits.map((h) => ({ ...(h.title ? { title: h.title } : {}), url: h.url }));
+  } catch (e) {
+    aiError = e;
+  }
+  try {
+    return await perplexitySearch(query);
+  } catch (e) {
+    if (aiError instanceof CrawlAiError && aiError.kind === 'credits') throw new ScanError(402, aiError.message);
+    if (e instanceof ScanError && e.status !== 401) throw e;
+    if (aiError instanceof CrawlAiError) throw new ScanError(aiError.status === 499 ? 499 : 503, aiError.message);
+    return [];
+  }
+}
+
+/** Crawl4AI engine reads the page directly (free, main content via pruning); Firecrawl is the backup. */
+async function readPage(url: string): Promise<string> {
+  const { crawl, bestMarkdown } = await import('./crawl4ai/crawler.server');
+  const r = await crawl(url, { fetch: { timeoutMs: 15000 } });
+  if (r.success && !r.needsBrowser) {
+    const md = bestMarkdown(r);
+    if (md.length >= 500) return md.slice(0, 60000);
+  }
+  try {
+    return await firecrawlMarkdown(url);
+  } catch (e) {
+    if (e instanceof ScanError && e.status === 401) return r.success ? bestMarkdown(r).slice(0, 60000) : '';
+    throw e;
+  }
 }
 
 /** Gemini checks the extracted lines against NCERT; returns indices to drop, or null when verification was unavailable. */
@@ -117,7 +155,7 @@ async function writeCache(chapterKey: string, snippets: NcertSnippet[]) {
 
 export type ScanResult = { chapter: string; chapterKey: string; snippets: NcertSnippet[]; cached: boolean; verified: boolean };
 
-/** Deep-scan one NCERT Biology chapter: cache → Perplexity → Firecrawl → verify → cache. */
+/** Deep-scan one NCERT Biology chapter: cache → search → read → verify → cache. */
 export async function scanChapter(cls: number, no: number): Promise<ScanResult> {
   const chapter = ncertChapter(cls, no);
   if (!chapter) throw new ScanError(404, 'Unknown NCERT Biology chapter.');
@@ -135,7 +173,7 @@ export async function scanChapter(cls: number, no: number): Promise<ScanResult> 
   const seen = new Set<string>();
   const pages: Array<{ title?: string; url: string }> = [];
   for (const q of queries) {
-    for (const r of await perplexitySearch(q)) {
+    for (const r of await findPages(q)) {
       // Skip PDF downloads and whole-book index pages — they never carry readable chapter text.
       if (seen.has(r.url) || /\.pdf($|\?)|download/i.test(r.url) || /\bpdf\b|download/i.test(r.title ?? '')) continue;
       seen.add(r.url); pages.push(r);
@@ -151,7 +189,7 @@ export async function scanChapter(cls: number, no: number): Promise<ScanResult> 
   for (const r of pages.slice(0, 5)) {
     if (kept.length >= MAX_SNIPPETS_PER_CHAPTER) break;
     try {
-      const md = await firecrawlMarkdown(r.url);
+      const md = await readPage(r.url);
       if (md.length < 500) { failures.push(`${r.url} (too short)`); continue; }
       if (!md.toLowerCase().includes(nameNeedle)) { failures.push(`${r.url} (not this chapter)`); continue; }
       const fresh = dedupeSnippets([...kept, ...extractSnippets(md).map((s) => ({ ...s, sourceUrl: r.url }))]).slice(kept.length, MAX_SNIPPETS_PER_CHAPTER);
