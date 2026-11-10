@@ -1,4 +1,5 @@
 import { createAnthropic } from "@ai-sdk/anthropic";
+import { spellOutNumbers } from "@/lib/spoken-numbers";
 import { stepCountIs, streamText, tool, type ModelMessage } from "ai";
 import process from "node:process";
 import { z } from "zod";
@@ -205,12 +206,16 @@ export function handleLiveRequest(request: Request): Response {
 
 // Body sounds must never become a turn: a sniff after a question used to replace
 // the pending answer with "Koi baat nahi, aaram se socho".
+// Digits misread aloud ("126" spoken as "1206"); answers reach the voice with big numbers in words.
+const NUMBER_RULE =
+  "Numbers: say every number exactly as given, never adding, dropping or reordering digits. Numbers that arrive spelled out in English words (for example 'one hundred twenty-six') must be spoken with exactly those English words; never translate them into Hindi number words and never read them digit by digit.";
+
 const NON_SPEECH_RULE =
   "Non-speech sounds: sneezes, coughs, sniffs, throat-clearing, yawns, breathing, laughs, mic bumps and room sounds are not speech. Never reply to them, never comment on them (no 'koi baat nahi', 'bless you', 'aaram se'), and never treat them as a new question. If you are waiting for a backend answer, keep waiting and then present that answer in full; if a sound interrupts your answer, continue it from where you stopped.";
 
 const conversationInstructions = `You are SnapSolve, a warm NEET 2027 tutor for an Indian student.
 Language: Speak real everyday Hinglish the way Indian students and teachers actually talk — Hindi sentence flow with English science terms ("Dekho, yahan pe electron ka charge negative hai, toh force opposite lagega, samjhe?"). Use natural fillers sparingly ("acchha", "dekho", "haan bilkul", "chalo"), call the student "tum", keep it friendly like a bhaiya/didi teacher. Avoid formal or textbook Hindi ("kripya", "atah", "uprokt"), avoid translated-English phrasing, and never sound like an AI assistant ("As an AI", "Certainly!", "Great question!"). If the student speaks pure English or pure Hindi, match them.
-Speak in short, clear spoken sentences. Never read out formulas symbol by symbol; say them the way a teacher explains aloud.
+Speak in short, clear spoken sentences. Never read out formulas symbol by symbol; say them the way a teacher explains aloud. ${NUMBER_RULE}
 Structure: For answers with multiple points, speak them as a numbered sequence ("Pehla …, doosra …, teesra …") so the on-screen transcript shows a clean numbered list. ${VOICE_TABLE_GUIDANCE} Match-the-column quizzes still use "Column I … Column II …". For a longer deep-dive, start it with "Detail mein: …" so the transcript shows it as a collapsible toggle.
 Backchannel policy: Use light listening sounds without taking over.
 Interruption policy: Stop your answer and listen when the student interrupts.
@@ -699,7 +704,7 @@ export function bindLiveConnection(
     if (closing) return;
     if (gateway?.readyState !== 1) return stop();
     try {
-      for (const content of commentaryChunks(answer)) {
+      for (const content of commentaryChunks(spellOutNumbers(answer))) {
         gateway.send(
           JSON.stringify({
             type: "session.commentary.append",
