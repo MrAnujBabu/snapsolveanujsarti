@@ -1,1 +1,108 @@
-aW1wb3J0IHsgY3JlYXRlRmlsZVJvdXRlLCBMaW5rIH0gZnJvbSAnQHRhbnN0YWNrL3JlYWN0LXJvdXRlcic7CmltcG9ydCB7IHVzZUVmZmVjdCwgdXNlSWQsIHVzZU1lbW8sIHVzZVN0YXRlIH0gZnJvbSAncmVhY3QnOwppbXBvcnQgeyBBcnJvd0xlZnQsIENoZXZyb25Eb3duLCBIaXN0b3J5LCBQbGF5Q2lyY2xlLCBTZWFyY2gsIFRyYXNoMiwgWW91dHViZSB9IGZyb20gJ2x1Y2lkZS1yZWFjdCc7CmltcG9ydCB7IEJ1dHRvbiB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9idXR0b24nOwppbXBvcnQgeyBJbnB1dCB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9pbnB1dCc7CmltcG9ydCB7IFlvdVR1YmVUcmFuc2NyaXB0RG93bmxvYWQgfSBmcm9tICdAL2NvbXBvbmVudHMveW91dHViZS10cmFuc2NyaXB0LWRvd25sb2FkJzsKaW1wb3J0IHsgZm9ybWF0VGltZSB9IGZyb20gJ0AvY29tcG9uZW50cy95b3V0dWJlLWR1Yic7CmltcG9ydCB7IGludGVycHJldGVySW5mbyB9IGZyb20gJ0AvbGliL2ludGVycHJldGVyLW1vZGVscyc7CmltcG9ydCB7IHNwZWFrZXJHZW5kZXJMYWJlbCB9IGZyb20gJ0AvbGliL3NwZWFrZXItZ2VuZGVyJzsKaW1wb3J0IHsgbGlzdExpYnJhcnksIHJlbW92ZUZyb21MaWJyYXJ5LCByZW1vdmVOYXJyYXRpb25BdWRpbywgdHlwZSBMaWJyYXJ5RW50cnkgfSBmcm9tICdAL2xpYi95b3V0dWJlLXN0dWR5LXN0b3JlJzsKCmV4cG9ydCBjb25zdCBSb3V0ZSA9IGNyZWF0ZUZpbGVSb3V0ZSgnL3RyYW5zY3JpcHRzJykoewogIGhlYWQ6ICgpID0+ICh7IG1ldGE6IFsKICAgIHsgdGl0bGU6ICdUcmFuc2NyaXB0IEhpc3Rvcnkg4oCUIFNuYXBTb2x2ZScgfSwKICAgIHsgbmFtZTogJ2Rlc2NyaXB0aW9uJywgY29udGVudDogJ+Ckh+CkuCBkZXZpY2Ug4KSq4KSwIHNhdmUg4KS54KWB4KSPIOCkuOCkvuCksOClhyBIaW5kaSB2aWRlbyB0cmFuc2NyaXB0cyDgpI/gpJUg4KSc4KSX4KS5IOCkquCkouCkvOClh+Ckgiwg4KSW4KWL4KSc4KWH4KSCIOCklOCksCBkb3dubG9hZCDgpJXgpLDgpYfgpILgpaQnIH0sCiAgICB7IHByb3BlcnR5OiAnb2c6dGl0bGUnLCBjb250ZW50OiAnVHJhbnNjcmlwdCBIaXN0b3J5IOKAlCBTbmFwU29sdmUnIH0sCiAgICB7IHByb3BlcnR5OiAnb2c6ZGVzY3JpcHRpb24nLCBjb250ZW50OiAnRXZlcnkgc2F2ZWQgSGluZGkgdmlkZW8gdHJhbnNjcmlwdCBpbiBvbmUgcGxhY2UuJyB9LAogICAgeyBwcm9wZXJ0eTogJ29nOnR5cGUnLCBjb250ZW50OiAnd2Vic2l0ZScgfSwgeyBuYW1lOiAndHdpdHRlcjpjYXJkJywgY29udGVudDogJ3N1bW1hcnknIH0sCiAgXSB9KSwKICBjb21wb25lbnQ6IFRyYW5zY3JpcHRIaXN0b3J5LAp9KTsKCmZ1bmN0aW9uIFRyYW5zY3JpcHRIaXN0b3J5KCkgewogIGNvbnN0IFtlbnRyaWVzLCBzZXRFbnRyaWVzXSA9IHVzZVN0YXRlPExpYnJhcnlFbnRyeVtdIHwgbnVsbD4obnVsbCk7CiAgY29uc3QgW3F1ZXJ5LCBzZXRRdWVyeV0gPSB1c2VTdGF0ZSgnJyk7CiAgY29uc3QgW2Vycm9yLCBzZXRFcnJvcl0gPSB1c2VTdGF0ZSgnJyk7CiAgdXNlRWZmZWN0KCgpID0+IHsgdm9pZCBsaXN0TGlicmFyeSgpLnRoZW4oc2V0RW50cmllcykuY2F0Y2goKCkgPT4geyBzZXRFbnRyaWVzKFtdKTsgc2V0RXJyb3IoJ1NhdmVkIHRyYW5zY3JpcHRzIOCkluCli+CksiDgpKjgpLngpYDgpIIg4KSq4KS+4KSP4KWkJyk7IH0pOyB9LCBbXSk7CiAgY29uc3Qgc2hvd24gPSB1c2VNZW1vKCgpID0+IHsKICAgIGNvbnN0IHEgPSBxdWVyeS50cmltKCkudG9Mb3dlckNhc2UoKTsKICAgIHJldHVybiAoZW50cmllcyA/PyBbXSkuZmlsdGVyKGUgPT4gIXEgfHwgZS5yZXN1bHQudGl0bGUudG9Mb3dlckNhc2UoKS5pbmNsdWRlcyhxKSB8fCBlLnJlc3VsdC5oaW5kaS50b0xvd2VyQ2FzZSgpLmluY2x1ZGVzKHEpKTsKICB9LCBbZW50cmllcywgcXVlcnldKTsKCiAgYXN5bmMgZnVuY3Rpb24gcmVtb3ZlKGVudHJ5OiBMaWJyYXJ5RW50cnkpIHsKICAgIGF3YWl0IHJlbW92ZUZyb21MaWJyYXJ5KGVudHJ5LmtleSkuY2F0Y2goKCkgPT4ge30pOwogICAgYXdhaXQgcmVtb3ZlTmFycmF0aW9uQXVkaW8oZW50cnkua2V5KS5jYXRjaCgoKSA9PiB7fSk7CiAgICBzZXRFbnRyaWVzKGF3YWl0IGxpc3RMaWJyYXJ5KCkuY2F0Y2goKCkgPT4gW10pKTsKICB9CgogIHJldHVybiAoCiAgICA8bWFpbiBjbGFzc05hbWU9Im14LWF1dG8gbWF4LXctM3hsIHB4LTQgcHktNiBzbTpweC04IHNtOnB5LTEwIj4KICAgICAgPExpbmsgdG89Ii95b3V0dWJlIiBjbGFzc05hbWU9ImlubGluZS1mbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiB0ZXh0LXNtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCBob3Zlcjp0ZXh0LWZvcmVncm91bmQiPjxBcnJvd0xlZnQgY2xhc3NOYW1lPSJzaXplLTQiIC8+VmlkZW8g4oaSIEhpbmRpPC9MaW5rPgogICAgICA8aGVhZGVyIGNsYXNzTmFtZT0ibXQtOCBib3JkZXItYiBwYi02Ij4KICAgICAgICA8aDEgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMyB0ZXh0LTN4bCBmb250LXNlbWlib2xkIj48SGlzdG9yeSBjbGFzc05hbWU9InNpemUtNyBzaHJpbmstMCB0ZXh0LXByaW1hcnkiIC8+VHJhbnNjcmlwdCBIaXN0b3J5PC9oMT4KICAgICAgICA8cCBjbGFzc05hbWU9Im10LTIgdGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPuCkh+CkuCBkZXZpY2Ug4KSq4KSwIHNhdmUg4KS54KWB4KSPIOCkuOCkvuCksOClhyBIaW5kaSB0cmFuc2NyaXB0cyDigJQg4KSq4KSi4KS84KSo4KWHIOCkr+CkviDgpKbgpYvgpKzgpL7gpLDgpL4g4KSW4KWL4KSy4KSo4KWHIOCkquCksCBjcmVkaXRzIOCkqOCkueClgOCkgiDgpLLgpJfgpKTgpYfgpaQ8L3A+CiAgICAgIDwvaGVhZGVyPgogICAgICB7ZW50cmllcyAmJiBlbnRyaWVzLmxlbmd0aCA+IDAgJiYgKAogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJyZWxhdGl2ZSBtdC02Ij4KICAgICAgICAgIDxTZWFyY2ggY2xhc3NOYW1lPSJwb2ludGVyLWV2ZW50cy1ub25lIGFic29sdXRlIGxlZnQtMyB0b3AtMS8yIHNpemUtNCAtdHJhbnNsYXRlLXktMS8yIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCIgLz4KICAgICAgICAgIDxJbnB1dCB2YWx1ZT17cXVlcnl9IG9uQ2hhbmdlPXtlID0+IHNldFF1ZXJ5KGUudGFyZ2V0LnZhbHVlKX0gcGxhY2Vob2xkZXI9IlRpdGxlIOCkr+CkviDgpLbgpKzgpY3gpKYg4KS44KWHIOCkluCli+CknOClh+CkgiIgYXJpYS1sYWJlbD0iVHJhbnNjcmlwdCDgpJbgpYvgpJzgpYfgpIIiIGNsYXNzTmFtZT0iaC0xMSBwbC05IiAvPgogICAgICAgIDwvZGl2PgogICAgICApfQogICAgICB7ZXJyb3IgJiYgPHAgcm9sZT0iYWxlcnQiIGNsYXNzTmFtZT0ibXQtNCB0ZXh0LXNtIHRleHQtZGVzdHJ1Y3RpdmUiPntlcnJvcn08L3A+fQogICAgICB7ZW50cmllcyA9PT0gbnVsbCA/IDxwIGNsYXNzTmFtZT0ibXQtOCB0ZXh0LXNtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+4KSW4KWL4KSyIOCksOCkueCkviDgpLngpYLgpIHigKY8L3A+CiAgICAgICAgOiAhZW50cmllcy5sZW5ndGggPyAoCiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibXQtMTAgcm91bmRlZC0yeGwgYm9yZGVyIGJvcmRlci1kYXNoZWQgcC04IHRleHQtY2VudGVyIj4KICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXNtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+4KSF4KSt4KWAIOCkleCli+CkiCB0cmFuc2NyaXB0IHNhdmUg4KSo4KS54KWA4KSCIOCkueCliOClpDwvcD4KICAgICAgICAgICAgPEJ1dHRvbiBhc0NoaWxkIGNsYXNzTmFtZT0ibXQtNCI+PExpbmsgdG89Ii95b3V0dWJlIj48WW91dHViZSBjbGFzc05hbWU9InNpemUtNCIgLz5WaWRlbyDgpJXgpYsgSGluZGkg4KSu4KWH4KSCIOCkuOCkruCkneCkvuCkkzwvTGluaz48L0J1dHRvbj4KICAgICAgICAgIDwvZGl2PgogICAgICAgICkgOiAoCiAgICAgICAgICA8dWwgY2xhc3NOYW1lPSJtdC02IHNwYWNlLXktMyI+CiAgICAgICAgICAgIHtzaG93bi5tYXAoZSA9PiA8SGlzdG9yeUl0ZW0ga2V5PXtlLmtleX0gZW50cnk9e2V9IG9uUmVtb3ZlPXsoKSA9PiB2b2lkIHJlbW92ZShlKX0gLz4pfQogICAgICAgICAgICB7IXNob3duLmxlbmd0aCAmJiA8bGkgY2xhc3NOYW1lPSJ0ZXh0LXNtIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+4oCce3F1ZXJ5feKAnSDgpLjgpYcg4KSV4KWL4KSIIHRyYW5zY3JpcHQg4KSo4KS54KWA4KSCIOCkruCkv+CksuCkvuClpDwvbGk+fQogICAgICAgICAgPC91bD4KICAgICAgICApfQogICAgPC9tYWluPgogICk7Cn0KCmZ1bmN0aW9uIEhpc3RvcnlJdGVtKHsgZW50cnksIG9uUmVtb3ZlIH06IHsgZW50cnk6IExpYnJhcnlFbnRyeTsgb25SZW1vdmUoKTogdm9pZCB9KSB7CiAgY29uc3QgW29wZW4sIHNldE9wZW5dID0gdXNlU3RhdGUoZmFsc2UpOwogIGNvbnN0IGlkID0gdXNlSWQoKTsKICBjb25zdCByID0gZW50cnkucmVzdWx0LCBkdXJhdGlvbiA9IHIuZHViPy5hdCgtMSk/LmVuZDsKICBjb25zdCBzcGVha2VyID0gci5icmllZj8uc3BlYWtlcj8uZ2VuZGVyICYmIHIuYnJpZWYuc3BlYWtlci5nZW5kZXIgIT09ICd1bmtub3duJyA/IHNwZWFrZXJHZW5kZXJMYWJlbChyLmJyaWVmLnNwZWFrZXIuZ2VuZGVyKSA6IG51bGw7CiAgY29uc3QgbWV0YSA9IFtuZXcgRGF0ZShlbnRyeS5zYXZlZEF0KS50b0xvY2FsZVN0cmluZygnaGktSU4nLCB7IGRheTogJ251bWVyaWMnLCBtb250aDogJ3Nob3J0JywgaG91cjogJ251bWVyaWMnLCBtaW51dGU6ICcyLWRpZ2l0JyB9KSwKICAgIGR1cmF0aW9uID8gZm9ybWF0VGltZShkdXJhdGlvbikgOiBudWxsLCByLmVuZ2luZSA/IGludGVycHJldGVySW5mbyhyLmVuZ2luZSkubmFtZSA6IG51bGwsIHNwZWFrZXIgPyBg4KSs4KWL4KSy4KSo4KWHIOCkteCkvuCksuCkvjogJHtzcGVha2VyfWAgOiBudWxsXS5maWx0ZXIoQm9vbGVhbikuam9pbignIMK3ICcpOwogIHJldHVybiAoCiAgICA8bGkgY2xhc3NOYW1lPSJyb3VuZGVkLTJ4bCBib3JkZXIgYmctY2FyZCI+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMyBwLTMiPgogICAgICAgIHtyLnZpZGVvSWQKICAgICAgICAgID8gPGltZyBzcmM9e2BodHRwczovL2kueXRpbWcuY29tL3ZpLyR7ci52aWRlb0lkfS9tcWRlZmF1bHQuanBnYH0gYWx0PSIiIGxvYWRpbmc9ImxhenkiIHJlZmVycmVyUG9saWN5PSJuby1yZWZlcnJlciIgY2xhc3NOYW1lPSJhc3BlY3QtdmlkZW8gdy0yNCBzaHJpbmstMCByb3VuZGVkLWxnIG9iamVjdC1jb3ZlciIgLz4KICAgICAgICAgIDogPHNwYW4gY2xhc3NOYW1lPSJmbGV4IGFzcGVjdC12aWRlbyB3LTI0IHNocmluay0wIGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciByb3VuZGVkLWxnIGJnLWFjY2VudCI+PFBsYXlDaXJjbGUgY2xhc3NOYW1lPSJzaXplLTYgdGV4dC1wcmltYXJ5IiAvPjwvc3Bhbj59CiAgICAgICAgPGRpdiBjbGFzc05hbWU9Im1pbi13LTAgZmxleC0xIj4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0ibGluZS1jbGFtcC0yIHRleHQtc20gZm9udC1tZWRpdW0gbGVhZGluZy1zbnVnIj57ci50aXRsZSB8fCAnVmlkZW8nfTwvcD4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0ibXQtMC41IHRydW5jYXRlIHRleHQtWzExcHhdIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+e21ldGF9PC9wPgogICAgICAgIDwvZGl2PgogICAgICAgIDxCdXR0b24gdHlwZT0iYnV0dG9uIiB2YXJpYW50PSJnaG9zdCIgc2l6ZT0iaWNvbiIgY2xhc3NOYW1lPSJzaHJpbmstMCIgYXJpYS1leHBhbmRlZD17b3Blbn0gYXJpYS1jb250cm9scz17aWR9CiAgICAgICAgICBhcmlhLWxhYmVsPXtvcGVuID8gJ1RyYW5zY3JpcHQg4KSs4KSC4KSmIOCkleCksOClh+CkgicgOiAnVHJhbnNjcmlwdCDgpJbgpYvgpLLgpYfgpIInfSB0aXRsZT17b3BlbiA/ICdUcmFuc2NyaXB0IOCkrOCkguCkpiDgpJXgpLDgpYfgpIInIDogJ1RyYW5zY3JpcHQg4KSW4KWL4KSy4KWH4KSCJ30gb25DbGljaz17KCkgPT4gc2V0T3Blbih2ID0+ICF2KX0+CiAgICAgICAgICA8Q2hldnJvbkRvd24gY2xhc3NOYW1lPXtgc2l6ZS00IHRyYW5zaXRpb24tdHJhbnNmb3JtIG1vdGlvbi1yZWR1Y2U6dHJhbnNpdGlvbi1ub25lICR7b3BlbiA/ICdyb3RhdGUtMTgwJyA6ICcnfWB9IC8+CiAgICAgICAgPC9CdXR0b24+CiAgICAgIDwvZGl2PgogICAgICA8ZGl2IGlkPXtpZH0gaGlkZGVuPXshb3Blbn0gY2xhc3NOYW1lPSJib3JkZXItdCI+CiAgICAgICAge3IuZHViPy5sZW5ndGgKICAgICAgICAgID8gPG9sIGNsYXNzTmFtZT0ibWF4LWgtWzI4cmVtXSBkaXZpZGUteSBvdmVyZmxvdy15LWF1dG8iIGFyaWEtbGFiZWw9e2Ake3IudGl0bGUgfHwgJ1ZpZGVvJ30g4KSV4KS+IHRyYW5zY3JpcHRgfT4KICAgICAgICAgICAgICB7ci5kdWIubWFwKChzLCBpKSA9PiA8bGkga2V5PXtpfSBjbGFzc05hbWU9ImZsZXggaXRlbXMtc3RhcnQgZ2FwLTMgcHgtNCBweS0zIj4KICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0ibXQtMC41IHNocmluay0wIHJvdW5kZWQtbWQgYmctcHJpbWFyeS8xMCBweC0xLjUgcHktMC41IGZvbnQtbW9ubyB0ZXh0LVsxMXB4XSB0ZXh0LXByaW1hcnkgdGFidWxhci1udW1zIj57Zm9ybWF0VGltZShzLnN0YXJ0KX08L3NwYW4+CiAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9Im1pbi13LTAgdGV4dC1zbSBsZWFkaW5nLXJlbGF4ZWQiPntzLmhpbmRpfTwvc3Bhbj4KICAgICAgICAgICAgICA8L2xpPil9CiAgICAgICAgICAgIDwvb2w+CiAgICAgICAgICA6IDxwIGNsYXNzTmFtZT0ibWF4LWgtWzI4cmVtXSBvdmVyZmxvdy15LWF1dG8gd2hpdGVzcGFjZS1wcmUtd3JhcCBweC00IHB5LTMgdGV4dC1zbSBsZWFkaW5nLXJlbGF4ZWQiPntyLmhpbmRpfTwvcD59CiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZmxleC13cmFwIGl0ZW1zLWNlbnRlciBnYXAtMiBib3JkZXItdCBwLTMiPgogICAgICAgICAgPEJ1dHRvbiBhc0NoaWxkIHNpemU9InNtIj48TGluayB0bz0iL3lvdXR1YmUiIHNlYXJjaD17eyBvcGVuOiBlbnRyeS5rZXkgfX0+PFBsYXlDaXJjbGUgY2xhc3NOYW1lPSJzaXplLTQiIC8+VmlkZW8g4KSV4KWHIOCkuOCkvuCkpSDgpJbgpYvgpLLgpYfgpII8L0xpbms+PC9CdXR0b24+CiAgICAgICAgICA8WW91VHViZVRyYW5zY3JpcHREb3dubG9hZCByZXN1bHQ9e3J9IHRyYW5zY3JpcHQ9IiIgZGlzYWJsZWQ9e2ZhbHNlfSAvPgogICAgICAgICAgPEJ1dHRvbiB0eXBlPSJidXR0b24iIHZhcmlhbnQ9Imdob3N0IiBzaXplPSJzbSIgY2xhc3NOYW1lPSJtbC1hdXRvIHRleHQtZGVzdHJ1Y3RpdmUiIG9uQ2xpY2s9e29uUmVtb3ZlfT48VHJhc2gyIGNsYXNzTmFtZT0ic2l6ZS00IiAvPuCkueCkn+CkvuCkj+CkgTwvQnV0dG9uPgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KICAgIDwvbGk+CiAgKTsKfQo=
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { useEffect, useId, useMemo, useState } from 'react';
+import { ArrowLeft, ChevronDown, History, PlayCircle, Search, Trash2, Youtube } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { YouTubeTranscriptDownload } from '@/components/youtube-transcript-download';
+import { formatTime } from '@/components/youtube-dub';
+import { interpreterInfo } from '@/lib/interpreter-models';
+import { speakerGenderLabel } from '@/lib/speaker-gender';
+import { listLibrary, removeFromLibrary, removeNarrationAudio, type LibraryEntry } from '@/lib/youtube-study-store';
+
+export const Route = createFileRoute('/transcripts')({
+  head: () => ({ meta: [
+    { title: 'Transcript History — SnapSolve' },
+    { name: 'description', content: 'इस device पर save हुए सारे Hindi video transcripts एक जगह पढ़ें, खोजें और download करें।' },
+    { property: 'og:title', content: 'Transcript History — SnapSolve' },
+    { property: 'og:description', content: 'Every saved Hindi video transcript in one place.' },
+    { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary' },
+  ] }),
+  component: TranscriptHistory,
+});
+
+function TranscriptHistory() {
+  const [entries, setEntries] = useState<LibraryEntry[] | null>(null);
+  const [query, setQuery] = useState('');
+  const [error, setError] = useState('');
+  useEffect(() => { void listLibrary().then(setEntries).catch(() => { setEntries([]); setError('Saved transcripts खोल नहीं पाए।'); }); }, []);
+  const shown = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return (entries ?? []).filter(e => !q || e.result.title.toLowerCase().includes(q) || e.result.hindi.toLowerCase().includes(q));
+  }, [entries, query]);
+
+  async function remove(entry: LibraryEntry) {
+    await removeFromLibrary(entry.key).catch(() => {});
+    await removeNarrationAudio(entry.key).catch(() => {});
+    setEntries(await listLibrary().catch(() => []));
+  }
+
+  return (
+    <main className="mx-auto max-w-3xl px-4 py-6 sm:px-8 sm:py-10">
+      <Link to="/youtube" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="size-4" />Video → Hindi</Link>
+      <header className="mt-8 border-b pb-6">
+        <h1 className="flex items-center gap-3 text-3xl font-semibold"><History className="size-7 shrink-0 text-primary" />Transcript History</h1>
+        <p className="mt-2 text-sm text-muted-foreground">इस device पर save हुए सारे Hindi transcripts — पढ़ने या दोबारा खोलने पर credits नहीं लगते।</p>
+      </header>
+      {entries && entries.length > 0 && (
+        <div className="relative mt-6">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input value={query} onChange={e => setQuery(e.target.value)} placeholder="Title या शब्द से खोजें" aria-label="Transcript खोजें" className="h-11 pl-9" />
+        </div>
+      )}
+      {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
+      {entries === null ? <p className="mt-8 text-sm text-muted-foreground">खोल रहा हूँ…</p>
+        : !entries.length ? (
+          <div className="mt-10 rounded-2xl border border-dashed p-8 text-center">
+            <p className="text-sm text-muted-foreground">अभी कोई transcript save नहीं है।</p>
+            <Button asChild className="mt-4"><Link to="/youtube"><Youtube className="size-4" />Video को Hindi में समझाओ</Link></Button>
+          </div>
+        ) : (
+          <ul className="mt-6 space-y-3">
+            {shown.map(e => <HistoryItem key={e.key} entry={e} onRemove={() => void remove(e)} />)}
+            {!shown.length && <li className="text-sm text-muted-foreground">“{query}” से कोई transcript नहीं मिला।</li>}
+          </ul>
+        )}
+    </main>
+  );
+}
+
+function HistoryItem({ entry, onRemove }: { entry: LibraryEntry; onRemove(): void }) {
+  const [open, setOpen] = useState(false);
+  const id = useId();
+  const r = entry.result, duration = r.dub?.at(-1)?.end;
+  const speaker = r.brief?.speaker?.gender && r.brief.speaker.gender !== 'unknown' ? speakerGenderLabel(r.brief.speaker.gender) : null;
+  const meta = [new Date(entry.savedAt).toLocaleString('hi-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }),
+    duration ? formatTime(duration) : null, r.engine ? interpreterInfo(r.engine).name : null, speaker ? `बोलने वाला: ${speaker}` : null].filter(Boolean).join(' · ');
+  return (
+    <li className="rounded-2xl border bg-card">
+      <div className="flex items-center gap-3 p-3">
+        {r.videoId
+          ? <img src={`https://i.ytimg.com/vi/${r.videoId}/mqdefault.jpg`} alt="" loading="lazy" referrerPolicy="no-referrer" className="aspect-video w-24 shrink-0 rounded-lg object-cover" />
+          : <span className="flex aspect-video w-24 shrink-0 items-center justify-center rounded-lg bg-accent"><PlayCircle className="size-6 text-primary" /></span>}
+        <div className="min-w-0 flex-1">
+          <p className="line-clamp-2 text-sm font-medium leading-snug">{r.title || 'Video'}</p>
+          <p className="mt-0.5 truncate text-[11px] text-muted-foreground">{meta}</p>
+        </div>
+        <Button type="button" variant="ghost" size="icon" className="shrink-0" aria-expanded={open} aria-controls={id}
+          aria-label={open ? 'Transcript बंद करें' : 'Transcript खोलें'} title={open ? 'Transcript बंद करें' : 'Transcript खोलें'} onClick={() => setOpen(v => !v)}>
+          <ChevronDown className={`size-4 transition-transform motion-reduce:transition-none ${open ? 'rotate-180' : ''}`} />
+        </Button>
+      </div>
+      <div id={id} hidden={!open} className="border-t">
+        {r.dub?.length
+          ? <ol className="max-h-[28rem] divide-y overflow-y-auto" aria-label={`${r.title || 'Video'} का transcript`}>
+              {r.dub.map((s, i) => <li key={i} className="flex items-start gap-3 px-4 py-3">
+                <span className="mt-0.5 shrink-0 rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] text-primary tabular-nums">{formatTime(s.start)}</span>
+                <span className="min-w-0 text-sm leading-relaxed">{s.hindi}</span>
+              </li>)}
+            </ol>
+          : <p className="max-h-[28rem] overflow-y-auto whitespace-pre-wrap px-4 py-3 text-sm leading-relaxed">{r.hindi}</p>}
+        <div className="flex flex-wrap items-center gap-2 border-t p-3">
+          <Button asChild size="sm"><Link to="/youtube" search={{ open: entry.key }}><PlayCircle className="size-4" />Video के साथ खोलें</Link></Button>
+          <YouTubeTranscriptDownload result={r} transcript="" disabled={false} />
+          <Button type="button" variant="ghost" size="sm" className="ml-auto text-destructive" onClick={onRemove}><Trash2 className="size-4" />हटाएँ</Button>
+        </div>
+      </div>
+    </li>
+  );
+}

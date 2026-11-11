@@ -1,1 +1,27 @@
-ewogICJ2ZXJzaW9uIjogIjciLAogICJkaWFsZWN0IjogInBvc3RncmVzcWwiLAogICJlbnRyaWVzIjogWwogICAgewogICAgICAiaWR4IjogMCwKICAgICAgInZlcnNpb24iOiAiNyIsCiAgICAgICJ3aGVuIjogMTc5NDEwMTk5Nzg2OCwKICAgICAgInRhZyI6ICIwMDAwX3Jlc3RvcmVfc25hcHNvbHZlX3NjaGVtYV92MiIsCiAgICAgICJicmVha3BvaW50cyI6IHRydWUKICAgIH0sCiAgICB7CiAgICAgICJpZHgiOiAxLAogICAgICAidmVyc2lvbiI6ICI3IiwKICAgICAgIndoZW4iOiAxNzk0MTAyMDk0NTU3LAogICAgICAidGFnIjogIjAwMDFfZ3JhbnRzX3ZvaWNlX3ZlZGFudHVfbmNlcnQiLAogICAgICAiYnJlYWtwb2ludHMiOiB0cnVlCiAgICB9LAogICAgewogICAgICAiaWR4IjogMiwKICAgICAgInZlcnNpb24iOiAiNyIsCiAgICAgICJ3aGVuIjogMTc5NDM2NTQ5ODg0MSwKICAgICAgInRhZyI6ICIwMDAyX3NuYXBzb2x2ZV9iYXNlIiwKICAgICAgImJyZWFrcG9pbnRzIjogdHJ1ZQogICAgfQogIF0KfQo=
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794101997868,
+      "tag": "0000_restore_snapsolve_schema_v2",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794102094557,
+      "tag": "0001_grants_voice_vedantu_ncert",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794365498841,
+      "tag": "0002_snapsolve_base",
+      "breakpoints": true
+    }
+  ]
+}

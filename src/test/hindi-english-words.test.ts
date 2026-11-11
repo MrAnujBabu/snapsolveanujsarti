@@ -1,1 +1,70 @@
-aW1wb3J0IHsgZGVzY3JpYmUsIGV4cGVjdCwgaXQgfSBmcm9tICd2aXRlc3QnOwppbXBvcnQgeyBsYXRpbldvcmRzLCBlbmdsaXNoTGV0dGVyc05vdGUsIEVWRVJZREFZX0VOR0xJU0hfUlVMRSB9IGZyb20gJ0AvbGliL2hpbmRpLWVuZ2xpc2gtd29yZHMnOwppbXBvcnQgeyBhY2NlcHRFbmdsaXNoRml4LCBmaW5pc2hFbmdsaXNoV29yZHMsIGludGVycHJldFRpbWVkLCByZXZpZXdQcm9tcHQgfSBmcm9tICdAL2xpYi9pbnRlcnByZXRlci5zZXJ2ZXInOwoKZGVzY3JpYmUoJ0VuZ2xpc2ggd29yZHMgbGVmdCBpbiBFbmdsaXNoIGxldHRlcnMnLCAoKSA9PiB7CiAgaXQoJ2ZpbmRzIHdvcmRzIGEgSGluZGkgbGlzdGVuZXIgc2hvdWxkIGhlYXIgdGhlIGV2ZXJ5ZGF5IHdheScsICgpID0+IHsKICAgIGV4cGVjdChsYXRpbldvcmRzKCfgpK7gpYjgpIIgR29vZ2xlIFNoZWV0cyDgpK7gpYfgpIIgZmxhc2hjYXJkcyDgpKzgpKjgpL7gpKTgpL4g4KS54KWC4KSBLCDgpKvgpL/gpLAgR29vZ2xlIOCkluCli+CksuCkpOCkviDgpLngpYLgpIHgpaQnKSkudG9FcXVhbChbJ0dvb2dsZScsICdTaGVldHMnLCAnZmxhc2hjYXJkcyddKTsKICB9KTsKCiAgaXQoJ2FsbG93cyBmb3JtdWxhcywgdW5pdHMgYWZ0ZXIgbnVtYmVycywgc2luZ2xlIGxldHRlcnMsIGNvZGUgYW5kIGxpbmtzJywgKCkgPT4gewogICAgZXhwZWN0KGxhdGluV29yZHMoJ+CkquCkvuCkqOClgCBIMk8g4KS54KWILCDgpLDgpYvgpJzgpLwgNSBtZyDgpLLgpYfgpIIsIG9wdGlvbiBBIOCkpuClh+CkluClh+CkgiwgYG5wbSBydW5gIOCkmuCksuCkvuCkj+CkgSwgaHR0cHM6Ly9uY2VydC5uaWMuaW4g4KSW4KWL4KSy4KWH4KSCLCBhQGIuaW4g4KSq4KSwIOCksuCkv+CkluClh+CkguClpCcpKS50b0VxdWFsKFsnb3B0aW9uJ10pOwogIH0pOwoKICBpdCgnaXMgY2xlYW4gZm9yIGZ1bGx5IERldmFuYWdhcmkgSGluZGknLCAoKSA9PiB7CiAgICBleHBlY3QobGF0aW5Xb3Jkcygn4KSu4KWI4KSCIOCkl+ClguCkl+CksiDgpLbgpYDgpJ/gpY3gpLgg4KSu4KWH4KSCIOCkq+CkvOCljeCksuCliOCktuCkleCkvuCksOCljeCkoSDgpKzgpKjgpL7gpKTgpL4g4KS54KWC4KSB4KWkJykpLnRvRXF1YWwoW10pOwogICAgZXhwZWN0KGVuZ2xpc2hMZXR0ZXJzTm90ZSgn4KSu4KWI4KSCIOCkl+ClguCkl+CksiDgpLbgpYDgpJ/gpY3gpLgg4KSu4KWH4KSCIOCkq+CkvOCljeCksuCliOCktuCkleCkvuCksOCljeCkoSDgpKzgpKjgpL7gpKTgpL4g4KS54KWC4KSB4KWkJykpLnRvQmUoJycpOwogIH0pOwoKICBpdCgndGhlIHJ1bGUgYXNrcyBmb3IgRGV2YW5hZ2FyaSBhcyBJbmRpYW5zIHNheSBpdCBhbmQgcGxhaW4gSGluZGkgZm9yIHVuY29tbW9uIHdvcmRzJywgKCkgPT4gewogICAgZXhwZWN0KEVWRVJZREFZX0VOR0xJU0hfUlVMRSkudG9Db250YWluKCdyZXZpc2lvbiDihpIg4KSw4KS/4KS14KWA4KSc4KS84KSoJyk7CiAgICBleHBlY3QoRVZFUllEQVlfRU5HTElTSF9SVUxFKS50b0NvbnRhaW4oJ3JldGVudGlvbiDihpIg4KSv4KS+4KSmIOCksOCkueCkqOCkvicpOwogICAgZXhwZWN0KEVWRVJZREFZX0VOR0xJU0hfUlVMRSkudG9Db250YWluKCfgpKrgpYHgpKjgpLDgpL7gpLXgpYPgpKTgpY3gpKTgpL8nKTsKICB9KTsKfSk7CgpkZXNjcmliZSgncmV2aWV3ZXIgYW5kIGZpbmFsIEVuZ2xpc2gtbGV0dGVycyBjaGVjaycsICgpID0+IHsKICBpdCgndGVsbHMgdGhlIHJldmlld2VyIGV4YWN0bHkgd2hpY2ggd29yZHMgYXJlIHN0aWxsIGluIEVuZ2xpc2ggbGV0dGVycycsICgpID0+IHsKICAgIGNvbnN0IHByb21wdCA9IHJldmlld1Byb21wdChbeyBzb3VyY2U6ICdJIHVzZSBHb29nbGUgU2hlZXRzLicsIGhpbmRpOiAn4KSu4KWI4KSCIEdvb2dsZSBTaGVldHMg4KSH4KS44KWN4KSk4KWH4KSu4KS+4KSyIOCkleCksOCkpOCkviDgpLngpYLgpIHgpaQnIH1dLCB7IHRpdGxlOiAnVCcsIGJyaWVmOiBudWxsIH0pOwogICAgZXhwZWN0KHByb21wdCkudG9Db250YWluKCdFTkdMSVNIIExFVFRFUlMgVE8gUkVXUklURTogR29vZ2xlLCBTaGVldHMnKTsKICB9KTsKCiAgaXQoJ2FjY2VwdHMgYSBjb3B5LWVkaXQgdGhhdCBvbmx5IGNvbnZlcnRzIHRoZSBFbmdsaXNoIHdvcmRzJywgKCkgPT4gewogICAgZXhwZWN0KGFjY2VwdEVuZ2xpc2hGaXgoJ+CkruCliOCkgiBHb29nbGUgU2hlZXRzIOCkh+CkuOCljeCkpOClh+CkruCkvuCksiDgpJXgpLDgpKTgpL4g4KS54KWC4KSB4KWkJywgJ+CkruCliOCkgiDgpJfgpYLgpJfgpLIg4KS24KWA4KSf4KWN4KS4IOCkh+CkuOCljeCkpOClh+CkruCkvuCksiDgpJXgpLDgpKTgpL4g4KS54KWC4KSB4KWkJykpLnRvQmUoJ+CkruCliOCkgiDgpJfgpYLgpJfgpLIg4KS24KWA4KSf4KWN4KS4IOCkh+CkuOCljeCkpOClh+CkruCkvuCksiDgpJXgpLDgpKTgpL4g4KS54KWC4KSB4KWkJyk7CiAgfSk7CgogIGl0KCdyZWplY3RzIGEgY29weS1lZGl0IHRoYXQgZHJvcHMgY29udGVudCwgYWRkcyBub3RlcyBvciBrZWVwcyB0aGUgRW5nbGlzaCcsICgpID0+IHsKICAgIGNvbnN0IGxpbmUgPSAn4KSu4KWI4KSCIOCkueCksCDgpKbgpL/gpKggR29vZ2xlIFNoZWV0cyDgpK7gpYfgpIIg4KSF4KSq4KSo4KWHIOCkuOCkvuCksOClhyDgpLjgpLXgpL7gpLIg4KSU4KSwIOCknOCkteCkvuCkrCDgpLLgpL/gpJbgpKTgpL4g4KS54KWC4KSBLCDgpKvgpL/gpLAg4KSJ4KSo4KWN4KS54KWH4KSCIOCkm+Ckv+CkquCkvuCkleCksCDgpK/gpL7gpKYg4KSV4KSw4KSk4KS+IOCkueClguCkgeClpCc7CiAgICBleHBlY3QoYWNjZXB0RW5nbGlzaEZpeChsaW5lLCAn4KSu4KWI4KSCIOCkl+ClguCkl+CksiDgpLbgpYDgpJ/gpY3gpLgg4KSy4KS/4KSW4KSk4KS+IOCkueClguCkgeClpCcpKS50b0JlKGxpbmUpOwogICAgZXhwZWN0KGFjY2VwdEVuZ2xpc2hGaXgobGluZSwgJ0NvbnZlcnRlZCBHb29nbGUgU2hlZXRzIHRvIEhpbmRpLicpKS50b0JlKGxpbmUpOwogICAgZXhwZWN0KGFjY2VwdEVuZ2xpc2hGaXgobGluZSwgbGluZSkpLnRvQmUobGluZSk7CiAgICBleHBlY3QoYWNjZXB0RW5nbGlzaEZpeChsaW5lLCAn4KSu4KWH4KSw4KS+IOCkpOCksOClgOCkleCkviDgpK/gpLkg4KS54KWIIOCkleCkvyDgpK7gpYjgpIIg4KSw4KWL4KSc4KS8IOCkl+ClguCkl+CksiDgpLbgpYDgpJ/gpY3gpLgg4KSu4KWH4KSCIOCkuOCkteCkvuCksi3gpJzgpLXgpL7gpKwg4KSy4KS/4KSW4KWC4KSBIOCklOCksCDgpKzgpL7gpKYg4KSu4KWH4KSCIOCkieCkqOCljeCkueClh+CkgiDgpJvgpL/gpKrgpL7gpJXgpLAg4KSm4KWH4KSW4KWC4KSB4KWkJykpLnRvQmUobGluZSk7CiAgfSk7CgogIGl0KCdjb3N0cyBub3RoaW5nIHdoZW4gZXZlcnkgYmxvY2sgaXMgYWxyZWFkeSBpbiBldmVyeWRheSBEZXZhbmFnYXJpJywgYXN5bmMgKCkgPT4gewogICAgbGV0IGNhbGxzID0gMDsKICAgIGNvbnN0IG91dCA9IGF3YWl0IGZpbmlzaEVuZ2xpc2hXb3Jkcyh7IGxpbmVzOiBbJ+CkruCliOCkgiDgpJfgpYLgpJfgpLIg4KS24KWA4KSf4KWN4KS4IOCkh+CkuOCljeCkpOClh+CkruCkvuCksiDgpJXgpLDgpKTgpL4g4KS54KWC4KSB4KWkJ10sIGVuZ2luZTogJ2NsYXVkZScsIGNvbnRleHQ6IHsgdGl0bGU6ICdUJywgYnJpZWY6IG51bGwgfSwKICAgICAgc2lnbmFsOiBuZXcgQWJvcnRDb250cm9sbGVyKCkuc2lnbmFsLCBjYWxsOiBhc3luYyAoKSA9PiB7IGNhbGxzKys7IHJldHVybiAnJzsgfSB9KTsKICAgIGV4cGVjdChjYWxscykudG9CZSgwKTsKICAgIGV4cGVjdChvdXQuZml4ZWQpLnRvQmUoMCk7CiAgfSk7CgogIGl0KCdmaXhlcyBvbmx5IHRoZSBibG9ja3Mgd2l0aCBFbmdsaXNoIGxldHRlcnMgYW5kIGtlZXBzIHRoZWlyIHRpbWVzdGFtcCBvcmRlcicsIGFzeW5jICgpID0+IHsKICAgIGNvbnN0IHB1Ymxpc2hlZDogW251bWJlciwgc3RyaW5nXVtdID0gW107CiAgICBjb25zdCBwcm9tcHRzOiBzdHJpbmdbXSA9IFtdOwogICAgYXdhaXQgaW50ZXJwcmV0VGltZWQoewogICAgICBzZWdtZW50czogW3sgc3RhcnQ6IDAsIGVuZDogMTAsIHRleHQ6ICdJIGFtIGEgZG9jdG9yLicgfSwgeyBzdGFydDogMTAsIGVuZDogMjAsIHRleHQ6ICdJIHVzZSBHb29nbGUgU2hlZXRzLicgfV0sCiAgICAgIGNvbnRleHQ6IHsgdGl0bGU6ICdUJywgYnJpZWY6IG51bGwgfSwgZW5naW5lOiAnY2xhdWRlJywgc2lnbmFsOiBuZXcgQWJvcnRDb250cm9sbGVyKCkuc2lnbmFsLCByZXZpZXc6IGZhbHNlLAogICAgICBvblNlZ21lbnQ6IChpLCBoaW5kaSkgPT4gcHVibGlzaGVkLnB1c2goW2ksIGhpbmRpXSksCiAgICAgIGNhbGw6IGFzeW5jIChfZW5naW5lLCBzeXN0ZW0sIHVzZXIpID0+IHsKICAgICAgICBwcm9tcHRzLnB1c2godXNlcik7CiAgICAgICAgaWYgKHN5c3RlbS5pbmNsdWRlcygnZmluYWwgY29weSBlZGl0b3InKSkgcmV0dXJuICcjIyMgMVxu4KSu4KWI4KSCIOCkl+ClguCkl+CksiDgpLbgpYDgpJ/gpY3gpLgg4KSH4KS44KWN4KSk4KWH4KSu4KS+4KSyIOCkleCksOCkpOCkviDgpLngpYLgpIHgpaQnOwogICAgICAgIHJldHVybiAnIyMjIDFcbuCkruCliOCkgiDgpKHgpYngpJXgpY3gpJ/gpLAg4KS54KWC4KSB4KWkXG4jIyMgMlxu4KSu4KWI4KSCIEdvb2dsZSBTaGVldHMg4KSH4KS44KWN4KSk4KWH4KSu4KS+4KSyIOCkleCksOCkpOCkviDgpLngpYLgpIHgpaQnOwogICAgICB9LAogICAgfSk7CiAgICBleHBlY3QocHVibGlzaGVkKS50b0VxdWFsKFtbMCwgJ+CkruCliOCkgiDgpKHgpYngpJXgpY3gpJ/gpLAg4KS54KWC4KSB4KWkJ10sIFsxLCAn4KSu4KWI4KSCIOCkl+ClguCkl+CksiDgpLbgpYDgpJ/gpY3gpLgg4KSH4KS44KWN4KSk4KWH4KSu4KS+4KSyIOCkleCksOCkpOCkviDgpLngpYLgpIHgpaQnXV0pOwogICAgY29uc3QgZml4UHJvbXB0ID0gcHJvbXB0c1sxXSA/PyAnJzsKICAgIGV4cGVjdChmaXhQcm9tcHQpLnRvQ29udGFpbignUkVXUklURTogR29vZ2xlLCBTaGVldHMnKTsKICAgIGV4cGVjdChmaXhQcm9tcHQpLm5vdC50b0NvbnRhaW4oJ+CkruCliOCkgiDgpKHgpYngpJXgpY3gpJ/gpLAg4KS54KWC4KSB4KWkJyk7CiAgfSk7Cn0pOwo=
+import { describe, expect, it } from 'vitest';
+import { latinWords, englishLettersNote, EVERYDAY_ENGLISH_RULE } from '@/lib/hindi-english-words';
+import { acceptEnglishFix, finishEnglishWords, interpretTimed, reviewPrompt } from '@/lib/interpreter.server';
+
+describe('English words left in English letters', () => {
+  it('finds words a Hindi listener should hear the everyday way', () => {
+    expect(latinWords('मैं Google Sheets में flashcards बनाता हूँ, फिर Google खोलता हूँ।')).toEqual(['Google', 'Sheets', 'flashcards']);
+  });
+
+  it('allows formulas, units after numbers, single letters, code and links', () => {
+    expect(latinWords('पानी H2O है, रोज़ 5 mg लें, option A देखें, `npm run` चलाएँ, https://ncert.nic.in खोलें, a@b.in पर लिखें।')).toEqual(['option']);
+  });
+
+  it('is clean for fully Devanagari Hindi', () => {
+    expect(latinWords('मैं गूगल शीट्स में फ़्लैशकार्ड बनाता हूँ।')).toEqual([]);
+    expect(englishLettersNote('मैं गूगल शीट्स में फ़्लैशकार्ड बनाता हूँ।')).toBe('');
+  });
+
+  it('the rule asks for Devanagari as Indians say it and plain Hindi for uncommon words', () => {
+    expect(EVERYDAY_ENGLISH_RULE).toContain('revision → रिवीज़न');
+    expect(EVERYDAY_ENGLISH_RULE).toContain('retention → याद रहना');
+    expect(EVERYDAY_ENGLISH_RULE).toContain('पुनरावृत्ति');
+  });
+});
+
+describe('reviewer and final English-letters check', () => {
+  it('tells the reviewer exactly which words are still in English letters', () => {
+    const prompt = reviewPrompt([{ source: 'I use Google Sheets.', hindi: 'मैं Google Sheets इस्तेमाल करता हूँ।' }], { title: 'T', brief: null });
+    expect(prompt).toContain('ENGLISH LETTERS TO REWRITE: Google, Sheets');
+  });
+
+  it('accepts a copy-edit that only converts the English words', () => {
+    expect(acceptEnglishFix('मैं Google Sheets इस्तेमाल करता हूँ।', 'मैं गूगल शीट्स इस्तेमाल करता हूँ।')).toBe('मैं गूगल शीट्स इस्तेमाल करता हूँ।');
+  });
+
+  it('rejects a copy-edit that drops content, adds notes or keeps the English', () => {
+    const line = 'मैं हर दिन Google Sheets में अपने सारे सवाल और जवाब लिखता हूँ, फिर उन्हें छिपाकर याद करता हूँ।';
+    expect(acceptEnglishFix(line, 'मैं गूगल शीट्स लिखता हूँ।')).toBe(line);
+    expect(acceptEnglishFix(line, 'Converted Google Sheets to Hindi.')).toBe(line);
+    expect(acceptEnglishFix(line, line)).toBe(line);
+    expect(acceptEnglishFix(line, 'मेरा तरीका यह है कि मैं रोज़ गूगल शीट्स में सवाल-जवाब लिखूँ और बाद में उन्हें छिपाकर देखूँ।')).toBe(line);
+  });
+
+  it('costs nothing when every block is already in everyday Devanagari', async () => {
+    let calls = 0;
+    const out = await finishEnglishWords({ lines: ['मैं गूगल शीट्स इस्तेमाल करता हूँ।'], engine: 'claude', context: { title: 'T', brief: null },
+      signal: new AbortController().signal, call: async () => { calls++; return ''; } });
+    expect(calls).toBe(0);
+    expect(out.fixed).toBe(0);
+  });
+
+  it('fixes only the blocks with English letters and keeps their timestamp order', async () => {
+    const published: [number, string][] = [];
+    const prompts: string[] = [];
+    await interpretTimed({
+      segments: [{ start: 0, end: 10, text: 'I am a doctor.' }, { start: 10, end: 20, text: 'I use Google Sheets.' }],
+      context: { title: 'T', brief: null }, engine: 'claude', signal: new AbortController().signal, review: false,
+      onSegment: (i, hindi) => published.push([i, hindi]),
+      call: async (_engine, system, user) => {
+        prompts.push(user);
+        if (system.includes('final copy editor')) return '### 1\nमैं गूगल शीट्स इस्तेमाल करता हूँ।';
+        return '### 1\nमैं डॉक्टर हूँ।\n### 2\nमैं Google Sheets इस्तेमाल करता हूँ।';
+      },
+    });
+    expect(published).toEqual([[0, 'मैं डॉक्टर हूँ।'], [1, 'मैं गूगल शीट्स इस्तेमाल करता हूँ।']]);
+    const fixPrompt = prompts[1] ?? '';
+    expect(fixPrompt).toContain('REWRITE: Google, Sheets');
+    expect(fixPrompt).not.toContain('मैं डॉक्टर हूँ।');
+  });
+});

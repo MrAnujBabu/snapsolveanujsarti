@@ -1,1 +1,163 @@
-aW1wb3J0IHsgaXNTYXJ2YW1Wb2ljZSwgdHlwZSBTYXJ2YW1Wb2ljZSB9IGZyb20gJy4vc2FydmFtLXNwZWVjaCc7CmltcG9ydCB0eXBlIHsgSW50ZXJwcmV0UmVzdWx0IH0gZnJvbSAnLi9pbnRlcnByZXQtcHJvdG9jb2wnOwppbXBvcnQgeyBpc0ludGVycHJldGVySWQgfSBmcm9tICcuL2ludGVycHJldGVyLW1vZGVscyc7CgpleHBvcnQgdHlwZSBZb3VUdWJlUmVzdWx0ID0gSW50ZXJwcmV0UmVzdWx0OwpleHBvcnQgdHlwZSBTYXZlZFlvdVR1YmVTdHVkeSA9IHsgdmVyc2lvbjogMTsgdXJsOiBzdHJpbmc7IHRyYW5zY3JpcHQ6IHN0cmluZzsgdm9pY2U6IFNhcnZhbVZvaWNlOyByZXN1bHQ6IFlvdVR1YmVSZXN1bHQgfTsKZXhwb3J0IHR5cGUgTGlicmFyeUVudHJ5ID0geyBrZXk6IHN0cmluZzsgc2F2ZWRBdDogbnVtYmVyOyB1cmw6IHN0cmluZzsgdm9pY2U6IFNhcnZhbVZvaWNlOyByZXN1bHQ6IFlvdVR1YmVSZXN1bHQgfTsKCmNvbnN0IGlzU3RyID0gKHY6IHVua25vd24pID0+IHR5cGVvZiB2ID09PSAnc3RyaW5nJzsKY29uc3Qgb3B0U3RyID0gKHY6IHVua25vd24pID0+IHYgPT09IHVuZGVmaW5lZCB8fCB2ID09PSBudWxsIHx8IHR5cGVvZiB2ID09PSAnc3RyaW5nJzsKCmV4cG9ydCBmdW5jdGlvbiBpc1lvdVR1YmVSZXN1bHQocjogdW5rbm93bik6IHIgaXMgWW91VHViZVJlc3VsdCB7CiAgaWYgKCFyIHx8IHR5cGVvZiByICE9PSAnb2JqZWN0JykgcmV0dXJuIGZhbHNlOwogIGNvbnN0IHYgPSByIGFzIFBhcnRpYWw8WW91VHViZVJlc3VsdD47CiAgaWYgKCFpc1N0cih2LnRpdGxlKSB8fCAhaXNTdHIodi5oaW5kaSkgfHwgIXYuaGluZGk/LnRyaW0oKSB8fCB0eXBlb2Ygdi50cnVuY2F0ZWQgIT09ICdib29sZWFuJyB8fCAhb3B0U3RyKHYudmlkZW9JZCkpIHJldHVybiBmYWxzZTsKICBpZiAodi5kdWIgIT09IHVuZGVmaW5lZCAmJiAhKEFycmF5LmlzQXJyYXkodi5kdWIpICYmIHYuZHViLmV2ZXJ5KHMgPT4gcyAmJiBOdW1iZXIuaXNGaW5pdGUocy5zdGFydCkgJiYgTnVtYmVyLmlzRmluaXRlKHMuZW5kKSAmJiBzLnN0YXJ0ID49IDAgJiYgcy5lbmQgPj0gcy5zdGFydCAmJiB0eXBlb2Ygcy5oaW5kaSA9PT0gJ3N0cmluZycpKSkgcmV0dXJuIGZhbHNlOwogIGlmICh2Lm9yaWdpbmFsICE9PSB1bmRlZmluZWQgJiYgIShBcnJheS5pc0FycmF5KHYub3JpZ2luYWwpICYmIHYub3JpZ2luYWwuZXZlcnkoaXNTdHIpICYmICghdi5kdWIgfHwgdi5vcmlnaW5hbC5sZW5ndGggPT09IHYuZHViLmxlbmd0aCkpKSByZXR1cm4gZmFsc2U7CiAgaWYgKHYuZW5naW5lICE9PSB1bmRlZmluZWQgJiYgIWlzSW50ZXJwcmV0ZXJJZCh2LmVuZ2luZSkpIHJldHVybiBmYWxzZTsKICBpZiAodi5zb3VyY2UgIT09IHVuZGVmaW5lZCAmJiAhKHYuc291cmNlICYmIHR5cGVvZiB2LnNvdXJjZSA9PT0gJ29iamVjdCcgJiYgaXNTdHIodi5zb3VyY2Uua2luZCkgJiYgaXNTdHIodi5zb3VyY2Uub3JpZ2luKSkpIHJldHVybiBmYWxzZTsKICBpZiAodi5wYW5lbCAhPT0gdW5kZWZpbmVkICYmICEodi5wYW5lbCAmJiB0eXBlb2Ygdi5wYW5lbCA9PT0gJ29iamVjdCcgJiYgQXJyYXkuaXNBcnJheSh2LnBhbmVsLmludGVycHJldGVycykpKSByZXR1cm4gZmFsc2U7CiAgaWYgKHYuYnJpZWYgIT09IHVuZGVmaW5lZCAmJiB2LmJyaWVmICE9PSBudWxsICYmICEodHlwZW9mIHYuYnJpZWYgPT09ICdvYmplY3QnICYmIEFycmF5LmlzQXJyYXkodi5icmllZi5nbG9zc2FyeSkgJiYgQXJyYXkuaXNBcnJheSh2LmJyaWVmLmNvcnJlY3Rpb25zKSkpIHJldHVybiBmYWxzZTsKICByZXR1cm4gdHJ1ZTsKfQoKZXhwb3J0IGZ1bmN0aW9uIGlzU2F2ZWRZb3VUdWJlU3R1ZHkodmFsdWU6IHVua25vd24pOiB2YWx1ZSBpcyBTYXZlZFlvdVR1YmVTdHVkeSB7CiAgaWYgKCF2YWx1ZSB8fCB0eXBlb2YgdmFsdWUgIT09ICdvYmplY3QnKSByZXR1cm4gZmFsc2U7CiAgY29uc3QgdiA9IHZhbHVlIGFzIFBhcnRpYWw8U2F2ZWRZb3VUdWJlU3R1ZHk+OwogIHJldHVybiB2LnZlcnNpb24gPT09IDEgJiYgaXNTdHIodi51cmwpICYmIGlzU3RyKHYudHJhbnNjcmlwdCkgJiYgaXNTYXJ2YW1Wb2ljZSh2LnZvaWNlKSAmJiBpc1lvdVR1YmVSZXN1bHQodi5yZXN1bHQpOwp9CgpmdW5jdGlvbiBpc0xpYnJhcnlFbnRyeSh2YWx1ZTogdW5rbm93bik6IHZhbHVlIGlzIExpYnJhcnlFbnRyeSB7CiAgY29uc3QgdiA9IHZhbHVlIGFzIFBhcnRpYWw8TGlicmFyeUVudHJ5PiB8IG51bGw7CiAgcmV0dXJuICEhdiAmJiBpc1N0cih2LmtleSkgJiYgTnVtYmVyLmlzRmluaXRlKHYuc2F2ZWRBdCkgJiYgaXNTdHIodi51cmwpICYmIGlzU2FydmFtVm9pY2Uodi52b2ljZSkgJiYgaXNZb3VUdWJlUmVzdWx0KHYucmVzdWx0KTsKfQoKZnVuY3Rpb24gb3BlbigpIHsKICByZXR1cm4gbmV3IFByb21pc2U8SURCRGF0YWJhc2U+KChyZXNvbHZlLCByZWplY3QpID0+IHsKICAgIGNvbnN0IHJlcXVlc3QgPSBpbmRleGVkREIub3Blbignc25hcHNvbHZlLXlvdXR1YmUtc3R1ZHknLCAzKTsKICAgIHJlcXVlc3Qub251cGdyYWRlbmVlZGVkID0gKCkgPT4gewogICAgICBjb25zdCBkYiA9IHJlcXVlc3QucmVzdWx0OwogICAgICBpZiAoIWRiLm9iamVjdFN0b3JlTmFtZXMuY29udGFpbnMoJ3N0dWR5JykpIGRiLmNyZWF0ZU9iamVjdFN0b3JlKCdzdHVkeScpOwogICAgICBpZiAoIWRiLm9iamVjdFN0b3JlTmFtZXMuY29udGFpbnMoJ2xpYnJhcnknKSkgZGIuY3JlYXRlT2JqZWN0U3RvcmUoJ2xpYnJhcnknLCB7IGtleVBhdGg6ICdrZXknIH0pOwogICAgICBpZiAoIWRiLm9iamVjdFN0b3JlTmFtZXMuY29udGFpbnMoJ21lZGlhJykpIGRiLmNyZWF0ZU9iamVjdFN0b3JlKCdtZWRpYScpOwogICAgICBpZiAoIWRiLm9iamVjdFN0b3JlTmFtZXMuY29udGFpbnMoJ2F1ZGlvJykpIGRiLmNyZWF0ZU9iamVjdFN0b3JlKCdhdWRpbycsIHsga2V5UGF0aDogJ2tleScgfSk7CiAgICB9OwogICAgcmVxdWVzdC5vbnN1Y2Nlc3MgPSAoKSA9PiByZXNvbHZlKHJlcXVlc3QucmVzdWx0KTsKICAgIHJlcXVlc3Qub25lcnJvciA9ICgpID0+IHJlamVjdChyZXF1ZXN0LmVycm9yKTsKICB9KTsKfQoKZnVuY3Rpb24gZG9uZSh0eDogSURCVHJhbnNhY3Rpb24pIHsKICByZXR1cm4gbmV3IFByb21pc2U8dm9pZD4oKHJlc29sdmUsIHJlamVjdCkgPT4geyB0eC5vbmNvbXBsZXRlID0gKCkgPT4gcmVzb2x2ZSgpOyB0eC5vbmVycm9yID0gKCkgPT4gcmVqZWN0KHR4LmVycm9yKTsgdHgub25hYm9ydCA9ICgpID0+IHJlamVjdCh0eC5lcnJvcik7IH0pOwp9CgpmdW5jdGlvbiByZWFkPFQ+KHN0b3JlOiBzdHJpbmcsIGtleTogSURCVmFsaWRLZXkpIHsKICByZXR1cm4gb3BlbigpLnRoZW4oZGIgPT4gbmV3IFByb21pc2U8VCB8IHVuZGVmaW5lZD4oKHJlc29sdmUsIHJlamVjdCkgPT4gewogICAgY29uc3QgcmVxID0gZGIudHJhbnNhY3Rpb24oc3RvcmUpLm9iamVjdFN0b3JlKHN0b3JlKS5nZXQoa2V5KTsKICAgIHJlcS5vbnN1Y2Nlc3MgPSAoKSA9PiByZXNvbHZlKHJlcS5yZXN1bHQgYXMgVCB8IHVuZGVmaW5lZCk7IHJlcS5vbmVycm9yID0gKCkgPT4gcmVqZWN0KHJlcS5lcnJvcik7CiAgfSkuZmluYWxseSgoKSA9PiBkYi5jbG9zZSgpKSk7Cn0KCi8qKiBMYXRlc3QgY29tcGxldGVkIGxlY3R1cmUgc3RheXMgb24tZGV2aWNlLCBsaWtlIGV4aXN0aW5nIGJyb3dzZXIgc3R1ZHkgdGhyZWFkcy4gKi8KZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHNhdmVZb3VUdWJlU3R1ZHkodmFsdWU6IFNhdmVkWW91VHViZVN0dWR5KSB7CiAgaWYgKCFpc1NhdmVkWW91VHViZVN0dWR5KHZhbHVlKSkgdGhyb3cgbmV3IEVycm9yKCdJbnZhbGlkIFlvdVR1YmUgc3R1ZHkuJyk7CiAgY29uc3QgZGIgPSBhd2FpdCBvcGVuKCk7CiAgdHJ5IHsgY29uc3QgdHggPSBkYi50cmFuc2FjdGlvbignc3R1ZHknLCAncmVhZHdyaXRlJyk7IHR4Lm9iamVjdFN0b3JlKCdzdHVkeScpLnB1dCh2YWx1ZSwgJ2xhdGVzdCcpOyBhd2FpdCBkb25lKHR4KTsgfQogIGZpbmFsbHkgeyBkYi5jbG9zZSgpOyB9Cn0KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBsb2FkWW91VHViZVN0dWR5KCk6IFByb21pc2U8U2F2ZWRZb3VUdWJlU3R1ZHkgfCB1bmRlZmluZWQ+IHsKICBjb25zdCB2YWx1ZSA9IGF3YWl0IHJlYWQ8dW5rbm93bj4oJ3N0dWR5JywgJ2xhdGVzdCcpOwogIHJldHVybiBpc1NhdmVkWW91VHViZVN0dWR5KHZhbHVlKSA/IHZhbHVlIDogdW5kZWZpbmVkOwp9CgovKiogRGV2aWNlIGxpYnJhcnkgb2YgZmluaXNoZWQgaW50ZXJwcmV0YXRpb25zOyBvbGRlc3QgZW50cmllcyBiZXlvbmQgdGhlIGNhcCBhcmUgcmVtb3ZlZC4gKi8KZXhwb3J0IGNvbnN0IExJQlJBUllfTElNSVQgPSA0MDsKCmV4cG9ydCBmdW5jdGlvbiBsaWJyYXJ5S2V5KHJlc3VsdDogUGljazxZb3VUdWJlUmVzdWx0LCAndmlkZW9JZCcgfCAndGl0bGUnIHwgJ3NvdXJjZScgfCAnc291cmNlS2V5Jz4sIHVybDogc3RyaW5nLCB0cmFuc2NyaXB0OiBzdHJpbmcpIHsKICBpZiAocmVzdWx0LnNvdXJjZUtleSkgcmV0dXJuIGBpbnRlcnByZXRhdGlvbjoke3Jlc3VsdC5zb3VyY2VLZXl9JHtyZXN1bHQuc291cmNlPy5tZWRpYUlkID8gYDoke3Jlc3VsdC5zb3VyY2UubWVkaWFJZH1gIDogJyd9YDsKICBpZiAocmVzdWx0LnZpZGVvSWQpIHJldHVybiBgdmlkZW86JHtyZXN1bHQudmlkZW9JZH1gOwogIGlmIChyZXN1bHQuc291cmNlPy5maWxlTmFtZSkgcmV0dXJuIGBmaWxlOiR7cmVzdWx0LnNvdXJjZS5maWxlTmFtZX1gOwogIGlmICh1cmwudHJpbSgpKSByZXR1cm4gYHVybDoke3VybC50cmltKCl9YDsKICBsZXQgaCA9IDA7IGZvciAobGV0IGkgPSAwOyBpIDwgdHJhbnNjcmlwdC5sZW5ndGg7IGkrKykgaCA9IChoICogMzEgKyB0cmFuc2NyaXB0LmNoYXJDb2RlQXQoaSkpIHwgMDsKICByZXR1cm4gYHRleHQ6JHtofWA7Cn0KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBzYXZlVG9MaWJyYXJ5KGVudHJ5OiBMaWJyYXJ5RW50cnkpIHsKICBpZiAoIWlzTGlicmFyeUVudHJ5KGVudHJ5KSkgdGhyb3cgbmV3IEVycm9yKCdJbnZhbGlkIGxpYnJhcnkgZW50cnkuJyk7CiAgY29uc3QgZGIgPSBhd2FpdCBvcGVuKCk7CiAgdHJ5IHsKICAgIGNvbnN0IHR4ID0gZGIudHJhbnNhY3Rpb24oJ2xpYnJhcnknLCAncmVhZHdyaXRlJyk7IGNvbnN0IHN0b3JlID0gdHgub2JqZWN0U3RvcmUoJ2xpYnJhcnknKTsKICAgIHN0b3JlLnB1dChlbnRyeSk7CiAgICBjb25zdCBhbGwgPSBhd2FpdCBuZXcgUHJvbWlzZTxMaWJyYXJ5RW50cnlbXT4oKHJlc29sdmUsIHJlamVjdCkgPT4geyBjb25zdCByID0gc3RvcmUuZ2V0QWxsKCk7IHIub25zdWNjZXNzID0gKCkgPT4gcmVzb2x2ZShyLnJlc3VsdCBhcyBMaWJyYXJ5RW50cnlbXSk7IHIub25lcnJvciA9ICgpID0+IHJlamVjdChyLmVycm9yKTsgfSk7CiAgICBhbGwuc29ydCgoYSwgYikgPT4gYi5zYXZlZEF0IC0gYS5zYXZlZEF0KS5zbGljZShMSUJSQVJZX0xJTUlUKS5mb3JFYWNoKG9sZCA9PiBzdG9yZS5kZWxldGUob2xkLmtleSkpOwogICAgYXdhaXQgZG9uZSh0eCk7CiAgfSBmaW5hbGx5IHsgZGIuY2xvc2UoKTsgfQp9CgpleHBvcnQgYXN5bmMgZnVuY3Rpb24gbGlzdExpYnJhcnkoKTogUHJvbWlzZTxMaWJyYXJ5RW50cnlbXT4gewogIGNvbnN0IGRiID0gYXdhaXQgb3BlbigpOwogIHRyeSB7CiAgICBjb25zdCBhbGwgPSBhd2FpdCBuZXcgUHJvbWlzZTx1bmtub3duW10+KChyZXNvbHZlLCByZWplY3QpID0+IHsgY29uc3QgciA9IGRiLnRyYW5zYWN0aW9uKCdsaWJyYXJ5Jykub2JqZWN0U3RvcmUoJ2xpYnJhcnknKS5nZXRBbGwoKTsgci5vbnN1Y2Nlc3MgPSAoKSA9PiByZXNvbHZlKHIucmVzdWx0IGFzIHVua25vd25bXSk7IHIub25lcnJvciA9ICgpID0+IHJlamVjdChyLmVycm9yKTsgfSk7CiAgICByZXR1cm4gYWxsLmZpbHRlcihpc0xpYnJhcnlFbnRyeSkuc29ydCgoYSwgYikgPT4gYi5zYXZlZEF0IC0gYS5zYXZlZEF0KTsKICB9IGZpbmFsbHkgeyBkYi5jbG9zZSgpOyB9Cn0KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiByZW1vdmVGcm9tTGlicmFyeShrZXk6IHN0cmluZykgewogIGNvbnN0IGRiID0gYXdhaXQgb3BlbigpOwogIHRyeSB7IGNvbnN0IHR4ID0gZGIudHJhbnNhY3Rpb24oJ2xpYnJhcnknLCAncmVhZHdyaXRlJyk7IHR4Lm9iamVjdFN0b3JlKCdsaWJyYXJ5JykuZGVsZXRlKGtleSk7IGF3YWl0IGRvbmUodHgpOyB9CiAgZmluYWxseSB7IGRiLmNsb3NlKCk7IH0KfQoKLyoqIFRoZSBsYXRlc3QgdXBsb2FkZWQgdmlkZW8gc3RheXMgb24gdGhlIGRldmljZSBzbyBpdHMgSGluZGkgdm9pY2Utb3ZlciBjYW4gcmVwbGF5IGFmdGVyIHJlZnJlc2guICovCmV4cG9ydCBjb25zdCBNRURJQV9MSU1JVF9CWVRFUyA9IDYwMCAqIDEwMjQgKiAxMDI0OwpleHBvcnQgdHlwZSBTYXZlZE1lZGlhID0geyBuYW1lOiBzdHJpbmc7IHR5cGU6IHN0cmluZzsgYmxvYjogQmxvYjsgaWQ/OiBzdHJpbmcgfTsKCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBzYXZlVXBsb2FkZWRNZWRpYShtZWRpYTogU2F2ZWRNZWRpYSkgewogIGlmIChtZWRpYS5ibG9iLnNpemUgPiBNRURJQV9MSU1JVF9CWVRFUykgcmV0dXJuIGZhbHNlOwogIGNvbnN0IGRiID0gYXdhaXQgb3BlbigpOwogIHRyeSB7IGNvbnN0IHR4ID0gZGIudHJhbnNhY3Rpb24oJ21lZGlhJywgJ3JlYWR3cml0ZScpOyB0eC5vYmplY3RTdG9yZSgnbWVkaWEnKS5wdXQobWVkaWEsICdsYXRlc3QnKTsgYXdhaXQgZG9uZSh0eCk7IHJldHVybiB0cnVlOyB9CiAgZmluYWxseSB7IGRiLmNsb3NlKCk7IH0KfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGxvYWRVcGxvYWRlZE1lZGlhKCk6IFByb21pc2U8U2F2ZWRNZWRpYSB8IHVuZGVmaW5lZD4gewogIGNvbnN0IHYgPSBhd2FpdCByZWFkPFNhdmVkTWVkaWE+KCdtZWRpYScsICdsYXRlc3QnKTsKICByZXR1cm4gdiAmJiB2LmJsb2IgaW5zdGFuY2VvZiBCbG9iICYmIGlzU3RyKHYubmFtZSkgPyB2IDogdW5kZWZpbmVkOwp9CgovKiogRmluaXNoZWQgSGluZGkgbmFycmF0aW9uIGF1ZGlvIHN0YXlzIG9uIHRoZSBkZXZpY2Ugc28gZG93bmxvYWRpbmcgYWdhaW4gbmV2ZXIgcGF5cyBmb3Igc3BlZWNoIHR3aWNlLiAqLwpleHBvcnQgY29uc3QgQVVESU9fTElNSVQgPSA1OwpleHBvcnQgdHlwZSBTYXZlZE5hcnJhdGlvbiA9IHsga2V5OiBzdHJpbmc7IHNhdmVkQXQ6IG51bWJlcjsgdGV4dEhhc2g6IHN0cmluZzsgdm9pY2U6IFNhcnZhbVZvaWNlOyBlbmdpbmU6IHN0cmluZzsgYmxvYjogQmxvYiB9OwoKLyoqIENoYW5nZXMgd2hlbmV2ZXIgdGhlIEhpbmRpIHRleHQgY2hhbmdlcywgc28gc3RhbGUgYXVkaW8gaXMgbmV2ZXIgb2ZmZXJlZCBmb3IgYSByZS1kb25lIHZpZGVvLiAqLwpleHBvcnQgZnVuY3Rpb24gdGV4dEZpbmdlcnByaW50KHRleHQ6IHN0cmluZykgewogIGxldCBoID0gMDsgZm9yIChsZXQgaSA9IDA7IGkgPCB0ZXh0Lmxlbmd0aDsgaSsrKSBoID0gKGggKiAzMSArIHRleHQuY2hhckNvZGVBdChpKSkgfCAwOwogIHJldHVybiBgJHt0ZXh0Lmxlbmd0aH06JHsoaCA+Pj4gMCkudG9TdHJpbmcoMzYpfWA7Cn0KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBzYXZlTmFycmF0aW9uQXVkaW8odmFsdWU6IFNhdmVkTmFycmF0aW9uKSB7CiAgY29uc3QgZGIgPSBhd2FpdCBvcGVuKCk7CiAgdHJ5IHsKICAgIGNvbnN0IHR4ID0gZGIudHJhbnNhY3Rpb24oJ2F1ZGlvJywgJ3JlYWR3cml0ZScpOyBjb25zdCBzdG9yZSA9IHR4Lm9iamVjdFN0b3JlKCdhdWRpbycpOwogICAgc3RvcmUucHV0KHZhbHVlKTsKICAgIGNvbnN0IGFsbCA9IGF3YWl0IG5ldyBQcm9taXNlPFNhdmVkTmFycmF0aW9uW10+KChyZXNvbHZlLCByZWplY3QpID0+IHsgY29uc3QgciA9IHN0b3JlLmdldEFsbCgpOyByLm9uc3VjY2VzcyA9ICgpID0+IHJlc29sdmUoci5yZXN1bHQgYXMgU2F2ZWROYXJyYXRpb25bXSk7IHIub25lcnJvciA9ICgpID0+IHJlamVjdChyLmVycm9yKTsgfSk7CiAgICBhbGwuc29ydCgoYSwgYikgPT4gYi5zYXZlZEF0IC0gYS5zYXZlZEF0KS5zbGljZShBVURJT19MSU1JVCkuZm9yRWFjaChvbGQgPT4gc3RvcmUuZGVsZXRlKG9sZC5rZXkpKTsKICAgIGF3YWl0IGRvbmUodHgpOwogIH0gZmluYWxseSB7IGRiLmNsb3NlKCk7IH0KfQoKLyoqIFNhdmVkIGF1ZGlvIHdob3NlIEhpbmRpIHRleHQgc3RpbGwgbWF0Y2hlczsgb25lIGVudHJ5IHBlciBsaWJyYXJ5IHZpZGVvLiAqLwpleHBvcnQgYXN5bmMgZnVuY3Rpb24gbGlzdE5hcnJhdGlvbkF1ZGlvKCk6IFByb21pc2U8U2F2ZWROYXJyYXRpb25bXT4gewogIGNvbnN0IGRiID0gYXdhaXQgb3BlbigpOwogIHRyeSB7CiAgICBjb25zdCBhbGwgPSBhd2FpdCBuZXcgUHJvbWlzZTx1bmtub3duW10+KChyZXNvbHZlLCByZWplY3QpID0+IHsgY29uc3QgciA9IGRiLnRyYW5zYWN0aW9uKCdhdWRpbycpLm9iamVjdFN0b3JlKCdhdWRpbycpLmdldEFsbCgpOyByLm9uc3VjY2VzcyA9ICgpID0+IHJlc29sdmUoci5yZXN1bHQgYXMgdW5rbm93bltdKTsgci5vbmVycm9yID0gKCkgPT4gcmVqZWN0KHIuZXJyb3IpOyB9KTsKICAgIHJldHVybiBhbGwuZmlsdGVyKCh2KTogdiBpcyBTYXZlZE5hcnJhdGlvbiA9PiB7IGNvbnN0IGEgPSB2IGFzIFBhcnRpYWw8U2F2ZWROYXJyYXRpb24+IHwgbnVsbDsgcmV0dXJuICEhYSAmJiBpc1N0cihhLmtleSkgJiYgaXNTdHIoYS50ZXh0SGFzaCkgJiYgdHlwZW9mIGEuYmxvYj8uc2l6ZSA9PT0gJ251bWJlcicgJiYgdHlwZW9mIGEuYmxvYi5zbGljZSA9PT0gJ2Z1bmN0aW9uJyAmJiBhLmJsb2Iuc2l6ZSA+IDQ0OyB9KTsKICB9IGZpbmFsbHkgeyBkYi5jbG9zZSgpOyB9Cn0KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiByZW1vdmVOYXJyYXRpb25BdWRpbyhrZXk6IHN0cmluZykgewogIGNvbnN0IGRiID0gYXdhaXQgb3BlbigpOwogIHRyeSB7IGNvbnN0IHR4ID0gZGIudHJhbnNhY3Rpb24oJ2F1ZGlvJywgJ3JlYWR3cml0ZScpOyB0eC5vYmplY3RTdG9yZSgnYXVkaW8nKS5kZWxldGUoa2V5KTsgYXdhaXQgZG9uZSh0eCk7IH0KICBmaW5hbGx5IHsgZGIuY2xvc2UoKTsgfQp9Cg==
+import { isSarvamVoice, type SarvamVoice } from './sarvam-speech';
+import type { InterpretResult } from './interpret-protocol';
+import { isInterpreterId } from './interpreter-models';
+
+export type YouTubeResult = InterpretResult;
+export type SavedYouTubeStudy = { version: 1; url: string; transcript: string; voice: SarvamVoice; result: YouTubeResult };
+export type LibraryEntry = { key: string; savedAt: number; url: string; voice: SarvamVoice; result: YouTubeResult };
+
+const isStr = (v: unknown) => typeof v === 'string';
+const optStr = (v: unknown) => v === undefined || v === null || typeof v === 'string';
+
+export function isYouTubeResult(r: unknown): r is YouTubeResult {
+  if (!r || typeof r !== 'object') return false;
+  const v = r as Partial<YouTubeResult>;
+  if (!isStr(v.title) || !isStr(v.hindi) || !v.hindi?.trim() || typeof v.truncated !== 'boolean' || !optStr(v.videoId)) return false;
+  if (v.dub !== undefined && !(Array.isArray(v.dub) && v.dub.every(s => s && Number.isFinite(s.start) && Number.isFinite(s.end) && s.start >= 0 && s.end >= s.start && typeof s.hindi === 'string'))) return false;
+  if (v.original !== undefined && !(Array.isArray(v.original) && v.original.every(isStr) && (!v.dub || v.original.length === v.dub.length))) return false;
+  if (v.engine !== undefined && !isInterpreterId(v.engine)) return false;
+  if (v.source !== undefined && !(v.source && typeof v.source === 'object' && isStr(v.source.kind) && isStr(v.source.origin))) return false;
+  if (v.panel !== undefined && !(v.panel && typeof v.panel === 'object' && Array.isArray(v.panel.interpreters))) return false;
+  if (v.brief !== undefined && v.brief !== null && !(typeof v.brief === 'object' && Array.isArray(v.brief.glossary) && Array.isArray(v.brief.corrections))) return false;
+  return true;
+}
+
+export function isSavedYouTubeStudy(value: unknown): value is SavedYouTubeStudy {
+  if (!value || typeof value !== 'object') return false;
+  const v = value as Partial<SavedYouTubeStudy>;
+  return v.version === 1 && isStr(v.url) && isStr(v.transcript) && isSarvamVoice(v.voice) && isYouTubeResult(v.result);
+}
+
+function isLibraryEntry(value: unknown): value is LibraryEntry {
+  const v = value as Partial<LibraryEntry> | null;
+  return !!v && isStr(v.key) && Number.isFinite(v.savedAt) && isStr(v.url) && isSarvamVoice(v.voice) && isYouTubeResult(v.result);
+}
+
+function open() {
+  return new Promise<IDBDatabase>((resolve, reject) => {
+    const request = indexedDB.open('snapsolve-youtube-study', 3);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains('study')) db.createObjectStore('study');
+      if (!db.objectStoreNames.contains('library')) db.createObjectStore('library', { keyPath: 'key' });
+      if (!db.objectStoreNames.contains('media')) db.createObjectStore('media');
+      if (!db.objectStoreNames.contains('audio')) db.createObjectStore('audio', { keyPath: 'key' });
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function done(tx: IDBTransaction) {
+  return new Promise<void>((resolve, reject) => { tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error); tx.onabort = () => reject(tx.error); });
+}
+
+function read<T>(store: string, key: IDBValidKey) {
+  return open().then(db => new Promise<T | undefined>((resolve, reject) => {
+    const req = db.transaction(store).objectStore(store).get(key);
+    req.onsuccess = () => resolve(req.result as T | undefined); req.onerror = () => reject(req.error);
+  }).finally(() => db.close()));
+}
+
+/** Latest completed lecture stays on-device, like existing browser study threads. */
+export async function saveYouTubeStudy(value: SavedYouTubeStudy) {
+  if (!isSavedYouTubeStudy(value)) throw new Error('Invalid YouTube study.');
+  const db = await open();
+  try { const tx = db.transaction('study', 'readwrite'); tx.objectStore('study').put(value, 'latest'); await done(tx); }
+  finally { db.close(); }
+}
+
+export async function loadYouTubeStudy(): Promise<SavedYouTubeStudy | undefined> {
+  const value = await read<unknown>('study', 'latest');
+  return isSavedYouTubeStudy(value) ? value : undefined;
+}
+
+/** Device library of finished interpretations; oldest entries beyond the cap are removed. */
+export const LIBRARY_LIMIT = 40;
+
+export function libraryKey(result: Pick<YouTubeResult, 'videoId' | 'title' | 'source' | 'sourceKey'>, url: string, transcript: string) {
+  if (result.sourceKey) return `interpretation:${result.sourceKey}${result.source?.mediaId ? `:${result.source.mediaId}` : ''}`;
+  if (result.videoId) return `video:${result.videoId}`;
+  if (result.source?.fileName) return `file:${result.source.fileName}`;
+  if (url.trim()) return `url:${url.trim()}`;
+  let h = 0; for (let i = 0; i < transcript.length; i++) h = (h * 31 + transcript.charCodeAt(i)) | 0;
+  return `text:${h}`;
+}
+
+export async function saveToLibrary(entry: LibraryEntry) {
+  if (!isLibraryEntry(entry)) throw new Error('Invalid library entry.');
+  const db = await open();
+  try {
+    const tx = db.transaction('library', 'readwrite'); const store = tx.objectStore('library');
+    store.put(entry);
+    const all = await new Promise<LibraryEntry[]>((resolve, reject) => { const r = store.getAll(); r.onsuccess = () => resolve(r.result as LibraryEntry[]); r.onerror = () => reject(r.error); });
+    all.sort((a, b) => b.savedAt - a.savedAt).slice(LIBRARY_LIMIT).forEach(old => store.delete(old.key));
+    await done(tx);
+  } finally { db.close(); }
+}
+
+export async function listLibrary(): Promise<LibraryEntry[]> {
+  const db = await open();
+  try {
+    const all = await new Promise<unknown[]>((resolve, reject) => { const r = db.transaction('library').objectStore('library').getAll(); r.onsuccess = () => resolve(r.result as unknown[]); r.onerror = () => reject(r.error); });
+    return all.filter(isLibraryEntry).sort((a, b) => b.savedAt - a.savedAt);
+  } finally { db.close(); }
+}
+
+export async function removeFromLibrary(key: string) {
+  const db = await open();
+  try { const tx = db.transaction('library', 'readwrite'); tx.objectStore('library').delete(key); await done(tx); }
+  finally { db.close(); }
+}
+
+/** The latest uploaded video stays on the device so its Hindi voice-over can replay after refresh. */
+export const MEDIA_LIMIT_BYTES = 600 * 1024 * 1024;
+export type SavedMedia = { name: string; type: string; blob: Blob; id?: string };
+
+export async function saveUploadedMedia(media: SavedMedia) {
+  if (media.blob.size > MEDIA_LIMIT_BYTES) return false;
+  const db = await open();
+  try { const tx = db.transaction('media', 'readwrite'); tx.objectStore('media').put(media, 'latest'); await done(tx); return true; }
+  finally { db.close(); }
+}
+
+export async function loadUploadedMedia(): Promise<SavedMedia | undefined> {
+  const v = await read<SavedMedia>('media', 'latest');
+  return v && v.blob instanceof Blob && isStr(v.name) ? v : undefined;
+}
+
+/** Finished Hindi narration audio stays on the device so downloading again never pays for speech twice. */
+export const AUDIO_LIMIT = 5;
+export type SavedNarration = { key: string; savedAt: number; textHash: string; voice: SarvamVoice; engine: string; blob: Blob };
+
+/** Changes whenever the Hindi text changes, so stale audio is never offered for a re-done video. */
+export function textFingerprint(text: string) {
+  let h = 0; for (let i = 0; i < text.length; i++) h = (h * 31 + text.charCodeAt(i)) | 0;
+  return `${text.length}:${(h >>> 0).toString(36)}`;
+}
+
+export async function saveNarrationAudio(value: SavedNarration) {
+  const db = await open();
+  try {
+    const tx = db.transaction('audio', 'readwrite'); const store = tx.objectStore('audio');
+    store.put(value);
+    const all = await new Promise<SavedNarration[]>((resolve, reject) => { const r = store.getAll(); r.onsuccess = () => resolve(r.result as SavedNarration[]); r.onerror = () => reject(r.error); });
+    all.sort((a, b) => b.savedAt - a.savedAt).slice(AUDIO_LIMIT).forEach(old => store.delete(old.key));
+    await done(tx);
+  } finally { db.close(); }
+}
+
+/** Saved audio whose Hindi text still matches; one entry per library video. */
+export async function listNarrationAudio(): Promise<SavedNarration[]> {
+  const db = await open();
+  try {
+    const all = await new Promise<unknown[]>((resolve, reject) => { const r = db.transaction('audio').objectStore('audio').getAll(); r.onsuccess = () => resolve(r.result as unknown[]); r.onerror = () => reject(r.error); });
+    return all.filter((v): v is SavedNarration => { const a = v as Partial<SavedNarration> | null; return !!a && isStr(a.key) && isStr(a.textHash) && typeof a.blob?.size === 'number' && typeof a.blob.slice === 'function' && a.blob.size > 44; });
+  } finally { db.close(); }
+}
+
+export async function removeNarrationAudio(key: string) {
+  const db = await open();
+  try { const tx = db.transaction('audio', 'readwrite'); tx.objectStore('audio').delete(key); await done(tx); }
+  finally { db.close(); }
+}

@@ -1,1 +1,83 @@
-Ly8gQnJvd3Nlci1zYWZlIE5ESlNPTiBwcm90b2NvbCBiZXR3ZWVuIC9hcGkveW91dHViZS1oaW5kaSBhbmQgdGhlIGludGVycHJldGVyIHBhZ2UuCmltcG9ydCB0eXBlIHsgRHViU2VnbWVudCwgVGltZWRTZWdtZW50IH0gZnJvbSAnLi95b3V0dWJlLWhpbmRpJzsKaW1wb3J0IHR5cGUgeyBJbnRlcnByZXRlcklkIH0gZnJvbSAnLi9pbnRlcnByZXRlci1tb2RlbHMnOwppbXBvcnQgdHlwZSB7IFNwZWFrZXJHZW5kZXIgfSBmcm9tICcuL3NwZWFrZXItZ2VuZGVyJzsKCmV4cG9ydCB0eXBlIEdsb3NzYXJ5SXRlbSA9IHsgdGVybTogc3RyaW5nOyBoaW5kaTogc3RyaW5nIH07CmV4cG9ydCB0eXBlIENvcnJlY3Rpb24gPSB7IGhlYXJkOiBzdHJpbmc7IGNvcnJlY3Q6IHN0cmluZyB9OwpleHBvcnQgdHlwZSBTcGVha2VySW5mbyA9IHsgZ2VuZGVyOiBTcGVha2VyR2VuZGVyOyBldmlkZW5jZTogc3RyaW5nIH07CmV4cG9ydCB0eXBlIEludGVycHJldEJyaWVmID0geyBsYW5ndWFnZTogc3RyaW5nOyBkb21haW46IHN0cmluZzsgc3VtbWFyeTogc3RyaW5nOyBnbG9zc2FyeTogR2xvc3NhcnlJdGVtW107IGNvcnJlY3Rpb25zOiBDb3JyZWN0aW9uW107IHNwZWFrZXI/OiBTcGVha2VySW5mbyB9OwoKZXhwb3J0IHR5cGUgU291cmNlS2luZCA9ICd5b3V0dWJlJyB8ICd3ZWInIHwgJ3VwbG9hZCcgfCAndGV4dCc7CmV4cG9ydCB0eXBlIFNvdXJjZU9yaWdpbiA9ICdjYXB0aW9ucycgfCAnYXV0by1jYXB0aW9ucycgfCAnbGlzdGVuZWQnIHwgJ3N1YnRpdGxlcycgfCAncGFzdGVkJzsKZXhwb3J0IHR5cGUgU291cmNlSW5mbyA9IHsKICBraW5kOiBTb3VyY2VLaW5kOyBvcmlnaW46IFNvdXJjZU9yaWdpbjsgbGFuZ3VhZ2U/OiBzdHJpbmc7CiAgbWVkaWFVcmw/OiBzdHJpbmc7IHBhZ2VVcmw/OiBzdHJpbmc7IGZpbGVOYW1lPzogc3RyaW5nOyBtZWRpYUlkPzogc3RyaW5nOwp9OwpleHBvcnQgdHlwZSBQYW5lbEluZm8gPSB7IGxpc3RlbmVyPzogc3RyaW5nOyB0ZXJtaW5vbG9naXN0Pzogc3RyaW5nOyBpbnRlcnByZXRlcnM6IHN0cmluZ1tdOyByZXZpZXdlcnM/OiBzdHJpbmdbXTsgcmV2aWV3ZWQ/OiBudW1iZXI7IGNvcnJlY3RlZD86IG51bWJlcjsgcmV2aWV3UmVxdWVzdGVkPzogYm9vbGVhbjsgcmV2aWV3VG90YWw/OiBudW1iZXIgfTsKCmV4cG9ydCB0eXBlIEludGVycHJldFJlc3VsdCA9IHsKICB0aXRsZTogc3RyaW5nOyBoaW5kaTogc3RyaW5nOyB0cnVuY2F0ZWQ6IGJvb2xlYW47IHZpZGVvSWQ/OiBzdHJpbmcgfCBudWxsOyBkdWI/OiBEdWJTZWdtZW50W107CiAgc291cmNlQ2hhcnM/OiBudW1iZXI7IHNvdXJjZT86IFNvdXJjZUluZm87IGJyaWVmPzogSW50ZXJwcmV0QnJpZWYgfCBudWxsOyBwYW5lbD86IFBhbmVsSW5mbzsKICAvKiogT3JpZ2luYWwtbGFuZ3VhZ2UgdGV4dCBmb3IgZWFjaCBkdWIgc2VnbWVudCwgaW4gdGhlIHNhbWUgb3JkZXIuICovCiAgb3JpZ2luYWw/OiBzdHJpbmdbXTsgZW5naW5lPzogSW50ZXJwcmV0ZXJJZDsKICBwaXBlbGluZT86IHN0cmluZzsgZGVlcExpc3Rlbj86IGJvb2xlYW47IHNvdXJjZUtleT86IHN0cmluZzsKfTsKCmV4cG9ydCB0eXBlIFN0YWdlID0gJ3NvdXJjZScgfCAnbGlzdGVuJyB8ICdicmllZicgfCAnaW50ZXJwcmV0JzsKCmV4cG9ydCB0eXBlIEludGVycHJldEV2ZW50ID0KICB8IHsgdHlwZTogJ3N0YWdlJzsgc3RhZ2U6IFN0YWdlOyBtZXNzYWdlOiBzdHJpbmcgfQogIHwgeyB0eXBlOiAncXVhbGl0eSc7IHJldmlld2VkOiBudW1iZXI7IGNvcnJlY3RlZDogbnVtYmVyIH0KICB8IHsgdHlwZTogJ2xpc3Rlbic7IHJlYWNoZWQ6IG51bWJlcjsgdG90YWw/OiBudW1iZXIgfQogIHwgeyB0eXBlOiAnc291cmNlJzsgdGl0bGU6IHN0cmluZzsgbGFuZ3VhZ2U6IHN0cmluZzsgb3JpZ2luOiBTb3VyY2VPcmlnaW47IHNlZ21lbnRzOiBudW1iZXI7IGR1cmF0aW9uOiBudW1iZXI7IHRydW5jYXRlZDogYm9vbGVhbjsgdmlkZW9JZD86IHN0cmluZyB8IG51bGw7IHRpbWVsaW5lPzogVGltZWRTZWdtZW50W107IHNvdXJjZUtleT86IHN0cmluZyB9CiAgfCB7IHR5cGU6ICdicmllZic7IGJyaWVmOiBJbnRlcnByZXRCcmllZiB8IG51bGw7IG1vZGVsPzogc3RyaW5nIH0KICB8IHsgdHlwZTogJ3Byb2dyZXNzJzsgZG9uZTogbnVtYmVyOyB0b3RhbDogbnVtYmVyIH0KICB8IHsgdHlwZTogJ3NlZ21lbnQnOyBpbmRleDogbnVtYmVyOyBzdGFydDogbnVtYmVyOyBlbmQ6IG51bWJlcjsgaGluZGk6IHN0cmluZzsgb3JpZ2luYWw6IHN0cmluZyB9CiAgfCB7IHR5cGU6ICdtZWRpYSc7IG1lZGlhVXJsOiBzdHJpbmc7IHRpdGxlOiBzdHJpbmc7IHBhZ2VVcmw6IHN0cmluZzsgY2FwdGlvbnNVcmw/OiBzdHJpbmcgfQogIHwgeyB0eXBlOiAnZG9uZSc7IHJlc3VsdDogSW50ZXJwcmV0UmVzdWx0IH0KICB8IHsgdHlwZTogJ2Vycm9yJzsgZXJyb3I6IHN0cmluZzsgc3RhdHVzOiBudW1iZXI7IG5lZWRUcmFuc2NyaXB0PzogYm9vbGVhbiB9OwoKZXhwb3J0IGZ1bmN0aW9uIGVuY29kZUV2ZW50KGV2ZW50OiBJbnRlcnByZXRFdmVudCkgewogIHJldHVybiBgJHtKU09OLnN0cmluZ2lmeShldmVudCl9XG5gOwp9CgpleHBvcnQgY2xhc3MgSW50ZXJwcmV0U3RyZWFtRXJyb3IgZXh0ZW5kcyBFcnJvciB7CiAgY29uc3RydWN0b3IobWVzc2FnZTogc3RyaW5nLCBwdWJsaWMgc3RhdHVzOiBudW1iZXIsIHB1YmxpYyBuZWVkVHJhbnNjcmlwdCA9IGZhbHNlKSB7IHN1cGVyKG1lc3NhZ2UpOyB9Cn0KCi8qKiBSZWFkcyBOREpTT04gZXZlbnRzIHVudGlsIHRoZSBzdHJlYW0gZW5kczsgcmV0dXJucyB0aGUgdGVybWluYWwgZG9uZS9tZWRpYSBldmVudC4gKi8KZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlYWRJbnRlcnByZXRTdHJlYW0ocmVzcG9uc2U6IFJlc3BvbnNlLCBvbkV2ZW50OiAoZXZlbnQ6IEludGVycHJldEV2ZW50KSA9PiB2b2lkLCBzaWduYWw/OiBBYm9ydFNpZ25hbCkgewogIGlmICghcmVzcG9uc2Uub2sgJiYgIShyZXNwb25zZS5oZWFkZXJzLmdldCgnY29udGVudC10eXBlJykgPz8gJycpLmluY2x1ZGVzKCduZGpzb24nKSkgewogICAgY29uc3QgYm9keSA9IGF3YWl0IHJlc3BvbnNlLmpzb24oKS5jYXRjaCgoKSA9PiAoe30pKSBhcyB7IGVycm9yPzogc3RyaW5nOyBuZWVkVHJhbnNjcmlwdD86IGJvb2xlYW4gfTsKICAgIHRocm93IG5ldyBJbnRlcnByZXRTdHJlYW1FcnJvcihib2R5LmVycm9yIHx8IGBSZXF1ZXN0IGZhaWxlZCAoJHtyZXNwb25zZS5zdGF0dXN9KWAsIHJlc3BvbnNlLnN0YXR1cywgISFib2R5Lm5lZWRUcmFuc2NyaXB0KTsKICB9CiAgaWYgKCFyZXNwb25zZS5ib2R5KSB0aHJvdyBuZXcgSW50ZXJwcmV0U3RyZWFtRXJyb3IoJ05vIHJlc3BvbnNlLicsIDUwMik7CiAgY29uc3QgcmVhZGVyID0gcmVzcG9uc2UuYm9keS5nZXRSZWFkZXIoKTsKICBjb25zdCBkZWNvZGVyID0gbmV3IFRleHREZWNvZGVyKCk7CiAgbGV0IGJ1ZmZlciA9ICcnOwogIGxldCB0ZXJtaW5hbDogRXh0cmFjdDxJbnRlcnByZXRFdmVudCwgeyB0eXBlOiAnZG9uZScgfCAnbWVkaWEnIH0+IHwgbnVsbCA9IG51bGw7CiAgY29uc3QgaGFuZGxlID0gKGxpbmU6IHN0cmluZykgPT4gewogICAgaWYgKCFsaW5lLnRyaW0oKSkgcmV0dXJuOwogICAgbGV0IGV2ZW50OiBJbnRlcnByZXRFdmVudDsKICAgIHRyeSB7IGV2ZW50ID0gSlNPTi5wYXJzZShsaW5lKSBhcyBJbnRlcnByZXRFdmVudDsgfSBjYXRjaCB7IHJldHVybjsgfQogICAgaWYgKGV2ZW50LnR5cGUgPT09ICdlcnJvcicpIHRocm93IG5ldyBJbnRlcnByZXRTdHJlYW1FcnJvcihldmVudC5lcnJvciwgZXZlbnQuc3RhdHVzLCAhIWV2ZW50Lm5lZWRUcmFuc2NyaXB0KTsKICAgIGlmIChldmVudC50eXBlID09PSAnZG9uZScgfHwgZXZlbnQudHlwZSA9PT0gJ21lZGlhJykgdGVybWluYWwgPSBldmVudDsKICAgIG9uRXZlbnQoZXZlbnQpOwogIH07CiAgdHJ5IHsKICAgIGZvciAoOzspIHsKICAgICAgaWYgKHNpZ25hbD8uYWJvcnRlZCkgdGhyb3cgbmV3IERPTUV4Y2VwdGlvbignQWJvcnRlZCcsICdBYm9ydEVycm9yJyk7CiAgICAgIGNvbnN0IHsgZG9uZSwgdmFsdWUgfSA9IGF3YWl0IHJlYWRlci5yZWFkKCk7CiAgICAgIGlmIChkb25lKSBicmVhazsKICAgICAgYnVmZmVyICs9IGRlY29kZXIuZGVjb2RlKHZhbHVlLCB7IHN0cmVhbTogdHJ1ZSB9KTsKICAgICAgbGV0IGk6IG51bWJlcjsKICAgICAgd2hpbGUgKChpID0gYnVmZmVyLmluZGV4T2YoJ1xuJykpID49IDApIHsgY29uc3QgbGluZSA9IGJ1ZmZlci5zbGljZSgwLCBpKTsgYnVmZmVyID0gYnVmZmVyLnNsaWNlKGkgKyAxKTsgaGFuZGxlKGxpbmUpOyB9CiAgICB9CiAgICBoYW5kbGUoYnVmZmVyICsgZGVjb2Rlci5kZWNvZGUoKSk7CiAgfSBmaW5hbGx5IHsKICAgIHJlYWRlci5jYW5jZWwoKS5jYXRjaCgoKSA9PiB7fSk7CiAgfQogIGlmICghdGVybWluYWwpIHRocm93IG5ldyBJbnRlcnByZXRTdHJlYW1FcnJvcignQ29ubmVjdGlvbiBlbmRlZCBlYXJseS4gUGxlYXNlIHRyeSBhZ2Fpbi4nLCA1MDIpOwogIHJldHVybiB0ZXJtaW5hbCBhcyBFeHRyYWN0PEludGVycHJldEV2ZW50LCB7IHR5cGU6ICdkb25lJyB8ICdtZWRpYScgfT47Cn0K
+// Browser-safe NDJSON protocol between /api/youtube-hindi and the interpreter page.
+import type { DubSegment, TimedSegment } from './youtube-hindi';
+import type { InterpreterId } from './interpreter-models';
+import type { SpeakerGender } from './speaker-gender';
+
+export type GlossaryItem = { term: string; hindi: string };
+export type Correction = { heard: string; correct: string };
+export type SpeakerInfo = { gender: SpeakerGender; evidence: string };
+export type InterpretBrief = { language: string; domain: string; summary: string; glossary: GlossaryItem[]; corrections: Correction[]; speaker?: SpeakerInfo };
+
+export type SourceKind = 'youtube' | 'web' | 'upload' | 'text';
+export type SourceOrigin = 'captions' | 'auto-captions' | 'listened' | 'subtitles' | 'pasted';
+export type SourceInfo = {
+  kind: SourceKind; origin: SourceOrigin; language?: string;
+  mediaUrl?: string; pageUrl?: string; fileName?: string; mediaId?: string;
+};
+export type PanelInfo = { listener?: string; terminologist?: string; interpreters: string[]; reviewers?: string[]; reviewed?: number; corrected?: number; reviewRequested?: boolean; reviewTotal?: number };
+
+export type InterpretResult = {
+  title: string; hindi: string; truncated: boolean; videoId?: string | null; dub?: DubSegment[];
+  sourceChars?: number; source?: SourceInfo; brief?: InterpretBrief | null; panel?: PanelInfo;
+  /** Original-language text for each dub segment, in the same order. */
+  original?: string[]; engine?: InterpreterId;
+  pipeline?: string; deepListen?: boolean; sourceKey?: string;
+};
+
+export type Stage = 'source' | 'listen' | 'brief' | 'interpret';
+
+export type InterpretEvent =
+  | { type: 'stage'; stage: Stage; message: string }
+  | { type: 'quality'; reviewed: number; corrected: number }
+  | { type: 'listen'; reached: number; total?: number }
+  | { type: 'source'; title: string; language: string; origin: SourceOrigin; segments: number; duration: number; truncated: boolean; videoId?: string | null; timeline?: TimedSegment[]; sourceKey?: string }
+  | { type: 'brief'; brief: InterpretBrief | null; model?: string }
+  | { type: 'progress'; done: number; total: number }
+  | { type: 'segment'; index: number; start: number; end: number; hindi: string; original: string }
+  | { type: 'media'; mediaUrl: string; title: string; pageUrl: string; captionsUrl?: string }
+  | { type: 'done'; result: InterpretResult }
+  | { type: 'error'; error: string; status: number; needTranscript?: boolean };
+
+export function encodeEvent(event: InterpretEvent) {
+  return `${JSON.stringify(event)}\n`;
+}
+
+export class InterpretStreamError extends Error {
+  constructor(message: string, public status: number, public needTranscript = false) { super(message); }
+}
+
+/** Reads NDJSON events until the stream ends; returns the terminal done/media event. */
+export async function readInterpretStream(response: Response, onEvent: (event: InterpretEvent) => void, signal?: AbortSignal) {
+  if (!response.ok && !(response.headers.get('content-type') ?? '').includes('ndjson')) {
+    const body = await response.json().catch(() => ({})) as { error?: string; needTranscript?: boolean };
+    throw new InterpretStreamError(body.error || `Request failed (${response.status})`, response.status, !!body.needTranscript);
+  }
+  if (!response.body) throw new InterpretStreamError('No response.', 502);
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let terminal: Extract<InterpretEvent, { type: 'done' | 'media' }> | null = null;
+  const handle = (line: string) => {
+    if (!line.trim()) return;
+    let event: InterpretEvent;
+    try { event = JSON.parse(line) as InterpretEvent; } catch { return; }
+    if (event.type === 'error') throw new InterpretStreamError(event.error, event.status, !!event.needTranscript);
+    if (event.type === 'done' || event.type === 'media') terminal = event;
+    onEvent(event);
+  };
+  try {
+    for (;;) {
+      if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let i: number;
+      while ((i = buffer.indexOf('\n')) >= 0) { const line = buffer.slice(0, i); buffer = buffer.slice(i + 1); handle(line); }
+    }
+    handle(buffer + decoder.decode());
+  } finally {
+    reader.cancel().catch(() => {});
+  }
+  if (!terminal) throw new InterpretStreamError('Connection ended early. Please try again.', 502);
+  return terminal as Extract<InterpretEvent, { type: 'done' | 'media' }>;
+}

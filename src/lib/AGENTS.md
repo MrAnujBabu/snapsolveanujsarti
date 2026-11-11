@@ -1,1 +1,2 @@
-IyBMaWIKLSBJbnRlcnByZXRlciBFbmdsaXNoIHdvcmRzIGZvbGxvdyB0aGUgc2hhcmVkIGhpbmRpLWVuZ2xpc2gtd29yZHMgcnVsZTsgb25seSBibG9ja3Mgd2l0aCBsZWZ0b3ZlciBFbmdsaXNoIGxldHRlcnMgZ2V0IG9uZSBndWFyZGVkIHN3YXAtb25seSBwYXNzLCBzbyBjbGVhbiBvdXRwdXQgY29zdHMgbm90aGluZyBleHRyYS4K
+# Lib
+- Interpreter English words follow the shared hindi-english-words rule; only blocks with leftover English letters get one guarded swap-only pass, so clean output costs nothing extra.
