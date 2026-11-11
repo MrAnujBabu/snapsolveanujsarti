@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Loader2, Play, Square, Pause, AudioLines, Languages } from 'lucide-react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { Loader2, Play, Square, Pause, AudioLines, Languages, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
@@ -60,6 +60,8 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
   const [current, setCurrent] = useState(-1), [error, setError] = useState('');
   const [spokenCount, setSpokenCount] = useState(0);
   const [showOriginal, setShowOriginal] = useState(false);
+  const [transcriptOpen, setTranscriptOpen] = useState(true);
+  const transcriptId = useId();
   const [src, setSrc] = useState(mediaSrc ?? null);
   const [provider, setProvider] = useState('Sarvam · Bulbul v4-flash');
   const timeline = `${videoId ?? mediaSrc ?? ''}|${segments.length}|${segments[0]?.start ?? 0}|${segments.at(-1)?.end ?? 0}`;
@@ -194,6 +196,10 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
             <Button variant="outline" size="icon" className="touch-btn" aria-label="Stop Hindi voice-over" title="Stop" onClick={() => stopRef.current()}><Square className="size-4" /></Button>
           </> : <Button className="touch-btn" onClick={() => start(0)} disabled={!ready || !segments.length}>{ready ? <Play className="size-4" /> : <Loader2 className="size-4 animate-spin" />}Hindi voice-over चलाओ</Button>}
           <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground" data-testid="dub-status" role="status">{paused ? 'Paused' : status}</span>
+          <Button type="button" variant="ghost" size="icon" className="shrink-0" aria-expanded={transcriptOpen} aria-controls={transcriptId}
+            aria-label={transcriptOpen ? 'Transcript बंद करें' : 'Transcript खोलें'} title={transcriptOpen ? 'Transcript बंद करें' : 'Transcript खोलें'} onClick={() => setTranscriptOpen(value => !value)}>
+            <ChevronDown className={`size-4 transition-transform motion-reduce:transition-none ${transcriptOpen ? 'rotate-180' : ''}`} />
+          </Button>
         </div>
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-xs text-muted-foreground">
           <span className="flex items-center gap-1.5"><AudioLines className="size-4 text-primary" />{provider}</span>
@@ -202,7 +208,7 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
         </div>
         {error && <p role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm text-destructive">{error}</p>}
       </div>
-      <ol ref={timestamps} className="max-h-[26rem] divide-y overflow-y-auto border-t" aria-label="Timestamped Hindi voice-over">
+      <ol id={transcriptId} hidden={!transcriptOpen} ref={timestamps} className="max-h-[26rem] divide-y overflow-y-auto border-t" aria-label="Timestamped Hindi voice-over">
         {segments.map((seg, i) => <li key={i}>
           <Button variant="ghost" disabled={!ready} onClick={() => start(i)} data-current={i === current}
             className="h-auto w-full items-start justify-start gap-3 rounded-none border-l-2 border-transparent px-4 py-3 text-left whitespace-normal data-[current=true]:border-primary data-[current=true]:bg-accent">

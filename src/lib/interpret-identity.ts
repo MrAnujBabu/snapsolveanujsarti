@@ -1,7 +1,7 @@
 import type { TimedSegment } from './youtube-hindi';
 import type { InterpreterId } from './interpreter-models';
 
-export const INTERPRET_PIPELINE = 'source-bound-v2';
+export const INTERPRET_PIPELINE = 'source-bound-v3';
 
 /** Exact normalized source identity, shared by the server and device recovery. */
 export async function interpretationIdentity(segments: TimedSegment[], language: string, source: string, engine: InterpreterId, review: boolean, deepListen: boolean) {
