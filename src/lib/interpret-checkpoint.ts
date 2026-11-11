@@ -1,1 +1,121 @@
-Ly8gQnJvd3Nlci1zYWZlIGNoZWNrcG9pbnRzIGZvciBsb25nIGludGVycHJldGF0aW9uczogZXZlcnkgZmluaXNoZWQgSGluZGkgcGFydCBpcyBrZXB0IG9uIHRoaXMgZGV2aWNlLAovLyBzbyBhIHN0b3BwZWQgcnVuIChuZXR3b3JrIGRyb3AsIHNjcmVlbiBvZmYsIGNyZWRpdHMgb3V0LCBTdG9wKSBjb250aW51ZXMgZnJvbSB3aGVyZSBpdCBzdG9wcGVkCi8vIHdpdGhvdXQgcGF5aW5nIGFnYWluIGZvciBwYXJ0cyB0aGF0IHdlcmUgYWxyZWFkeSBkb25lLgppbXBvcnQgdHlwZSB7IEludGVycHJldEJyaWVmIH0gZnJvbSAnLi9pbnRlcnByZXQtcHJvdG9jb2wnOwppbXBvcnQgdHlwZSB7IEludGVycHJldGVySWQgfSBmcm9tICcuL2ludGVycHJldGVyLW1vZGVscyc7CmltcG9ydCB0eXBlIHsgVGltZWRTZWdtZW50IH0gZnJvbSAnLi95b3V0dWJlLWhpbmRpJzsKaW1wb3J0IHR5cGUgeyBTcGVha2VyR2VuZGVyIH0gZnJvbSAnLi9zcGVha2VyLWdlbmRlcic7CgpleHBvcnQgdHlwZSBIZWFyZE1lZGlhID0geyBzZWdtZW50czogVGltZWRTZWdtZW50W107IGxhbmd1YWdlOiBzdHJpbmc7IHRydW5jYXRlZDogYm9vbGVhbjsgZHVyYXRpb246IG51bWJlcjsgc3BlYWtlcj86IFNwZWFrZXJHZW5kZXIgfTsKZXhwb3J0IHR5cGUgQ2hlY2twb2ludCA9IHsKICBrZXk6IHN0cmluZzsgc2F2ZWRBdDogbnVtYmVyOyB0aXRsZTogc3RyaW5nOwogIC8qKiBIaW5kaSBwZXIgc2VnbWVudCwgJycgd2hlcmUgbm90IGRvbmUgeWV0LiAqLwogIGxpbmVzOiBzdHJpbmdbXTsKICAvKiogU3RhcnQgdGltZSAoc2Vjb25kcykgcGVyIHNlZ21lbnQsIGZvciB0aGUgaG91ci1ieS1ob3VyIHZpZXcuICovCiAgc3RhcnRzOiBudW1iZXJbXTsKICBicmllZjogSW50ZXJwcmV0QnJpZWYgfCBudWxsOyBicmllZk1vZGVsPzogc3RyaW5nOwogIHNvdXJjZUtleT86IHN0cmluZzsKICAvKiogU3BlZWNoIHRoZSBsaXN0ZW5lciBhbHJlYWR5IGhlYXJkICh1cGxvYWRzIC8gd2Vic2l0ZSBtZWRpYSksIHNvIGxpc3RlbmluZyBpcyBub3QgcGFpZCBmb3IgdHdpY2UuICovCiAgaGVhcmQ/OiBIZWFyZE1lZGlhOwp9OwoKZXhwb3J0IHR5cGUgQ2hlY2twb2ludElucHV0ID0KICB8IHsga2luZDogJ2xpbmsnOyB1cmw6IHN0cmluZyB9CiAgfCB7IGtpbmQ6ICd0ZXh0JzsgdHJhbnNjcmlwdDogc3RyaW5nOyB1cmw/OiBzdHJpbmcgfQogIHwgeyBraW5kOiAnZmlsZSc7IGZpbGU6IHsgbmFtZTogc3RyaW5nOyBzaXplOiBudW1iZXI7IGxhc3RNb2RpZmllZDogbnVtYmVyIH0gfTsKCmZ1bmN0aW9uIGhhc2godGV4dDogc3RyaW5nKSB7CiAgbGV0IGggPSAweDgxMWM5ZGM1OwogIGZvciAobGV0IGkgPSAwOyBpIDwgdGV4dC5sZW5ndGg7IGkrKykgeyBoIF49IHRleHQuY2hhckNvZGVBdChpKTsgaCA9IE1hdGguaW11bChoLCAweDAxMDAwMTkzKTsgfQogIHJldHVybiAoaCA+Pj4gMCkudG9TdHJpbmcoMzYpOwp9CgovKiogU2FtZSBzb3VyY2UgKyBzYW1lIGludGVycHJldGVyICsgc2FtZSByZXZpZXcgc2V0dGluZyDihpIgc2FtZSBjaGVja3BvaW50LiAqLwpleHBvcnQgZnVuY3Rpb24gY2hlY2twb2ludEtleShpbnB1dDogQ2hlY2twb2ludElucHV0LCBlbmdpbmU6IEludGVycHJldGVySWQsIHF1YWxpdHk6IGJvb2xlYW4sIGRlZXBMaXN0ZW4gPSBmYWxzZSkgewogIGNvbnN0IHNyYyA9IGlucHV0LmtpbmQgPT09ICdsaW5rJyA/IGBsaW5rfCR7aW5wdXQudXJsLnRyaW0oKX1gCiAgICA6IGlucHV0LmtpbmQgPT09ICdmaWxlJyA/IGBmaWxlfCR7aW5wdXQuZmlsZS5uYW1lfXwke2lucHV0LmZpbGUuc2l6ZX18JHtpbnB1dC5maWxlLmxhc3RNb2RpZmllZH1gCiAgICA6IGB0ZXh0fCR7aGFzaChpbnB1dC50cmFuc2NyaXB0LnRyaW0oKSl9fCR7KGlucHV0LnVybCA/PyAnJykudHJpbSgpfWA7CiAgcmV0dXJuIGAke3NyY318JHtlbmdpbmV9fCR7cXVhbGl0eSA/ICdyZXZpZXcnIDogJ2Zhc3QnfXwke2RlZXBMaXN0ZW4gPyAnbGlzdGVuJyA6ICdjYXB0aW9ucyd9YDsKfQoKZXhwb3J0IGZ1bmN0aW9uIGRvbmVDb3VudChsaW5lczogc3RyaW5nW10pIHsgcmV0dXJuIGxpbmVzLmZpbHRlcihsID0+IGwudHJpbSgpKS5sZW5ndGg7IH0KCi8qKiBUcnVlIHdoZW4gYSBjaGVja3BvaW50IGhhcyB3b3JrIHNhdmVkIGJ1dCBpcyBub3QgZmluaXNoZWQg4oCUIHdvcnRoIG9mZmVyaW5nICJjb250aW51ZSIuICovCmV4cG9ydCBmdW5jdGlvbiBpc1Jlc3VtYWJsZShjcDogQ2hlY2twb2ludCB8IG51bGwgfCB1bmRlZmluZWQpOiBjcCBpcyBDaGVja3BvaW50IHsKICByZXR1cm4gISFjcCAmJiBjcC5saW5lcy5sZW5ndGggPiAwICYmIGRvbmVDb3VudChjcC5saW5lcykgPiAwICYmIGRvbmVDb3VudChjcC5saW5lcykgPCBjcC5saW5lcy5sZW5ndGg7Cn0KCi8qKiBBIGNvbXBsZXRlIGNoZWNrcG9pbnQgc3RpbGwgbWF0dGVycyB3aGVuIGZpbmFsIGxpYnJhcnkgcGVyc2lzdGVuY2UgZmFpbGVkLiAqLwpleHBvcnQgZnVuY3Rpb24gaXNSZWNvdmVyYWJsZShjcDogQ2hlY2twb2ludCB8IG51bGwgfCB1bmRlZmluZWQpOiBjcCBpcyBDaGVja3BvaW50IHsKICByZXR1cm4gISFjcCAmJiBjcC5saW5lcy5sZW5ndGggPiAwICYmIGRvbmVDb3VudChjcC5saW5lcykgPiAwOwp9CgpleHBvcnQgdHlwZSBIb3VyU2VjdGlvbiA9IHsgaG91cjogbnVtYmVyOyBkb25lOiBudW1iZXI7IHRvdGFsOiBudW1iZXIgfTsKLyoqIEdyb3VwcyBwYXJ0cyBieSBob3VyIG9mIHZpZGVvLCBzbyBhIDEw4oCTMjQgaG91ciB2aWRlbyBzaG93cyB3aGljaCBob3VycyBhcmUgZmluaXNoZWQuICovCmV4cG9ydCBmdW5jdGlvbiBob3VyU2VjdGlvbnMoc3RhcnRzOiBudW1iZXJbXSwgbGluZXM6IHN0cmluZ1tdKTogSG91clNlY3Rpb25bXSB7CiAgY29uc3QgbWFwID0gbmV3IE1hcDxudW1iZXIsIEhvdXJTZWN0aW9uPigpOwogIHN0YXJ0cy5mb3JFYWNoKChzdGFydCwgaSkgPT4gewogICAgY29uc3QgaG91ciA9IE1hdGgubWF4KDAsIE1hdGguZmxvb3Ioc3RhcnQgLyAzNjAwKSk7CiAgICBjb25zdCBzID0gbWFwLmdldChob3VyKSA/PyB7IGhvdXIsIGRvbmU6IDAsIHRvdGFsOiAwIH07CiAgICBzLnRvdGFsKys7IGlmIChsaW5lc1tpXT8udHJpbSgpKSBzLmRvbmUrKzsKICAgIG1hcC5zZXQoaG91ciwgcyk7CiAgfSk7CiAgcmV0dXJuIFsuLi5tYXAudmFsdWVzKCldLnNvcnQoKGEsIGIpID0+IGEuaG91ciAtIGIuaG91cik7Cn0KCi8qKiBOZXR3b3JrIGRyb3BzLCByYXRlIGxpbWl0cyBhbmQgc2VydmVyIGhpY2N1cHMgYXJlIHdvcnRoIGFuIGF1dG9tYXRpYyBjb250aW51ZTsgY3JlZGl0cywgZGVuaWFscyBhbmQgYmFkIGlucHV0IGFyZSBub3QuICovCmV4cG9ydCBmdW5jdGlvbiBpc1RyYW5zaWVudEZhaWx1cmUoZXJyb3I6IHVua25vd24pIHsKICBpZiAoZXJyb3IgaW5zdGFuY2VvZiBET01FeGNlcHRpb24gJiYgZXJyb3IubmFtZSA9PT0gJ0Fib3J0RXJyb3InKSByZXR1cm4gZmFsc2U7CiAgaWYgKGVycm9yIGluc3RhbmNlb2YgVHlwZUVycm9yKSByZXR1cm4gdHJ1ZTsgLy8gZmV0Y2ggZmFpbGVkIC8gY29ubmVjdGlvbiBsb3N0CiAgY29uc3Qgc3RhdHVzID0gKGVycm9yIGFzIHsgc3RhdHVzPzogdW5rbm93biB9IHwgbnVsbCk/LnN0YXR1czsKICByZXR1cm4gdHlwZW9mIHN0YXR1cyA9PT0gJ251bWJlcicgJiYgKHN0YXR1cyA9PT0gNDI5IHx8IChzdGF0dXMgPj0gNTAwICYmIHN0YXR1cyAhPT0gNTAxKSk7Cn0KCi8qKiBXYWl0cyBiZWZvcmUgZWFjaCBhdXRvbWF0aWMgY29udGludWUgKGJvdW5kZWQ7IHRoZW4gdGhlIHN0dWRlbnQgY29udGludWVzIGJ5IGhhbmQpLiAqLwpleHBvcnQgY29uc3QgQVVUT19DT05USU5VRV9ERUxBWVNfTVMgPSBbNV8wMDAsIDE1XzAwMCwgMzBfMDAwXTsKCi8vIC0tLS0tLS0tLS0gZGV2aWNlIHN0b3JhZ2UgLS0tLS0tLS0tLQoKY29uc3QgREIgPSAnc25hcHNvbHZlLWludGVycHJldC1jaGVja3BvaW50cyc7CmNvbnN0IFNUT1JFID0gJ2NoZWNrcG9pbnRzJzsKY29uc3QgTElNSVQgPSAxMjsKCmZ1bmN0aW9uIG9wZW4oKTogUHJvbWlzZTxJREJEYXRhYmFzZT4gewogIHJldHVybiBuZXcgUHJvbWlzZSgocmVzb2x2ZSwgcmVqZWN0KSA9PiB7CiAgICBjb25zdCByZXEgPSBpbmRleGVkREIub3BlbihEQiwgMSk7CiAgICByZXEub251cGdyYWRlbmVlZGVkID0gKCkgPT4geyBpZiAoIXJlcS5yZXN1bHQub2JqZWN0U3RvcmVOYW1lcy5jb250YWlucyhTVE9SRSkpIHJlcS5yZXN1bHQuY3JlYXRlT2JqZWN0U3RvcmUoU1RPUkUsIHsga2V5UGF0aDogJ2tleScgfSk7IH07CiAgICByZXEub25zdWNjZXNzID0gKCkgPT4gcmVzb2x2ZShyZXEucmVzdWx0KTsKICAgIHJlcS5vbmVycm9yID0gKCkgPT4gcmVqZWN0KHJlcS5lcnJvcik7CiAgfSk7Cn0KYXN5bmMgZnVuY3Rpb24gdHg8VD4obW9kZTogSURCVHJhbnNhY3Rpb25Nb2RlLCBmbjogKHN0b3JlOiBJREJPYmplY3RTdG9yZSkgPT4gSURCUmVxdWVzdDxUPik6IFByb21pc2U8VD4gewogIGNvbnN0IGRiID0gYXdhaXQgb3BlbigpOwogIHRyeSB7CiAgICByZXR1cm4gYXdhaXQgbmV3IFByb21pc2U8VD4oKHJlc29sdmUsIHJlamVjdCkgPT4gewogICAgICBjb25zdCB0ID0gZGIudHJhbnNhY3Rpb24oU1RPUkUsIG1vZGUpOwogICAgICBjb25zdCByZXEgPSBmbih0Lm9iamVjdFN0b3JlKFNUT1JFKSk7CiAgICAgIHQub25jb21wbGV0ZSA9ICgpID0+IHJlc29sdmUocmVxLnJlc3VsdCk7CiAgICAgIHQub25lcnJvciA9ICgpID0+IHJlamVjdCh0LmVycm9yKTsKICAgICAgdC5vbmFib3J0ID0gKCkgPT4gcmVqZWN0KHQuZXJyb3IpOwogICAgfSk7CiAgfSBmaW5hbGx5IHsgZGIuY2xvc2UoKTsgfQp9CgpmdW5jdGlvbiB2YWxpZCh2OiB1bmtub3duKTogdiBpcyBDaGVja3BvaW50IHsKICBjb25zdCBjID0gdiBhcyBQYXJ0aWFsPENoZWNrcG9pbnQ+IHwgbnVsbDsKICByZXR1cm4gISFjICYmIHR5cGVvZiBjLmtleSA9PT0gJ3N0cmluZycgJiYgQXJyYXkuaXNBcnJheShjLmxpbmVzKSAmJiBjLmxpbmVzLmV2ZXJ5KGwgPT4gdHlwZW9mIGwgPT09ICdzdHJpbmcnKSAmJiBBcnJheS5pc0FycmF5KGMuc3RhcnRzKTsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGxvYWRDaGVja3BvaW50KGtleTogc3RyaW5nKTogUHJvbWlzZTxDaGVja3BvaW50IHwgbnVsbD4gewogIGNvbnN0IHYgPSBhd2FpdCB0eCgncmVhZG9ubHknLCBzID0+IHMuZ2V0KGtleSkgYXMgSURCUmVxdWVzdDx1bmtub3duPik7CiAgcmV0dXJuIHZhbGlkKHYpID8gdiA6IG51bGw7Cn0KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBzYXZlQ2hlY2twb2ludChjcDogQ2hlY2twb2ludCkgewogIGF3YWl0IHR4KCdyZWFkd3JpdGUnLCBzID0+IHMucHV0KGNwKSk7CiAgY29uc3QgYWxsID0gYXdhaXQgdHgoJ3JlYWRvbmx5JywgcyA9PiBzLmdldEFsbCgpIGFzIElEQlJlcXVlc3Q8dW5rbm93bltdPik7CiAgY29uc3Qgb2xkID0gYWxsLmZpbHRlcih2YWxpZCkuc29ydCgoYSwgYikgPT4gYi5zYXZlZEF0IC0gYS5zYXZlZEF0KS5zbGljZShMSU1JVCk7CiAgZm9yIChjb25zdCBjIG9mIG9sZCkgYXdhaXQgdHgoJ3JlYWR3cml0ZScsIHMgPT4gcy5kZWxldGUoYy5rZXkpKTsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlbW92ZUNoZWNrcG9pbnQoa2V5OiBzdHJpbmcpIHsgYXdhaXQgdHgoJ3JlYWR3cml0ZScsIHMgPT4gcy5kZWxldGUoa2V5KSk7IH0K
+// Browser-safe checkpoints for long interpretations: every finished Hindi part is kept on this device,
+// so a stopped run (network drop, screen off, credits out, Stop) continues from where it stopped
+// without paying again for parts that were already done.
+import type { InterpretBrief } from './interpret-protocol';
+import type { InterpreterId } from './interpreter-models';
+import type { TimedSegment } from './youtube-hindi';
+import type { SpeakerGender } from './speaker-gender';
+
+export type HeardMedia = { segments: TimedSegment[]; language: string; truncated: boolean; duration: number; speaker?: SpeakerGender };
+export type Checkpoint = {
+  key: string; savedAt: number; title: string;
+  /** Hindi per segment, '' where not done yet. */
+  lines: string[];
+  /** Start time (seconds) per segment, for the hour-by-hour view. */
+  starts: number[];
+  brief: InterpretBrief | null; briefModel?: string;
+  sourceKey?: string;
+  /** Speech the listener already heard (uploads / website media), so listening is not paid for twice. */
+  heard?: HeardMedia;
+};
+
+export type CheckpointInput =
+  | { kind: 'link'; url: string }
+  | { kind: 'text'; transcript: string; url?: string }
+  | { kind: 'file'; file: { name: string; size: number; lastModified: number } };
+
+function hash(text: string) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) { h ^= text.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+  return (h >>> 0).toString(36);
+}
+
+/** Same source + same interpreter + same review setting → same checkpoint. */
+export function checkpointKey(input: CheckpointInput, engine: InterpreterId, quality: boolean, deepListen = false) {
+  const src = input.kind === 'link' ? `link|${input.url.trim()}`
+    : input.kind === 'file' ? `file|${input.file.name}|${input.file.size}|${input.file.lastModified}`
+    : `text|${hash(input.transcript.trim())}|${(input.url ?? '').trim()}`;
+  return `${src}|${engine}|${quality ? 'review' : 'fast'}|${deepListen ? 'listen' : 'captions'}`;
+}
+
+export function doneCount(lines: string[]) { return lines.filter(l => l.trim()).length; }
+
+/** True when a checkpoint has work saved but is not finished — worth offering "continue". */
+export function isResumable(cp: Checkpoint | null | undefined): cp is Checkpoint {
+  return !!cp && cp.lines.length > 0 && doneCount(cp.lines) > 0 && doneCount(cp.lines) < cp.lines.length;
+}
+
+/** A complete checkpoint still matters when final library persistence failed. */
+export function isRecoverable(cp: Checkpoint | null | undefined): cp is Checkpoint {
+  return !!cp && cp.lines.length > 0 && doneCount(cp.lines) > 0;
+}
+
+export type HourSection = { hour: number; done: number; total: number };
+/** Groups parts by hour of video, so a 10–24 hour video shows which hours are finished. */
+export function hourSections(starts: number[], lines: string[]): HourSection[] {
+  const map = new Map<number, HourSection>();
+  starts.forEach((start, i) => {
+    const hour = Math.max(0, Math.floor(start / 3600));
+    const s = map.get(hour) ?? { hour, done: 0, total: 0 };
+    s.total++; if (lines[i]?.trim()) s.done++;
+    map.set(hour, s);
+  });
+  return [...map.values()].sort((a, b) => a.hour - b.hour);
+}
+
+/** Network drops, rate limits and server hiccups are worth an automatic continue; credits, denials and bad input are not. */
+export function isTransientFailure(error: unknown) {
+  if (error instanceof DOMException && error.name === 'AbortError') return false;
+  if (error instanceof TypeError) return true; // fetch failed / connection lost
+  const status = (error as { status?: unknown } | null)?.status;
+  return typeof status === 'number' && (status === 429 || (status >= 500 && status !== 501));
+}
+
+/** Waits before each automatic continue (bounded; then the student continues by hand). */
+export const AUTO_CONTINUE_DELAYS_MS = [5_000, 15_000, 30_000];
+
+// ---------- device storage ----------
+
+const DB = 'snapsolve-interpret-checkpoints';
+const STORE = 'checkpoints';
+const LIMIT = 12;
+
+function open(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB, 1);
+    req.onupgradeneeded = () => { if (!req.result.objectStoreNames.contains(STORE)) req.result.createObjectStore(STORE, { keyPath: 'key' }); };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+async function tx<T>(mode: IDBTransactionMode, fn: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
+  const db = await open();
+  try {
+    return await new Promise<T>((resolve, reject) => {
+      const t = db.transaction(STORE, mode);
+      const req = fn(t.objectStore(STORE));
+      t.oncomplete = () => resolve(req.result);
+      t.onerror = () => reject(t.error);
+      t.onabort = () => reject(t.error);
+    });
+  } finally { db.close(); }
+}
+
+function valid(v: unknown): v is Checkpoint {
+  const c = v as Partial<Checkpoint> | null;
+  return !!c && typeof c.key === 'string' && Array.isArray(c.lines) && c.lines.every(l => typeof l === 'string') && Array.isArray(c.starts);
+}
+
+export async function loadCheckpoint(key: string): Promise<Checkpoint | null> {
+  const v = await tx('readonly', s => s.get(key) as IDBRequest<unknown>);
+  return valid(v) ? v : null;
+}
+
+export async function saveCheckpoint(cp: Checkpoint) {
+  await tx('readwrite', s => s.put(cp));
+  const all = await tx('readonly', s => s.getAll() as IDBRequest<unknown[]>);
+  const old = all.filter(valid).sort((a, b) => b.savedAt - a.savedAt).slice(LIMIT);
+  for (const c of old) await tx('readwrite', s => s.delete(c.key));
+}
+
+export async function removeCheckpoint(key: string) { await tx('readwrite', s => s.delete(key)); }

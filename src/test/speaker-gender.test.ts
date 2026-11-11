@@ -1,1 +1,52 @@
-aW1wb3J0IHsgZGVzY3JpYmUsIGV4cGVjdCwgaXQgfSBmcm9tICd2aXRlc3QnOwppbXBvcnQgeyBtZXJnZVNwZWFrZXJHZW5kZXIsIHNwZWFrZXJHZW5kZXJSdWxlLCB0b1NwZWFrZXJHZW5kZXIgfSBmcm9tICdAL2xpYi9zcGVha2VyLWdlbmRlcic7CmltcG9ydCB7IHBhcnNlTGlzdGVuT3V0cHV0IH0gZnJvbSAnQC9saWIvdHJhbnNjcmlwdC1jdWVzJzsKaW1wb3J0IHsgbm9ybWFsaXplQnJpZWYsIHRpbWVkQmF0Y2hQcm9tcHQsIHdpdGhIZWFyZFNwZWFrZXIgfSBmcm9tICdAL2xpYi9pbnRlcnByZXRlci5zZXJ2ZXInOwoKY29uc3QgYnJpZWYgPSAoZ2VuZGVyPzogc3RyaW5nKSA9PiAoeyBsYW5ndWFnZTogJ2VuJywgZG9tYWluOiAnc3R1ZHknLCBzdW1tYXJ5OiAn4KSq4KSi4KS84KS+4KSIJywgZ2xvc3Nhcnk6IFtdLCBjb3JyZWN0aW9uczogW10sIC4uLihnZW5kZXIgPyB7IHNwZWFrZXJfZ2VuZGVyOiBnZW5kZXIsIHNwZWFrZXJfZXZpZGVuY2U6ICd0ZXN0JyB9IDoge30pIH0pOwpjb25zdCBzZWcgPSBbeyBzdGFydDogMCwgZW5kOiAzMCwgdGV4dDogJ0kgd2FzIHRpcmVkLCBzbyBJIHdlbnQgaG9tZS4nIH1dOwoKZGVzY3JpYmUoJ3NwZWFrZXIgZ2VuZGVyIGludGVycHJldGF0aW9uJywgKCkgPT4gewogIGl0KCd0ZWxscyB0aGUgaW50ZXJwcmV0ZXIgdG8gdXNlIG1hc2N1bGluZSBmaXJzdC1wZXJzb24gSGluZGkgZm9yIGEgbWFsZSBzcGVha2VyJywgKCkgPT4gewogICAgY29uc3QgcHJvbXB0ID0gdGltZWRCYXRjaFByb21wdChzZWcsIHsgdGl0bGU6ICdUJywgYnJpZWY6IG5vcm1hbGl6ZUJyaWVmKGJyaWVmKCdtYWxlJykpIH0pOwogICAgZXhwZWN0KHByb21wdCkudG9Db250YWluKCdTcGVha2VyIGdlbmRlcjogTUFMRScpOwogICAgZXhwZWN0KHByb21wdCkudG9Db250YWluKCfgpK7gpYjgpIIg4KSV4KSw4KSk4KS+IOCkueClguCkgScpOwogICAgZXhwZWN0KHByb21wdCkubm90LnRvQ29udGFpbignU3BlYWtlciBnZW5kZXI6IEZFTUFMRScpOwogIH0pOwoKICBpdCgndGVsbHMgdGhlIGludGVycHJldGVyIHRvIHVzZSBmZW1pbmluZSBmaXJzdC1wZXJzb24gSGluZGkgZm9yIGEgZmVtYWxlIHNwZWFrZXInLCAoKSA9PiB7CiAgICBjb25zdCBwcm9tcHQgPSB0aW1lZEJhdGNoUHJvbXB0KHNlZywgeyB0aXRsZTogJ1QnLCBicmllZjogbm9ybWFsaXplQnJpZWYoYnJpZWYoJ2ZlbWFsZScpKSB9KTsKICAgIGV4cGVjdChwcm9tcHQpLnRvQ29udGFpbignU3BlYWtlciBnZW5kZXI6IEZFTUFMRScpOwogICAgZXhwZWN0KHByb21wdCkudG9Db250YWluKCfgpK7gpYjgpIIg4KSV4KSw4KSk4KWAIOCkueClguCkgScpOwogIH0pOwoKICBpdCgndXNlcyBnZW5kZXItbmV1dHJhbCBwaHJhc2luZyB3aGVuIHRoZSBnZW5kZXIgaXMgbm90IGVzdGFibGlzaGVkJywgKCkgPT4gewogICAgZXhwZWN0KHRpbWVkQmF0Y2hQcm9tcHQoc2VnLCB7IHRpdGxlOiAnVCcsIGJyaWVmOiBudWxsIH0pKS50b0NvbnRhaW4oJ1NwZWFrZXIgZ2VuZGVyOiBOT1QgRVNUQUJMSVNIRUQnKTsKICAgIGV4cGVjdChub3JtYWxpemVCcmllZihicmllZigncm9ib3QnKSk/LnNwZWFrZXI/LmdlbmRlcikudG9CZSgndW5rbm93bicpOwogIH0pOwoKICBpdCgna2VlcHMgYSBzYXZlZCBicmllZiBzcGVha2VyIHdoZW4gYSBzdG9wcGVkIHJ1biByZXN1bWVzJywgKCkgPT4gewogICAgZXhwZWN0KG5vcm1hbGl6ZUJyaWVmKHsgLi4uYnJpZWYoKSwgc3BlYWtlcjogeyBnZW5kZXI6ICdmZW1hbGUnLCBldmlkZW5jZTogJ3NhaWQgSSBhbSBQcml5YScgfSB9KT8uc3BlYWtlcj8uZ2VuZGVyKS50b0JlKCdmZW1hbGUnKTsKICB9KTsKCiAgaXQoJ3JlYWRzIHRoZSB2b2ljZSB0aGUgbGlzdGVuZXIgaGVhcmQsIGFuZCBkcm9wcyB0aGUgaGVhZGVyIGZyb20gdGhlIHRyYW5zY3JpcHQnLCAoKSA9PiB7CiAgICBjb25zdCBoZWFyZCA9IHBhcnNlTGlzdGVuT3V0cHV0KCdMQU5HPWVuXG5TUEVBS0VSPWZlbWFsZVxuWzA6MDBdIEkgd2VudCBob21lLlxuWzA6MDVdIEkgd2FzIHRpcmVkLicpOwogICAgZXhwZWN0KGhlYXJkLnNwZWFrZXIpLnRvQmUoJ2ZlbWFsZScpOwogICAgZXhwZWN0KGhlYXJkLmN1ZXMubWFwKGMgPT4gYy50ZXh0KS5qb2luKCcgJykpLm5vdC50b0NvbnRhaW4oJ1NQRUFLRVInKTsKICAgIGV4cGVjdChwYXJzZUxpc3Rlbk91dHB1dCgnTEFORz1lblxuWzA6MDBdIEhpLicpLnNwZWFrZXIpLnRvQmVVbmRlZmluZWQoKTsKICB9KTsKCiAgaXQoJ3VzZXMgdGhlIGhlYXJkIHZvaWNlIG9ubHkgd2hlbiB0aGUgdGV4dCBicmllZiBjb3VsZCBub3QgZGVjaWRlJywgKCkgPT4gewogICAgZXhwZWN0KHdpdGhIZWFyZFNwZWFrZXIobm9ybWFsaXplQnJpZWYoYnJpZWYoJ3Vua25vd24nKSksICdtYWxlJyk/LnNwZWFrZXI/LmdlbmRlcikudG9CZSgnbWFsZScpOwogICAgZXhwZWN0KHdpdGhIZWFyZFNwZWFrZXIobm9ybWFsaXplQnJpZWYoYnJpZWYoJ2ZlbWFsZScpKSwgJ21hbGUnKT8uc3BlYWtlcj8uZ2VuZGVyKS50b0JlKCdmZW1hbGUnKTsKICAgIGV4cGVjdCh3aXRoSGVhcmRTcGVha2VyKG51bGwsICdmZW1hbGUnLCAnZW4nKT8uc3BlYWtlcj8uZ2VuZGVyKS50b0JlKCdmZW1hbGUnKTsKICB9KTsKCiAgaXQoJ2NvbWJpbmVzIGxpc3RlbmVkIHBpZWNlczogZGlmZmVyZW50IHZvaWNlcyBiZWNvbWUgbWl4ZWQsIHVua25vd24gbmV2ZXIgb3ZlcnJpZGVzJywgKCkgPT4gewogICAgZXhwZWN0KG1lcmdlU3BlYWtlckdlbmRlcigndW5rbm93bicsICdtYWxlJykpLnRvQmUoJ21hbGUnKTsKICAgIGV4cGVjdChtZXJnZVNwZWFrZXJHZW5kZXIoJ21hbGUnLCAndW5rbm93bicpKS50b0JlKCdtYWxlJyk7CiAgICBleHBlY3QobWVyZ2VTcGVha2VyR2VuZGVyKCdtYWxlJywgJ2ZlbWFsZScpKS50b0JlKCdtaXhlZCcpOwogICAgZXhwZWN0KHRvU3BlYWtlckdlbmRlcignV29tYW4nKSkudG9CZSgnZmVtYWxlJyk7CiAgICBleHBlY3Qoc3BlYWtlckdlbmRlclJ1bGUoJ21peGVkJykpLnRvQ29udGFpbignU0VWRVJBTCBTUEVBS0VSUycpOwogIH0pOwp9KTs=
+import { describe, expect, it } from 'vitest';
+import { mergeSpeakerGender, speakerGenderRule, toSpeakerGender } from '@/lib/speaker-gender';
+import { parseListenOutput } from '@/lib/transcript-cues';
+import { normalizeBrief, timedBatchPrompt, withHeardSpeaker } from '@/lib/interpreter.server';
+
+const brief = (gender?: string) => ({ language: 'en', domain: 'study', summary: 'पढ़ाई', glossary: [], corrections: [], ...(gender ? { speaker_gender: gender, speaker_evidence: 'test' } : {}) });
+const seg = [{ start: 0, end: 30, text: 'I was tired, so I went home.' }];
+
+describe('speaker gender interpretation', () => {
+  it('tells the interpreter to use masculine first-person Hindi for a male speaker', () => {
+    const prompt = timedBatchPrompt(seg, { title: 'T', brief: normalizeBrief(brief('male')) });
+    expect(prompt).toContain('Speaker gender: MALE');
+    expect(prompt).toContain('मैं करता हूँ');
+    expect(prompt).not.toContain('Speaker gender: FEMALE');
+  });
+
+  it('tells the interpreter to use feminine first-person Hindi for a female speaker', () => {
+    const prompt = timedBatchPrompt(seg, { title: 'T', brief: normalizeBrief(brief('female')) });
+    expect(prompt).toContain('Speaker gender: FEMALE');
+    expect(prompt).toContain('मैं करती हूँ');
+  });
+
+  it('uses gender-neutral phrasing when the gender is not established', () => {
+    expect(timedBatchPrompt(seg, { title: 'T', brief: null })).toContain('Speaker gender: NOT ESTABLISHED');
+    expect(normalizeBrief(brief('robot'))?.speaker?.gender).toBe('unknown');
+  });
+
+  it('keeps a saved brief speaker when a stopped run resumes', () => {
+    expect(normalizeBrief({ ...brief(), speaker: { gender: 'female', evidence: 'said I am Priya' } })?.speaker?.gender).toBe('female');
+  });
+
+  it('reads the voice the listener heard, and drops the header from the transcript', () => {
+    const heard = parseListenOutput('LANG=en\nSPEAKER=female\n[0:00] I went home.\n[0:05] I was tired.');
+    expect(heard.speaker).toBe('female');
+    expect(heard.cues.map(c => c.text).join(' ')).not.toContain('SPEAKER');
+    expect(parseListenOutput('LANG=en\n[0:00] Hi.').speaker).toBeUndefined();
+  });
+
+  it('uses the heard voice only when the text brief could not decide', () => {
+    expect(withHeardSpeaker(normalizeBrief(brief('unknown')), 'male')?.speaker?.gender).toBe('male');
+    expect(withHeardSpeaker(normalizeBrief(brief('female')), 'male')?.speaker?.gender).toBe('female');
+    expect(withHeardSpeaker(null, 'female', 'en')?.speaker?.gender).toBe('female');
+  });
+
+  it('combines listened pieces: different voices become mixed, unknown never overrides', () => {
+    expect(mergeSpeakerGender('unknown', 'male')).toBe('male');
+    expect(mergeSpeakerGender('male', 'unknown')).toBe('male');
+    expect(mergeSpeakerGender('male', 'female')).toBe('mixed');
+    expect(toSpeakerGender('Woman')).toBe('female');
+    expect(speakerGenderRule('mixed')).toContain('SEVERAL SPEAKERS');
+  });
+});

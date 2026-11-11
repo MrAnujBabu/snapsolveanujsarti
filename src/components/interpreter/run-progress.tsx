@@ -1,1 +1,94 @@
-aW1wb3J0IHsgdXNlSWQsIHVzZVN0YXRlIH0gZnJvbSAncmVhY3QnOwppbXBvcnQgeyBDaGVjaywgTG9hZGVyMiwgU3F1YXJlLCBFYXIsIEJvb2tPcGVuVGV4dCwgTGFuZ3VhZ2VzLCBTaGllbGRDaGVjaywgTGluazIsIENoZXZyb25Eb3duIH0gZnJvbSAnbHVjaWRlLXJlYWN0JzsKaW1wb3J0IHsgQnV0dG9uIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL2J1dHRvbic7CmltcG9ydCB7IFByb2dyZXNzIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL3Byb2dyZXNzJzsKaW1wb3J0IHR5cGUgeyBSdW5TdGF0ZSB9IGZyb20gJ0AvbGliL2ludGVycHJldC1jbGllbnQnOwppbXBvcnQgeyBob3VyU2VjdGlvbnMgfSBmcm9tICdAL2xpYi9pbnRlcnByZXQtY2hlY2twb2ludCc7CmltcG9ydCB7IGZvcm1hdFRpbWUgfSBmcm9tICdAL2NvbXBvbmVudHMveW91dHViZS1kdWInOwppbXBvcnQgeyBzcGVha2VyR2VuZGVyTGFiZWwgfSBmcm9tICdAL2xpYi9zcGVha2VyLWdlbmRlcic7Cgp0eXBlIFN0ZXAgPSB7IGtleTogc3RyaW5nOyBsYWJlbDogc3RyaW5nOyBpY29uOiB0eXBlb2YgRWFyOyBzdGF0ZTogJ2RvbmUnIHwgJ2FjdGl2ZScgfCAndG9kbyc7IGRldGFpbD86IHN0cmluZyB8IHVuZGVmaW5lZCB9OwoKZnVuY3Rpb24gc3RlcHMoczogUnVuU3RhdGUsIGludGVycHJldGVyOiBzdHJpbmcsIHF1YWxpdHk6IGJvb2xlYW4pOiBTdGVwW10gewogIGNvbnN0IG9yZGVyID0gWydzb3VyY2UnLCAnbGlzdGVuJywgJ2JyaWVmJywgJ2ludGVycHJldCddIGFzIGNvbnN0OwogIGNvbnN0IGF0ID0gcy5zdGFnZSA9PT0gJ2lkbGUnID8gLTEgOiBvcmRlci5pbmRleE9mKHMuc3RhZ2UpOwogIGNvbnN0IHN0YXRlID0gKGk6IG51bWJlcik6IFN0ZXBbJ3N0YXRlJ10gPT4gKGF0ID4gaSA/ICdkb25lJyA6IGF0ID09PSBpID8gJ2FjdGl2ZScgOiAndG9kbycpOwogIGNvbnN0IGxpc3Q6IFN0ZXBbXSA9IFt7IGtleTogJ3NvdXJjZScsIGxhYmVsOiAnVmlkZW8g4KSU4KSwIGNhcHRpb25zIOCkquCkouCkvOCkqOCkvicsIGljb246IExpbmsyLCBzdGF0ZTogc3RhdGUoMCksIGRldGFpbDogcy50aXRsZSB8fCB1bmRlZmluZWQgfV07CiAgaWYgKHMubGlzdGVuaW5nKSBsaXN0LnB1c2goeyBrZXk6ICdsaXN0ZW4nLCBsYWJlbDogJ0dlbWluaSA0IEFyZ29uIOCkhuCkteCkvuCknOCkvCDgpLjgpYHgpKgg4KSw4KS54KS+IOCkueCliCcsIGljb246IEVhciwgc3RhdGU6IHN0YXRlKDEpLAogICAgZGV0YWlsOiBzLmxpc3RlbiA/IGAke2Zvcm1hdFRpbWUocy5saXN0ZW4ucmVhY2hlZCl9JHtzLmxpc3Rlbi50b3RhbCA/IGAgLyAke2Zvcm1hdFRpbWUocy5saXN0ZW4udG90YWwpfWAgOiAnJ31gIDogdW5kZWZpbmVkIH0pOwogIGxpc3QucHVzaCh7IGtleTogJ2JyaWVmJywgbGFiZWw6ICdHUFQtNiBBc3RyYTog4KS14KS/4KS34KSvIOCklOCksCDgpJzgpLzgpLDgpYLgpLDgpYAg4KS24KSs4KWN4KSmJywgaWNvbjogQm9va09wZW5UZXh0LCBzdGF0ZTogc3RhdGUoMiksCiAgICBkZXRhaWw6IFtzLmJyaWVmPy5nbG9zc2FyeS5sZW5ndGggPyBgJHtzLmJyaWVmLmdsb3NzYXJ5Lmxlbmd0aH0g4KS24KSs4KWN4KSmIMK3ICR7cy5icmllZi5kb21haW59YCA6ICcnLAogICAgICBzLmJyaWVmPy5zcGVha2VyICYmIHMuYnJpZWYuc3BlYWtlci5nZW5kZXIgIT09ICd1bmtub3duJyA/IGDgpKzgpYvgpLLgpKjgpYcg4KS14KS+4KSy4KS+OiAke3NwZWFrZXJHZW5kZXJMYWJlbChzLmJyaWVmLnNwZWFrZXIuZ2VuZGVyKX1gIDogJyddLmZpbHRlcihCb29sZWFuKS5qb2luKCcgwrcgJykgfHwgdW5kZWZpbmVkIH0pOwogIGxpc3QucHVzaCh7IGtleTogJ2ludGVycHJldCcsIGxhYmVsOiBgJHtpbnRlcnByZXRlcn06IOCkuOCksOCksiBIaW5kaWAsIGljb246IExhbmd1YWdlcywgc3RhdGU6IHN0YXRlKDMpLCBkZXRhaWw6IHMudG90YWwgPyBgJHtzLmRvbmV9LyR7cy50b3RhbH0g4KS54KS/4KS44KWN4KS44KWHYCA6IHVuZGVmaW5lZCB9KTsKICBpZiAocXVhbGl0eSkgbGlzdC5wdXNoKHsga2V5OiAncmV2aWV3JywgbGFiZWw6ICfgpKbgpYLgpLjgpLDgpL4gcHJlbWl1bSBtb2RlbCDgpLngpLAg4KS54KS/4KS44KWN4KS44KS+IOCknOCkvuCkgeCkmiDgpLDgpLngpL4g4KS54KWIJywgaWNvbjogU2hpZWxkQ2hlY2ssIHN0YXRlOiBzLnN0YWdlID09PSAnaW50ZXJwcmV0JyA/ICdhY3RpdmUnIDogJ3RvZG8nLAogICAgZGV0YWlsOiBzLnF1YWxpdHkgPyBgJHtzLnF1YWxpdHkuY29ycmVjdGVkfSDgpLjgpYHgpKfgpL7gpLBgIDogdW5kZWZpbmVkIH0pOwogIHJldHVybiBsaXN0Owp9CgpleHBvcnQgZnVuY3Rpb24gUnVuUHJvZ3Jlc3MoeyBzdGF0ZSwgaW50ZXJwcmV0ZXIsIHF1YWxpdHksIG9uQ2FuY2VsIH06IHsgc3RhdGU6IFJ1blN0YXRlOyBpbnRlcnByZXRlcjogc3RyaW5nOyBxdWFsaXR5OiBib29sZWFuOyBvbkNhbmNlbCgpOiB2b2lkIH0pIHsKICBjb25zdCBwY3QgPSBzdGF0ZS5zdGFnZSA9PT0gJ2xpc3RlbicgJiYgc3RhdGUubGlzdGVuPy50b3RhbCA/IChzdGF0ZS5saXN0ZW4ucmVhY2hlZCAvIHN0YXRlLmxpc3Rlbi50b3RhbCkgKiAxMDAKICAgIDogc3RhdGUuc3RhZ2UgPT09ICdpbnRlcnByZXQnICYmIHN0YXRlLnRvdGFsID8gKHN0YXRlLmRvbmUgLyBzdGF0ZS50b3RhbCkgKiAxMDAgOiBudWxsOwogIGNvbnN0IFtvcGVuLCBzZXRPcGVuXSA9IHVzZVN0YXRlKGZhbHNlKTsKICBjb25zdCBsaXN0SWQgPSB1c2VJZCgpOwogIGNvbnN0IHBhcnRzID0gc3RhdGUuaGluZGkubWFwKChoaW5kaSwgaSkgPT4gKHsgaGluZGksIHN0YXJ0OiBzdGF0ZS50aW1lbGluZVtpXT8uc3RhcnQgPz8gMCB9KSk7CiAgcmV0dXJuICgKICAgIDxzZWN0aW9uIGFyaWEtbGl2ZT0icG9saXRlIiBjbGFzc05hbWU9InJvdW5kZWQtMnhsIGJvcmRlciBiZy1jYXJkIHAtNCBzaGFkb3ctc20gc206cC01Ij4KICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtc3RhcnQganVzdGlmeS1iZXR3ZWVuIGdhcC0zIj4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibWluLXctMCI+CiAgICAgICAgICA8cCBjbGFzc05hbWU9ImZvbnQtZGlzcGxheSB0ZXh0LWJhc2UgZm9udC1zZW1pYm9sZCI+RXhwZXJ0IHRlYW0g4KSV4KS+4KSuIOCkleCksCDgpLDgpLngpYAg4KS54KWIPC9wPgogICAgICAgICAgPHAgY2xhc3NOYW1lPSJtdC0wLjUgdGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQiIGRhdGEtdGVzdGlkPSJydW4tbWVzc2FnZSI+e3N0YXRlLm1lc3NhZ2UgfHwgJ+CktuClgeCksOClgiDgpJXgpLAg4KSw4KS54KS+IOCkueClguCkgeKApid9PC9wPgogICAgICAgIDwvZGl2PgogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IHNocmluay0wIGl0ZW1zLWNlbnRlciBnYXAtMSI+CiAgICAgICAgICA8QnV0dG9uIHZhcmlhbnQ9Im91dGxpbmUiIHNpemU9InNtIiBvbkNsaWNrPXtvbkNhbmNlbH0gY2xhc3NOYW1lPSJ0b3VjaC1idG4gc2hyaW5rLTAiPjxTcXVhcmUgY2xhc3NOYW1lPSJzaXplLTMuNSIgLz7gpLDgpYvgpJXgpYfgpII8L0J1dHRvbj4KICAgICAgICAgIDxCdXR0b24gdHlwZT0iYnV0dG9uIiB2YXJpYW50PSJnaG9zdCIgc2l6ZT0iaWNvbiIgY2xhc3NOYW1lPSJzaHJpbmstMCIgYXJpYS1leHBhbmRlZD17b3Blbn0gYXJpYS1jb250cm9scz17bGlzdElkfQogICAgICAgICAgICBhcmlhLWxhYmVsPXtvcGVuID8gJ1RyYW5zY3JpcHQg4KSs4KSC4KSmIOCkleCksOClh+CkgicgOiAnVHJhbnNjcmlwdCDgpJbgpYvgpLLgpYfgpIInfSB0aXRsZT17b3BlbiA/ICdUcmFuc2NyaXB0IOCkrOCkguCkpiDgpJXgpLDgpYfgpIInIDogJ1RyYW5zY3JpcHQg4KSW4KWL4KSy4KWH4KSCJ30gb25DbGljaz17KCkgPT4gc2V0T3Blbih2ID0+ICF2KX0+CiAgICAgICAgICAgIDxDaGV2cm9uRG93biBjbGFzc05hbWU9e2BzaXplLTQgdHJhbnNpdGlvbi10cmFuc2Zvcm0gbW90aW9uLXJlZHVjZTp0cmFuc2l0aW9uLW5vbmUgJHtvcGVuID8gJ3JvdGF0ZS0xODAnIDogJyd9YH0gLz4KICAgICAgICAgIDwvQnV0dG9uPgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBpZD17bGlzdElkfSBoaWRkZW49eyFvcGVufSBjbGFzc05hbWU9Im10LTQgcm91bmRlZC14bCBib3JkZXIiPgogICAgICAgIHtwYXJ0cy5sZW5ndGgKICAgICAgICAgID8gPG9sIGNsYXNzTmFtZT0ibWF4LWgtNzIgZGl2aWRlLXkgb3ZlcmZsb3cteS1hdXRvIiBhcmlhLWxhYmVsPSLgpKzgpKgg4KSw4KS54KS+IEhpbmRpIHRyYW5zY3JpcHQiPgogICAgICAgICAgICAgIHtwYXJ0cy5tYXAoKHAsIGkpID0+IDxsaSBrZXk9e2l9IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1zdGFydCBnYXAtMyBweC0zIHB5LTIuNSI+CiAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9Im10LTAuNSBzaHJpbmstMCByb3VuZGVkLW1kIGJnLXByaW1hcnkvMTAgcHgtMS41IHB5LTAuNSBmb250LW1vbm8gdGV4dC1bMTFweF0gdGV4dC1wcmltYXJ5IHRhYnVsYXItbnVtcyI+e2Zvcm1hdFRpbWUocC5zdGFydCl9PC9zcGFuPgogICAgICAgICAgICAgICAge3AuaGluZGkudHJpbSgpCiAgICAgICAgICAgICAgICAgID8gPHNwYW4gY2xhc3NOYW1lPSJtaW4tdy0wIHRleHQtc20gbGVhZGluZy1yZWxheGVkIHRleHQtZm9yZWdyb3VuZCI+e3AuaGluZGl9PC9zcGFuPgogICAgICAgICAgICAgICAgICA6IDxzcGFuIGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIgdGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPjxMYW5ndWFnZXMgY2xhc3NOYW1lPSJzaXplLTMuNSBhbmltYXRlLXB1bHNlIHRleHQtcHJpbWFyeSIgLz7gpLjgpK7gpJ3gpL4g4KSw4KS54KS+IOCkueClguCkgeKApjwvc3Bhbj59CiAgICAgICAgICAgICAgPC9saT4pfQogICAgICAgICAgICA8L29sPgogICAgICAgICAgOiA8cCBjbGFzc05hbWU9InB4LTMgcHktMi41IHRleHQtc20gdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj5UcmFuc2NyaXB0IOCkleClhyDgpLngpL/gpLjgpY3gpLjgpYcg4KSs4KSo4KSk4KWHIOCkueClgCDgpK/gpLngpL7gpIEg4KSm4KS/4KSW4KWH4KSC4KSX4KWH4KWkPC9wPn0KICAgICAgPC9kaXY+CiAgICAgIHtwY3QgIT09IG51bGwgJiYgPFByb2dyZXNzIHZhbHVlPXtwY3R9IGNsYXNzTmFtZT0ibXQtNCBoLTEuNSIgYXJpYS1sYWJlbD0iUHJvZ3Jlc3MiIC8+fQogICAgICA8b2wgY2xhc3NOYW1lPSJtdC00IHNwYWNlLXktMi41Ij4KICAgICAgICB7c3RlcHMoc3RhdGUsIGludGVycHJldGVyLCBxdWFsaXR5KS5tYXAoc3RlcCA9PiAoCiAgICAgICAgICA8bGkga2V5PXtzdGVwLmtleX0gY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMyB0ZXh0LXNtIiBkYXRhLXN0YXRlPXtzdGVwLnN0YXRlfT4KICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJmbGV4IHNpemUtNyBzaHJpbmstMCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgcm91bmRlZC1mdWxsIGJvcmRlciBkYXRhLVtzPWRvbmVdOmJvcmRlci1wcmltYXJ5IGRhdGEtW3M9ZG9uZV06YmctcHJpbWFyeSBkYXRhLVtzPWRvbmVdOnRleHQtcHJpbWFyeS1mb3JlZ3JvdW5kIGRhdGEtW3M9YWN0aXZlXTpib3JkZXItcHJpbWFyeSBkYXRhLVtzPWFjdGl2ZV06dGV4dC1wcmltYXJ5IiBkYXRhLXM9e3N0ZXAuc3RhdGV9PgogICAgICAgICAgICAgIHtzdGVwLnN0YXRlID09PSAnZG9uZScgPyA8Q2hlY2sgY2xhc3NOYW1lPSJzaXplLTMuNSIgLz4gOiBzdGVwLnN0YXRlID09PSAnYWN0aXZlJyA/IDxMb2FkZXIyIGNsYXNzTmFtZT0ic2l6ZS0zLjUgYW5pbWF0ZS1zcGluIiAvPiA6IDxzdGVwLmljb24gY2xhc3NOYW1lPSJzaXplLTMuNSB0ZXh0LW11dGVkLWZvcmVncm91bmQiIC8+fQogICAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT17c3RlcC5zdGF0ZSA9PT0gJ3RvZG8nID8gJ3RleHQtbXV0ZWQtZm9yZWdyb3VuZCcgOiAndGV4dC1mb3JlZ3JvdW5kJ30+e3N0ZXAubGFiZWx9PC9zcGFuPgogICAgICAgICAgICB7c3RlcC5kZXRhaWwgJiYgPHNwYW4gY2xhc3NOYW1lPSJtbC1hdXRvIHRydW5jYXRlIHBsLTIgdGV4dC14cyB0ZXh0LW11dGVkLWZvcmVncm91bmQgdGFidWxhci1udW1zIj57c3RlcC5kZXRhaWx9PC9zcGFuPn0KICAgICAgICAgIDwvbGk+CiAgICAgICAgKSl9CiAgICAgIDwvb2w+CiAgICAgIHsoKCkgPT4gewogICAgICAgIGNvbnN0IGhvdXJzID0gaG91clNlY3Rpb25zKHN0YXRlLnRpbWVsaW5lLm1hcCh0ID0+IHQuc3RhcnQpLCBzdGF0ZS5oaW5kaSk7CiAgICAgICAgaWYgKGhvdXJzLmxlbmd0aCA8IDIpIHJldHVybiBudWxsOwogICAgICAgIHJldHVybiAoCiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibXQtNCIgZGF0YS10ZXN0aWQ9ImhvdXItc2VjdGlvbnMiPgogICAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQteHMgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj7gpJjgpILgpJ/gpYcg4KSV4KWHIOCkueCkv+CkuOCkvuCkrCDgpLjgpYcg4oCUIOCkueCksCDgpKrgpYLgpLDgpL4g4KS54KS/4KS44KWN4KS44KS+IOCkh+CkuOClgCBkZXZpY2Ug4KSq4KSwIHNhdmUg4KS54KWL4KSk4KS+IOCkueCliDwvcD4KICAgICAgICAgICAgPHVsIGNsYXNzTmFtZT0ibXQtMiBmbGV4IGZsZXgtd3JhcCBnYXAtMS41Ij4KICAgICAgICAgICAgICB7aG91cnMubWFwKGggPT4gKAogICAgICAgICAgICAgICAgPGxpIGtleT17aC5ob3VyfSBkYXRhLWRvbmU9e2guZG9uZSA9PT0gaC50b3RhbH0gY2xhc3NOYW1lPSJyb3VuZGVkLW1kIGJvcmRlciBweC0yIHB5LTEgdGV4dC14cyB0YWJ1bGFyLW51bXMgZGF0YS1bZG9uZT10cnVlXTpib3JkZXItcHJpbWFyeSBkYXRhLVtkb25lPXRydWVdOmJnLXByaW1hcnkgZGF0YS1bZG9uZT10cnVlXTp0ZXh0LXByaW1hcnktZm9yZWdyb3VuZCI+CiAgICAgICAgICAgICAgICAgIOCkmOCkguCkn+CkviB7aC5ob3VyICsgMX06IHtoLmRvbmV9L3toLnRvdGFsfQogICAgICAgICAgICAgICAgPC9saT4KICAgICAgICAgICAgICApKX0KICAgICAgICAgICAgPC91bD4KICAgICAgICAgIDwvZGl2PgogICAgICAgICk7CiAgICAgIH0pKCl9CiAgICAgIHtzdGF0ZS5zdGFnZSA9PT0gJ2ludGVycHJldCcgJiYgc3RhdGUudGltZWxpbmUubGVuZ3RoID4gMCAmJiBzdGF0ZS52aWRlb0lkICYmICgKICAgICAgICA8cCBjbGFzc05hbWU9Im10LTQgcm91bmRlZC1sZyBiZy1hY2NlbnQvNjAgcHgtMyBweS0yIHRleHQteHMgdGV4dC1hY2NlbnQtZm9yZWdyb3VuZCI+4KSo4KWA4KSa4KWHIHZpZGVvIOCkheCkreClgCDgpLjgpYcg4KSa4KSy4KS+IOCkuOCkleCkpOClhyDgpLngpYjgpIIg4oCUIOCknOCliyDgpLngpL/gpLjgpY3gpLjgpYcg4KSk4KWI4KSv4KS+4KSwIOCkueCli+CkpOClhyDgpJzgpL7gpI/gpIHgpJfgpYcsIEhpbmRpIHZvaWNlIOCkieCkqOCljeCkueClh+CkgiDgpKzgpYvgpLLgpKTgpYAg4KSc4KS+4KSP4KSX4KWA4KWkPC9wPgogICAgICApfQogICAgPC9zZWN0aW9uPgogICk7Cn0K
+import { useId, useState } from 'react';
+import { Check, Loader2, Square, Ear, BookOpenText, Languages, ShieldCheck, Link2, ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import type { RunState } from '@/lib/interpret-client';
+import { hourSections } from '@/lib/interpret-checkpoint';
+import { formatTime } from '@/components/youtube-dub';
+import { speakerGenderLabel } from '@/lib/speaker-gender';
+
+type Step = { key: string; label: string; icon: typeof Ear; state: 'done' | 'active' | 'todo'; detail?: string | undefined };
+
+function steps(s: RunState, interpreter: string, quality: boolean): Step[] {
+  const order = ['source', 'listen', 'brief', 'interpret'] as const;
+  const at = s.stage === 'idle' ? -1 : order.indexOf(s.stage);
+  const state = (i: number): Step['state'] => (at > i ? 'done' : at === i ? 'active' : 'todo');
+  const list: Step[] = [{ key: 'source', label: 'Video और captions पढ़ना', icon: Link2, state: state(0), detail: s.title || undefined }];
+  if (s.listening) list.push({ key: 'listen', label: 'Gemini 4 Argon आवाज़ सुन रहा है', icon: Ear, state: state(1),
+    detail: s.listen ? `${formatTime(s.listen.reached)}${s.listen.total ? ` / ${formatTime(s.listen.total)}` : ''}` : undefined });
+  list.push({ key: 'brief', label: 'GPT-6 Astra: विषय और ज़रूरी शब्द', icon: BookOpenText, state: state(2),
+    detail: [s.brief?.glossary.length ? `${s.brief.glossary.length} शब्द · ${s.brief.domain}` : '',
+      s.brief?.speaker && s.brief.speaker.gender !== 'unknown' ? `बोलने वाला: ${speakerGenderLabel(s.brief.speaker.gender)}` : ''].filter(Boolean).join(' · ') || undefined });
+  list.push({ key: 'interpret', label: `${interpreter}: सरल Hindi`, icon: Languages, state: state(3), detail: s.total ? `${s.done}/${s.total} हिस्से` : undefined });
+  if (quality) list.push({ key: 'review', label: 'दूसरा premium model हर हिस्सा जाँच रहा है', icon: ShieldCheck, state: s.stage === 'interpret' ? 'active' : 'todo',
+    detail: s.quality ? `${s.quality.corrected} सुधार` : undefined });
+  return list;
+}
+
+export function RunProgress({ state, interpreter, quality, onCancel }: { state: RunState; interpreter: string; quality: boolean; onCancel(): void }) {
+  const pct = state.stage === 'listen' && state.listen?.total ? (state.listen.reached / state.listen.total) * 100
+    : state.stage === 'interpret' && state.total ? (state.done / state.total) * 100 : null;
+  const [open, setOpen] = useState(false);
+  const listId = useId();
+  const parts = state.hindi.map((hindi, i) => ({ hindi, start: state.timeline[i]?.start ?? 0 }));
+  return (
+    <section aria-live="polite" className="rounded-2xl border bg-card p-4 shadow-sm sm:p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="font-display text-base font-semibold">Expert team काम कर रही है</p>
+          <p className="mt-0.5 text-sm text-muted-foreground" data-testid="run-message">{state.message || 'शुरू कर रहा हूँ…'}</p>
+        </div>
+        <div className="flex shrink-0 items-center gap-1">
+          <Button variant="outline" size="sm" onClick={onCancel} className="touch-btn shrink-0"><Square className="size-3.5" />रोकें</Button>
+          <Button type="button" variant="ghost" size="icon" className="shrink-0" aria-expanded={open} aria-controls={listId}
+            aria-label={open ? 'Transcript बंद करें' : 'Transcript खोलें'} title={open ? 'Transcript बंद करें' : 'Transcript खोलें'} onClick={() => setOpen(v => !v)}>
+            <ChevronDown className={`size-4 transition-transform motion-reduce:transition-none ${open ? 'rotate-180' : ''}`} />
+          </Button>
+        </div>
+      </div>
+      <div id={listId} hidden={!open} className="mt-4 rounded-xl border">
+        {parts.length
+          ? <ol className="max-h-72 divide-y overflow-y-auto" aria-label="बन रहा Hindi transcript">
+              {parts.map((p, i) => <li key={i} className="flex items-start gap-3 px-3 py-2.5">
+                <span className="mt-0.5 shrink-0 rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] text-primary tabular-nums">{formatTime(p.start)}</span>
+                {p.hindi.trim()
+                  ? <span className="min-w-0 text-sm leading-relaxed text-foreground">{p.hindi}</span>
+                  : <span className="flex items-center gap-2 text-sm text-muted-foreground"><Languages className="size-3.5 animate-pulse text-primary" />समझा रहा हूँ…</span>}
+              </li>)}
+            </ol>
+          : <p className="px-3 py-2.5 text-sm text-muted-foreground">Transcript के हिस्से बनते ही यहाँ दिखेंगे।</p>}
+      </div>
+      {pct !== null && <Progress value={pct} className="mt-4 h-1.5" aria-label="Progress" />}
+      <ol className="mt-4 space-y-2.5">
+        {steps(state, interpreter, quality).map(step => (
+          <li key={step.key} className="flex items-center gap-3 text-sm" data-state={step.state}>
+            <span className="flex size-7 shrink-0 items-center justify-center rounded-full border data-[s=done]:border-primary data-[s=done]:bg-primary data-[s=done]:text-primary-foreground data-[s=active]:border-primary data-[s=active]:text-primary" data-s={step.state}>
+              {step.state === 'done' ? <Check className="size-3.5" /> : step.state === 'active' ? <Loader2 className="size-3.5 animate-spin" /> : <step.icon className="size-3.5 text-muted-foreground" />}
+            </span>
+            <span className={step.state === 'todo' ? 'text-muted-foreground' : 'text-foreground'}>{step.label}</span>
+            {step.detail && <span className="ml-auto truncate pl-2 text-xs text-muted-foreground tabular-nums">{step.detail}</span>}
+          </li>
+        ))}
+      </ol>
+      {(() => {
+        const hours = hourSections(state.timeline.map(t => t.start), state.hindi);
+        if (hours.length < 2) return null;
+        return (
+          <div className="mt-4" data-testid="hour-sections">
+            <p className="text-xs text-muted-foreground">घंटे के हिसाब से — हर पूरा हिस्सा इसी device पर save होता है</p>
+            <ul className="mt-2 flex flex-wrap gap-1.5">
+              {hours.map(h => (
+                <li key={h.hour} data-done={h.done === h.total} className="rounded-md border px-2 py-1 text-xs tabular-nums data-[done=true]:border-primary data-[done=true]:bg-primary data-[done=true]:text-primary-foreground">
+                  घंटा {h.hour + 1}: {h.done}/{h.total}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
+      {state.stage === 'interpret' && state.timeline.length > 0 && state.videoId && (
+        <p className="mt-4 rounded-lg bg-accent/60 px-3 py-2 text-xs text-accent-foreground">नीचे video अभी से चला सकते हैं — जो हिस्से तैयार होते जाएँगे, Hindi voice उन्हें बोलती जाएगी।</p>
+      )}
+    </section>
+  );
+}

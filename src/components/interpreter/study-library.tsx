@@ -1,1 +1,45 @@
-aW1wb3J0IHsgSGlzdG9yeSwgVHJhc2gyLCBQbGF5Q2lyY2xlLCBEb3dubG9hZCB9IGZyb20gJ2x1Y2lkZS1yZWFjdCc7CmltcG9ydCB7IExpbmsgfSBmcm9tICdAdGFuc3RhY2svcmVhY3Qtcm91dGVyJzsKaW1wb3J0IHsgQnV0dG9uIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL2J1dHRvbic7CmltcG9ydCB0eXBlIHsgTGlicmFyeUVudHJ5IH0gZnJvbSAnQC9saWIveW91dHViZS1zdHVkeS1zdG9yZSc7CmltcG9ydCB7IGludGVycHJldGVySW5mbyB9IGZyb20gJ0AvbGliL2ludGVycHJldGVyLW1vZGVscyc7CmltcG9ydCB7IGZvcm1hdFRpbWUgfSBmcm9tICdAL2NvbXBvbmVudHMveW91dHViZS1kdWInOwoKLyoqIEZpbmlzaGVkIGludGVycHJldGF0aW9ucyBzYXZlZCBvbiB0aGlzIGRldmljZTsgb3BlbiBpbnN0YW50bHkgd2l0aG91dCBzcGVuZGluZyBjcmVkaXRzIGFnYWluLiAqLwpleHBvcnQgZnVuY3Rpb24gU3R1ZHlMaWJyYXJ5KHsgZW50cmllcywgYWN0aXZlS2V5LCBkaXNhYmxlZCwgb25PcGVuLCBvblJlbW92ZSwgYXVkaW9SZWFkeSwgb25Eb3dubG9hZCB9OiB7CiAgZW50cmllczogTGlicmFyeUVudHJ5W107IGFjdGl2ZUtleTogc3RyaW5nIHwgbnVsbDsgZGlzYWJsZWQ/OiBib29sZWFuOyBvbk9wZW4oZW50cnk6IExpYnJhcnlFbnRyeSk6IHZvaWQ7IG9uUmVtb3ZlKGVudHJ5OiBMaWJyYXJ5RW50cnkpOiB2b2lkOwogIC8qKiBMaWJyYXJ5IGtleXMgd2hvc2UgSGluZGkgYXVkaW8gaXMgYWxyZWFkeSBzYXZlZCBvbiB0aGlzIGRldmljZS4gKi8KICBhdWRpb1JlYWR5PzogUmVhZG9ubHlTZXQ8c3RyaW5nPjsgb25Eb3dubG9hZD8oZW50cnk6IExpYnJhcnlFbnRyeSk6IHZvaWQ7Cn0pIHsKICBpZiAoIWVudHJpZXMubGVuZ3RoKSByZXR1cm4gbnVsbDsKICByZXR1cm4gKAogICAgPHNlY3Rpb24gY2xhc3NOYW1lPSJtdC0xMiIgYXJpYS1sYWJlbGxlZGJ5PSJsaWJyYXJ5LXRpdGxlIj4KICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiBnYXAtMyI+PGgyIGlkPSJsaWJyYXJ5LXRpdGxlIiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0yIHRleHQtbGcgZm9udC1zZW1pYm9sZCI+PEhpc3RvcnkgY2xhc3NOYW1lPSJzaXplLTUgdGV4dC1wcmltYXJ5IiAvPuCkhuCkquCkleClgCDgpLLgpL7gpIfgpKzgpY3gpLDgpYfgpLDgpYA8L2gyPjxMaW5rIHRvPSIvdHJhbnNjcmlwdHMiIGNsYXNzTmFtZT0ic2hyaW5rLTAgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LXByaW1hcnkgaG92ZXI6dW5kZXJsaW5lIj5UcmFuc2NyaXB0IEhpc3Rvcnkg4oaSPC9MaW5rPjwvZGl2PgogICAgICA8cCBjbGFzc05hbWU9Im10LTEgdGV4dC1zbSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPuCkh+CkuOClgCBkZXZpY2Ug4KSq4KSwIHNhdmUg4KS54KWIIOKAlCDgpKbgpYvgpKzgpL7gpLDgpL4g4KSW4KWL4KSy4KSo4KWHIOCkquCksCBjcmVkaXRzIOCkqOCkueClgOCkgiDgpLLgpJfgpKTgpYfgpaQgPERvd25sb2FkIGNsYXNzTmFtZT0iaW5saW5lIHNpemUtMy41IiAvPiDgpLjgpYcgSGluZGkgYXVkaW8gcGhvbmUg4KSu4KWH4KSCIGRvd25sb2FkIOCkleCksOClh+CkguClpDwvcD4KICAgICAgPHVsIGNsYXNzTmFtZT0ibXQtNCBncmlkIGdhcC0yIHNtOmdyaWQtY29scy0yIj4KICAgICAgICB7ZW50cmllcy5tYXAoZSA9PiB7CiAgICAgICAgICBjb25zdCByID0gZS5yZXN1bHQsIGR1cmF0aW9uID0gci5kdWI/LmF0KC0xKT8uZW5kOwogICAgICAgICAgcmV0dXJuICgKICAgICAgICAgICAgPGxpIGtleT17ZS5rZXl9IGRhdGEtYWN0aXZlPXtlLmtleSA9PT0gYWN0aXZlS2V5fSBjbGFzc05hbWU9Imdyb3VwIGZsZXggaXRlbXMtY2VudGVyIGdhcC0zIHJvdW5kZWQteGwgYm9yZGVyIGJnLWNhcmQgcC0yIHByLTEgZGF0YS1bYWN0aXZlPXRydWVdOmJvcmRlci1wcmltYXJ5Ij4KICAgICAgICAgICAgICA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgZGlzYWJsZWQ9e2Rpc2FibGVkfSBvbkNsaWNrPXsoKSA9PiBvbk9wZW4oZSl9IGNsYXNzTmFtZT0idG91Y2gtYnRuIGZsZXggbWluLXctMCBmbGV4LTEgaXRlbXMtY2VudGVyIGdhcC0zIHRleHQtbGVmdCBkaXNhYmxlZDpvcGFjaXR5LTUwIj4KICAgICAgICAgICAgICAgIHtyLnZpZGVvSWQKICAgICAgICAgICAgICAgICAgPyA8aW1nIHNyYz17YGh0dHBzOi8vaS55dGltZy5jb20vdmkvJHtyLnZpZGVvSWR9L21xZGVmYXVsdC5qcGdgfSBhbHQ9IiIgbG9hZGluZz0ibGF6eSIgcmVmZXJyZXJQb2xpY3k9Im5vLXJlZmVycmVyIiBjbGFzc05hbWU9ImFzcGVjdC12aWRlbyB3LTI0IHNocmluay0wIHJvdW5kZWQtbGcgb2JqZWN0LWNvdmVyIiAvPgogICAgICAgICAgICAgICAgICA6IDxzcGFuIGNsYXNzTmFtZT0iZmxleCBhc3BlY3QtdmlkZW8gdy0yNCBzaHJpbmstMCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgcm91bmRlZC1sZyBiZy1hY2NlbnQiPjxQbGF5Q2lyY2xlIGNsYXNzTmFtZT0ic2l6ZS02IHRleHQtcHJpbWFyeSIgLz48L3NwYW4+fQogICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJtaW4tdy0wIj4KICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJsaW5lLWNsYW1wLTIgdGV4dC1zbSBsZWFkaW5nLXNudWcgZm9udC1tZWRpdW0iPntyLnRpdGxlIHx8ICdWaWRlbyd9PC9zcGFuPgogICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9Im10LTAuNSBibG9jayB0cnVuY2F0ZSB0ZXh0LVsxMXB4XSB0ZXh0LW11dGVkLWZvcmVncm91bmQiPgogICAgICAgICAgICAgICAgICAgIHtbci5lbmdpbmUgPyBpbnRlcnByZXRlckluZm8oci5lbmdpbmUpLm5hbWUgOiBudWxsLCBkdXJhdGlvbiA/IGZvcm1hdFRpbWUoZHVyYXRpb24pIDogbnVsbCwgbmV3IERhdGUoZS5zYXZlZEF0KS50b0xvY2FsZURhdGVTdHJpbmcoJ2hpLUlOJywgeyBkYXk6ICdudW1lcmljJywgbW9udGg6ICdzaG9ydCcgfSldLmZpbHRlcihCb29sZWFuKS5qb2luKCcgwrcgJyl9CiAgICAgICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgICAgIDwvc3Bhbj4KICAgICAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICAgICAgICB7b25Eb3dubG9hZCAmJiAoYXVkaW9SZWFkeT8uaGFzKGUua2V5KQogICAgICAgICAgICAgICAgPyA8QnV0dG9uIHZhcmlhbnQ9ImRlZmF1bHQiIHNpemU9Imljb24iIGRpc2FibGVkPXtkaXNhYmxlZH0gYXJpYS1sYWJlbD17YCR7ci50aXRsZSB8fCAnVmlkZW8nfSDgpJXgpL4gSGluZGkgYXVkaW8gZG93bmxvYWQg4KSV4KSw4KWLYH0gdGl0bGU9IkhpbmRpIGF1ZGlvIGRvd25sb2FkIChzYXZlZCkiIG9uQ2xpY2s9eygpID0+IG9uRG93bmxvYWQoZSl9IGNsYXNzTmFtZT0ic2hyaW5rLTAiPjxEb3dubG9hZCBjbGFzc05hbWU9InNpemUtNCIgLz48L0J1dHRvbj4KICAgICAgICAgICAgICAgIDogPEJ1dHRvbiB2YXJpYW50PSJvdXRsaW5lIiBzaXplPSJpY29uIiBkaXNhYmxlZD17ZGlzYWJsZWR9IGFyaWEtbGFiZWw9e2Ake3IudGl0bGUgfHwgJ1ZpZGVvJ30g4KSV4KS+IEhpbmRpIGF1ZGlvIOCkrOCkqOCkvuCkleCksCBkb3dubG9hZCDgpJXgpLDgpYtgfSB0aXRsZT0iSGluZGkgYXVkaW8g4KSs4KSo4KS+4KSTIOCklOCksCBkb3dubG9hZCDgpJXgpLDgpYsiIG9uQ2xpY2s9eygpID0+IG9uRG93bmxvYWQoZSl9IGNsYXNzTmFtZT0ic2hyaW5rLTAiPjxEb3dubG9hZCBjbGFzc05hbWU9InNpemUtNCIgLz48L0J1dHRvbj4pfQogICAgICAgICAgICAgIDxCdXR0b24gdmFyaWFudD0iZ2hvc3QiIHNpemU9Imljb24iIGRpc2FibGVkPXtkaXNhYmxlZH0gYXJpYS1sYWJlbD17YCR7ci50aXRsZSB8fCAnVmlkZW8nfSDgpLLgpL7gpIfgpKzgpY3gpLDgpYfgpLDgpYAg4KS44KWHIOCkueCkn+CkvuCkk2B9IG9uQ2xpY2s9eygpID0+IG9uUmVtb3ZlKGUpfSBjbGFzc05hbWU9InNocmluay0wIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+PFRyYXNoMiBjbGFzc05hbWU9InNpemUtNCIgLz48L0J1dHRvbj4KICAgICAgICAgICAgPC9saT4KICAgICAgICAgICk7CiAgICAgICAgfSl9CiAgICAgIDwvdWw+CiAgICA8L3NlY3Rpb24+CiAgKTsKfQo=
+import { History, Trash2, PlayCircle, Download } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { Button } from '@/components/ui/button';
+import type { LibraryEntry } from '@/lib/youtube-study-store';
+import { interpreterInfo } from '@/lib/interpreter-models';
+import { formatTime } from '@/components/youtube-dub';
+
+/** Finished interpretations saved on this device; open instantly without spending credits again. */
+export function StudyLibrary({ entries, activeKey, disabled, onOpen, onRemove, audioReady, onDownload }: {
+  entries: LibraryEntry[]; activeKey: string | null; disabled?: boolean; onOpen(entry: LibraryEntry): void; onRemove(entry: LibraryEntry): void;
+  /** Library keys whose Hindi audio is already saved on this device. */
+  audioReady?: ReadonlySet<string>; onDownload?(entry: LibraryEntry): void;
+}) {
+  if (!entries.length) return null;
+  return (
+    <section className="mt-12" aria-labelledby="library-title">
+      <div className="flex items-center justify-between gap-3"><h2 id="library-title" className="flex items-center gap-2 text-lg font-semibold"><History className="size-5 text-primary" />आपकी लाइब्रेरी</h2><Link to="/transcripts" className="shrink-0 text-sm font-medium text-primary hover:underline">Transcript History →</Link></div>
+      <p className="mt-1 text-sm text-muted-foreground">इसी device पर save है — दोबारा खोलने पर credits नहीं लगते। <Download className="inline size-3.5" /> से Hindi audio phone में download करें।</p>
+      <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+        {entries.map(e => {
+          const r = e.result, duration = r.dub?.at(-1)?.end;
+          return (
+            <li key={e.key} data-active={e.key === activeKey} className="group flex items-center gap-3 rounded-xl border bg-card p-2 pr-1 data-[active=true]:border-primary">
+              <button type="button" disabled={disabled} onClick={() => onOpen(e)} className="touch-btn flex min-w-0 flex-1 items-center gap-3 text-left disabled:opacity-50">
+                {r.videoId
+                  ? <img src={`https://i.ytimg.com/vi/${r.videoId}/mqdefault.jpg`} alt="" loading="lazy" referrerPolicy="no-referrer" className="aspect-video w-24 shrink-0 rounded-lg object-cover" />
+                  : <span className="flex aspect-video w-24 shrink-0 items-center justify-center rounded-lg bg-accent"><PlayCircle className="size-6 text-primary" /></span>}
+                <span className="min-w-0">
+                  <span className="line-clamp-2 text-sm leading-snug font-medium">{r.title || 'Video'}</span>
+                  <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">
+                    {[r.engine ? interpreterInfo(r.engine).name : null, duration ? formatTime(duration) : null, new Date(e.savedAt).toLocaleDateString('hi-IN', { day: 'numeric', month: 'short' })].filter(Boolean).join(' · ')}
+                  </span>
+                </span>
+              </button>
+              {onDownload && (audioReady?.has(e.key)
+                ? <Button variant="default" size="icon" disabled={disabled} aria-label={`${r.title || 'Video'} का Hindi audio download करो`} title="Hindi audio download (saved)" onClick={() => onDownload(e)} className="shrink-0"><Download className="size-4" /></Button>
+                : <Button variant="outline" size="icon" disabled={disabled} aria-label={`${r.title || 'Video'} का Hindi audio बनाकर download करो`} title="Hindi audio बनाओ और download करो" onClick={() => onDownload(e)} className="shrink-0"><Download className="size-4" /></Button>)}
+              <Button variant="ghost" size="icon" disabled={disabled} aria-label={`${r.title || 'Video'} लाइब्रेरी से हटाओ`} onClick={() => onRemove(e)} className="shrink-0 text-muted-foreground"><Trash2 className="size-4" /></Button>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}

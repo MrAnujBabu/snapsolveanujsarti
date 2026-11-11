@@ -1,1 +1,29 @@
-aW1wb3J0IHsgZGVzY3JpYmUsIGV4cGVjdCwgaXQgfSBmcm9tICd2aXRlc3QnOwppbXBvcnQgeyBsb2FkVm9pY2VEcmFmdCwgc2F2ZVZvaWNlRHJhZnQsIFZPSUNFX0RSQUZUX0tFWSB9IGZyb20gJ0AvbGliL3ZvaWNlLWRyYWZ0JzsKCmZ1bmN0aW9uIG1lbW9yeSgpOiBTdG9yYWdlIHsKICBjb25zdCBtID0gbmV3IE1hcDxzdHJpbmcsIHN0cmluZz4oKTsKICByZXR1cm4geyBnZXRJdGVtOiBrID0+IG0uZ2V0KGspID8/IG51bGwsIHNldEl0ZW06IChrLCB2KSA9PiB7IG0uc2V0KGssIHYpOyB9LCByZW1vdmVJdGVtOiBrID0+IHsgbS5kZWxldGUoayk7IH0sIGNsZWFyOiAoKSA9PiBtLmNsZWFyKCksIGtleTogKCkgPT4gbnVsbCwgZ2V0IGxlbmd0aCgpIHsgcmV0dXJuIG0uc2l6ZTsgfSB9IGFzIFN0b3JhZ2U7Cn0KY29uc3Qgcm93cyA9IFt7IGlkOiAnYScsIHJvbGU6ICd1c2VyJyBhcyBjb25zdCwgdGV4dDogJ1Bob3Rvc3ludGhlc2lzIHNhbWpoYW8nIH0sIHsgaWQ6ICdiJywgcm9sZTogJ2Fzc2lzdGFudCcgYXMgY29uc3QsIHRleHQ6ICdDaGFsbyBzaHVydSBrYXJ0ZSBoYWluLicgfV07CmNvbnN0IEhPVVIgPSA2MCAqIDYwICogMTAwMDsKCmRlc2NyaWJlKCd2b2ljZSB0cmFuc2NyaXB0IHNhdmVkIG9uIHRoZSBkZXZpY2UnLCAoKSA9PiB7CiAgaXQoJ2NvbWVzIGJhY2sgYWZ0ZXIgYSByZWZyZXNoIHdpdGhpbiAyNCBob3VycycsICgpID0+IHsKICAgIGNvbnN0IHN0b3JlID0gbWVtb3J5KCk7CiAgICBzYXZlVm9pY2VEcmFmdChyb3dzLCBbXSwgMV8wMDAsIHN0b3JlKTsKICAgIGV4cGVjdChsb2FkVm9pY2VEcmFmdCgxXzAwMCArIDIzICogSE9VUiwgc3RvcmUpPy5yb3dzKS50b0VxdWFsKHJvd3MpOwogIH0pOwogIGl0KCdpcyBkZWxldGVkIG9uY2UgMjQgaG91cnMgaGF2ZSBwYXNzZWQnLCAoKSA9PiB7CiAgICBjb25zdCBzdG9yZSA9IG1lbW9yeSgpOwogICAgc2F2ZVZvaWNlRHJhZnQocm93cywgW10sIDFfMDAwLCBzdG9yZSk7CiAgICBleHBlY3QobG9hZFZvaWNlRHJhZnQoMV8wMDAgKyAyNCAqIEhPVVIsIHN0b3JlKSkudG9CZU51bGwoKTsKICAgIGV4cGVjdChzdG9yZS5nZXRJdGVtKFZPSUNFX0RSQUZUX0tFWSkpLnRvQmVOdWxsKCk7CiAgfSk7CiAgaXQoJ3Jlc3RhcnRzIHRoZSAyNCBob3VycyB3aGVuIHRoZSB0cmFuc2NyaXB0IGNoYW5nZXMnLCAoKSA9PiB7CiAgICBjb25zdCBzdG9yZSA9IG1lbW9yeSgpOwogICAgc2F2ZVZvaWNlRHJhZnQocm93cy5zbGljZSgwLCAxKSwgW10sIDAsIHN0b3JlKTsKICAgIHNhdmVWb2ljZURyYWZ0KHJvd3MsIFtdLCAyMCAqIEhPVVIsIHN0b3JlKTsKICAgIGV4cGVjdChsb2FkVm9pY2VEcmFmdCgzMCAqIEhPVVIsIHN0b3JlKT8ucm93cykudG9IYXZlTGVuZ3RoKDIpOwogIH0pOwp9KTsK
+import { describe, expect, it } from 'vitest';
+import { loadVoiceDraft, saveVoiceDraft, VOICE_DRAFT_KEY } from '@/lib/voice-draft';
+
+function memory(): Storage {
+  const m = new Map<string, string>();
+  return { getItem: k => m.get(k) ?? null, setItem: (k, v) => { m.set(k, v); }, removeItem: k => { m.delete(k); }, clear: () => m.clear(), key: () => null, get length() { return m.size; } } as Storage;
+}
+const rows = [{ id: 'a', role: 'user' as const, text: 'Photosynthesis samjhao' }, { id: 'b', role: 'assistant' as const, text: 'Chalo shuru karte hain.' }];
+const HOUR = 60 * 60 * 1000;
+
+describe('voice transcript saved on the device', () => {
+  it('comes back after a refresh within 24 hours', () => {
+    const store = memory();
+    saveVoiceDraft(rows, [], 1_000, store);
+    expect(loadVoiceDraft(1_000 + 23 * HOUR, store)?.rows).toEqual(rows);
+  });
+  it('is deleted once 24 hours have passed', () => {
+    const store = memory();
+    saveVoiceDraft(rows, [], 1_000, store);
+    expect(loadVoiceDraft(1_000 + 24 * HOUR, store)).toBeNull();
+    expect(store.getItem(VOICE_DRAFT_KEY)).toBeNull();
+  });
+  it('restarts the 24 hours when the transcript changes', () => {
+    const store = memory();
+    saveVoiceDraft(rows.slice(0, 1), [], 0, store);
+    saveVoiceDraft(rows, [], 20 * HOUR, store);
+    expect(loadVoiceDraft(30 * HOUR, store)?.rows).toHaveLength(2);
+  });
+});

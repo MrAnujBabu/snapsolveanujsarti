@@ -1,1 +1,39 @@
-aW1wb3J0ICdmYWtlLWluZGV4ZWRkYi9hdXRvJzsKaW1wb3J0IHsgZXhwZWN0LCBpdCB9IGZyb20gJ3ZpdGVzdCc7CmltcG9ydCB7IGlzU2F2ZWRZb3VUdWJlU3R1ZHksIGxvYWRZb3VUdWJlU3R1ZHksIHNhdmVZb3VUdWJlU3R1ZHksIGxpYnJhcnlLZXksIHR5cGUgU2F2ZWRZb3VUdWJlU3R1ZHkgfSBmcm9tICdAL2xpYi95b3V0dWJlLXN0dWR5LXN0b3JlJzsKCml0KCdrZWVwcyBkaXN0aW5jdCBjb252ZXJzaW9ucyBvZiB0aGUgc2FtZSB2aWRlbyBpbiBzZXBhcmF0ZSBsaWJyYXJ5IGVudHJpZXMnLCAoKSA9PiB7CiAgZXhwZWN0KGxpYnJhcnlLZXkoeyB0aXRsZTogJ1QnLCB2aWRlb0lkOiAnTHQ1NENYOURtUzQnLCBzb3VyY2VLZXk6ICdyZXZpZXdlZCcgfSwgJycsICcnKSkuCiAgICBub3QudG9CZShsaWJyYXJ5S2V5KHsgdGl0bGU6ICdUJywgdmlkZW9JZDogJ0x0NTRDWDlEbVM0Jywgc291cmNlS2V5OiAnZmFzdCcgfSwgJycsICcnKSk7Cn0pOwoKaXQoJ3Jlc3RvcmVzIGNvbXBsZXRlZCB0cmFuc2NyaXB0LCB0aW1lc3RhbXBzLCBVUkwgYW5kIHZvaWNlIGZyb20gZGV2aWNlIHN0b3JhZ2UnLCBhc3luYyAoKSA9PiB7CiAgY29uc3Qgc3R1ZHk6IFNhdmVkWW91VHViZVN0dWR5ID0geyB2ZXJzaW9uOiAxLCB1cmw6ICdodHRwczovL3lvdXR1LmJlL0tBNWtQYmRrSzJFJywgdHJhbnNjcmlwdDogJycsIHZvaWNlOiAnaXNoaXRhX2hpX2VkdGVjaCcsCiAgICByZXN1bHQ6IHsgdGl0bGU6ICdMZWN0dXJlJywgaGluZGk6ICfgpKrgpLngpLLgpL7gpaQg4KSm4KWC4KS44KSw4KS+4KWkJywgdHJ1bmNhdGVkOiBmYWxzZSwgdmlkZW9JZDogJ0tBNWtQYmRrSzJFJywgZHViOiBbeyBzdGFydDogMCwgZW5kOiAzMCwgaGluZGk6ICfgpKrgpLngpLLgpL7gpaQnIH0sIHsgc3RhcnQ6IDMwLCBlbmQ6IDYwLCBoaW5kaTogJ+CkpuClguCkuOCksOCkvuClpCcgfV0gfSB9OwogIGF3YWl0IHNhdmVZb3VUdWJlU3R1ZHkoc3R1ZHkpOwogIGV4cGVjdChhd2FpdCBsb2FkWW91VHViZVN0dWR5KCkpLnRvRXF1YWwoc3R1ZHkpOwp9KTsKaXQoJ3JlamVjdHMgY29ycnVwdCBzdG9yZWQgdGltZXN0YW1wcyBhbmQgdW5rbm93biB2b2ljZXMnLCAoKSA9PiB7CiAgZXhwZWN0KGlzU2F2ZWRZb3VUdWJlU3R1ZHkoeyB2ZXJzaW9uOiAxLCB2b2ljZTogJ2Zha2UnLCB1cmw6ICcnLCB0cmFuc2NyaXB0OiAnJywgcmVzdWx0OiB7fSB9KSkudG9CZShmYWxzZSk7CiAgZXhwZWN0KGlzU2F2ZWRZb3VUdWJlU3R1ZHkoeyB2ZXJzaW9uOiAxLCB2b2ljZTogJ2lzaGl0YV9oaV9lZHRlY2gnLCB1cmw6ICcnLCB0cmFuc2NyaXB0OiAnJywgcmVzdWx0OiB7IHRpdGxlOiAnJywgaGluZGk6ICdhJywgdHJ1bmNhdGVkOiBmYWxzZSwgZHViOiBbeyBzdGFydDogMzAsIGVuZDogMSwgaGluZGk6ICdhJyB9XSB9IH0pKS50b0JlKGZhbHNlKTsKfSk7Cml0KCdrZWVwcyBmaW5pc2hlZCBIaW5kaSBhdWRpbyBvbiB0aGUgZGV2aWNlIGZvciByZS1kb3dubG9hZCwgbmV3ZXN0IDUgb25seScsIGFzeW5jICgpID0+IHsKICAvLyBqc2RvbSdzIEJsb2IgY2Fubm90IGJlIHN0b3JlZCBieSB0aGUgdGVzdCBkYXRhYmFzZTsgYnJvd3NlcnMgc3RvcmUgcmVhbCBCbG9icy4KICBjb25zdCB7IEJsb2I6IE5vZGVCbG9iIH0gPSBhd2FpdCBpbXBvcnQoJ25vZGU6YnVmZmVyJyk7IGNvbnN0IHsgdmkgfSA9IGF3YWl0IGltcG9ydCgndml0ZXN0Jyk7IHZpLnN0dWJHbG9iYWwoJ0Jsb2InLCBOb2RlQmxvYik7CiAgY29uc3QgeyBzYXZlTmFycmF0aW9uQXVkaW8sIGxpc3ROYXJyYXRpb25BdWRpbywgcmVtb3ZlTmFycmF0aW9uQXVkaW8sIHRleHRGaW5nZXJwcmludCwgQVVESU9fTElNSVQgfSA9IGF3YWl0IGltcG9ydCgnQC9saWIveW91dHViZS1zdHVkeS1zdG9yZScpOwogIGV4cGVjdChBVURJT19MSU1JVCkudG9CZSg1KTsKICBmb3IgKGxldCBpID0gMDsgaSA8IDY7IGkrKykgewogICAgYXdhaXQgc2F2ZU5hcnJhdGlvbkF1ZGlvKHsga2V5OiBgdmlkZW86JHtpfWAsIHNhdmVkQXQ6IDEwMDAgKyBpLCB0ZXh0SGFzaDogdGV4dEZpbmdlcnByaW50KGDgpLngpL/gpILgpKbgpYAgJHtpfWApLCB2b2ljZTogJ2lzaGl0YV9oaV9lZHRlY2gnLCBlbmdpbmU6ICdzYXJ2YW0nLCBibG9iOiBuZXcgQmxvYihbbmV3IFVpbnQ4QXJyYXkoMTAwKV0sIHsgdHlwZTogJ2F1ZGlvL3dhdicgfSkgfSk7CiAgfQogIGNvbnN0IGtleXMgPSAoYXdhaXQgbGlzdE5hcnJhdGlvbkF1ZGlvKCkpLm1hcChhID0+IGEua2V5KS5zb3J0KCk7CiAgZXhwZWN0KGtleXMpLnRvRXF1YWwoWyd2aWRlbzoxJywgJ3ZpZGVvOjInLCAndmlkZW86MycsICd2aWRlbzo0JywgJ3ZpZGVvOjUnXSk7CiAgYXdhaXQgcmVtb3ZlTmFycmF0aW9uQXVkaW8oJ3ZpZGVvOjUnKTsKICBleHBlY3QoKGF3YWl0IGxpc3ROYXJyYXRpb25BdWRpbygpKS5tYXAoYSA9PiBhLmtleSkpLm5vdC50b0NvbnRhaW4oJ3ZpZGVvOjUnKTsKICB2aS51bnN0dWJBbGxHbG9iYWxzKCk7Cn0pOwoKaXQoJ3RyZWF0cyBhdWRpbyBhcyBzdGFsZSBvbmNlIHRoZSBIaW5kaSB0ZXh0IGNoYW5nZXMnLCBhc3luYyAoKSA9PiB7CiAgY29uc3QgeyB0ZXh0RmluZ2VycHJpbnQgfSA9IGF3YWl0IGltcG9ydCgnQC9saWIveW91dHViZS1zdHVkeS1zdG9yZScpOwogIGV4cGVjdCh0ZXh0RmluZ2VycHJpbnQoJ+CkquCkueCksuCkvuClpCDgpKbgpYLgpLjgpLDgpL7gpaQnKSkudG9CZSh0ZXh0RmluZ2VycHJpbnQoJ+CkquCkueCksuCkvuClpCDgpKbgpYLgpLjgpLDgpL7gpaQnKSk7CiAgZXhwZWN0KHRleHRGaW5nZXJwcmludCgn4KSq4KS54KSy4KS+4KWkIOCkpuClguCkuOCksOCkvuClpCcpKS5ub3QudG9CZSh0ZXh0RmluZ2VycHJpbnQoJ+CkquCkueCksuCkvuClpCDgpKTgpYDgpLjgpLDgpL7gpaQnKSk7Cn0pOwo=
+import 'fake-indexeddb/auto';
+import { expect, it } from 'vitest';
+import { isSavedYouTubeStudy, loadYouTubeStudy, saveYouTubeStudy, libraryKey, type SavedYouTubeStudy } from '@/lib/youtube-study-store';
+
+it('keeps distinct conversions of the same video in separate library entries', () => {
+  expect(libraryKey({ title: 'T', videoId: 'Lt54CX9DmS4', sourceKey: 'reviewed' }, '', '')).
+    not.toBe(libraryKey({ title: 'T', videoId: 'Lt54CX9DmS4', sourceKey: 'fast' }, '', ''));
+});
+
+it('restores completed transcript, timestamps, URL and voice from device storage', async () => {
+  const study: SavedYouTubeStudy = { version: 1, url: 'https://youtu.be/KA5kPbdkK2E', transcript: '', voice: 'ishita_hi_edtech',
+    result: { title: 'Lecture', hindi: 'पहला। दूसरा।', truncated: false, videoId: 'KA5kPbdkK2E', dub: [{ start: 0, end: 30, hindi: 'पहला।' }, { start: 30, end: 60, hindi: 'दूसरा।' }] } };
+  await saveYouTubeStudy(study);
+  expect(await loadYouTubeStudy()).toEqual(study);
+});
+it('rejects corrupt stored timestamps and unknown voices', () => {
+  expect(isSavedYouTubeStudy({ version: 1, voice: 'fake', url: '', transcript: '', result: {} })).toBe(false);
+  expect(isSavedYouTubeStudy({ version: 1, voice: 'ishita_hi_edtech', url: '', transcript: '', result: { title: '', hindi: 'a', truncated: false, dub: [{ start: 30, end: 1, hindi: 'a' }] } })).toBe(false);
+});
+it('keeps finished Hindi audio on the device for re-download, newest 5 only', async () => {
+  // jsdom's Blob cannot be stored by the test database; browsers store real Blobs.
+  const { Blob: NodeBlob } = await import('node:buffer'); const { vi } = await import('vitest'); vi.stubGlobal('Blob', NodeBlob);
+  const { saveNarrationAudio, listNarrationAudio, removeNarrationAudio, textFingerprint, AUDIO_LIMIT } = await import('@/lib/youtube-study-store');
+  expect(AUDIO_LIMIT).toBe(5);
+  for (let i = 0; i < 6; i++) {
+    await saveNarrationAudio({ key: `video:${i}`, savedAt: 1000 + i, textHash: textFingerprint(`हिंदी ${i}`), voice: 'ishita_hi_edtech', engine: 'sarvam', blob: new Blob([new Uint8Array(100)], { type: 'audio/wav' }) });
+  }
+  const keys = (await listNarrationAudio()).map(a => a.key).sort();
+  expect(keys).toEqual(['video:1', 'video:2', 'video:3', 'video:4', 'video:5']);
+  await removeNarrationAudio('video:5');
+  expect((await listNarrationAudio()).map(a => a.key)).not.toContain('video:5');
+  vi.unstubAllGlobals();
+});
+
+it('treats audio as stale once the Hindi text changes', async () => {
+  const { textFingerprint } = await import('@/lib/youtube-study-store');
+  expect(textFingerprint('पहला। दूसरा।')).toBe(textFingerprint('पहला। दूसरा।'));
+  expect(textFingerprint('पहला। दूसरा।')).not.toBe(textFingerprint('पहला। तीसरा।'));
+});

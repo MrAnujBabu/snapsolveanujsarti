@@ -1,1 +1,89 @@
-aW1wb3J0IHsgdXNlRWZmZWN0LCB1c2VSZWYsIHVzZVN0YXRlIH0gZnJvbSAncmVhY3QnOwppbXBvcnQgeyBEb3dubG9hZCwgTG9hZGVyMiwgU3F1YXJlIH0gZnJvbSAnbHVjaWRlLXJlYWN0JzsKaW1wb3J0IHsgQnV0dG9uIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL2J1dHRvbic7CmltcG9ydCB7IHR5cGUgWW91VHViZVZvaWNlRW5naW5lIH0gZnJvbSAnQC9saWIveW91dHViZS1zcGVlY2gnOwppbXBvcnQgeyBmZXRjaER1YkF1ZGlvIH0gZnJvbSAnQC9saWIveW91dHViZS1hdWRpbyc7CmltcG9ydCB7IGVuY29kZVdhdiB9IGZyb20gJ0AvbGliL3JlY29yZC13YXYnOwppbXBvcnQgeyBTUEVFQ0hfU0FNUExFX1JBVEUgfSBmcm9tICdAL2xpYi9zdHJlYW0tc3BlZWNoJzsKaW1wb3J0IHsgbmFycmF0aW9uV2F2LCBkZWxpdmVyTmFycmF0aW9uIH0gZnJvbSAnQC9saWIveW91dHViZS1kb3dubG9hZCc7CmltcG9ydCB7IHNwbGl0Rm9yU3BlZWNoIH0gZnJvbSAnQC9saWIveW91dHViZS1oaW5kaSc7CmltcG9ydCB0eXBlIHsgU2FydmFtVm9pY2UgfSBmcm9tICdAL2xpYi9zYXJ2YW0tc3BlZWNoJzsKaW1wb3J0IHsgbGlzdE5hcnJhdGlvbkF1ZGlvLCBzYXZlTmFycmF0aW9uQXVkaW8sIHRleHRGaW5nZXJwcmludCB9IGZyb20gJ0AvbGliL3lvdXR1YmUtc3R1ZHktc3RvcmUnOwoKLyoqIGBhdWRpb0tleWAgaXMgdGhlIGxpYnJhcnkga2V5OiBmaW5pc2hlZCBhdWRpbyBpcyBrZXB0IG9uIHRoZSBkZXZpY2UgdW5kZXIgaXQuIGByZXF1ZXN0YCBzdGFydHMgcHJlcGFyYXRpb24gb25jZSAobGlicmFyeSBEb3dubG9hZCB0YXApLiAqLwpleHBvcnQgZnVuY3Rpb24gWW91VHViZU5hcnJhdGlvbkRvd25sb2FkKHsgdGV4dCwgdm9pY2UsIHZvaWNlRW5naW5lLCB2aWRlb0lkLCBkaXNhYmxlZCwgb25CdXN5Q2hhbmdlLCBhdWRpb0tleSwgcmVxdWVzdCwgb25SZXF1ZXN0SGFuZGxlZCwgb25TYXZlZCB9OiB7CiAgdGV4dDogc3RyaW5nOyB2b2ljZTogU2FydmFtVm9pY2U7IHZvaWNlRW5naW5lPzogWW91VHViZVZvaWNlRW5naW5lOyB2aWRlb0lkOiBzdHJpbmcgfCBudWxsIHwgdW5kZWZpbmVkOyBkaXNhYmxlZDogYm9vbGVhbjsgb25CdXN5Q2hhbmdlKHZhbHVlOiBib29sZWFuKTogdm9pZDsKICBhdWRpb0tleT86IHN0cmluZyB8IG51bGw7IHJlcXVlc3Q/OiBib29sZWFuOyBvblJlcXVlc3RIYW5kbGVkPygpOiB2b2lkOyBvblNhdmVkPygpOiB2b2lkOwp9KSB7CiAgY29uc3QgYm94ID0gdXNlUmVmPEhUTUxEaXZFbGVtZW50PihudWxsKTsKICBjb25zdCBbY2hlY2tlZEZvciwgc2V0Q2hlY2tlZEZvcl0gPSB1c2VTdGF0ZSgnJyk7CiAgY29uc3Qgc2lnbmF0dXJlID0gYCR7YXVkaW9LZXkgPz8gJyd9fCR7dGV4dEZpbmdlcnByaW50KHRleHQpfXwke3ZvaWNlfXwke3ZvaWNlRW5naW5lID8/ICdzYXJ2YW0nfWA7CiAgY29uc3QgW2J1c3ksIHNldEJ1c3ldID0gdXNlU3RhdGUoZmFsc2UpLCBbcHJvZ3Jlc3MsIHNldFByb2dyZXNzXSA9IHVzZVN0YXRlKCcnKTsKICBjb25zdCBbYXVkaW8sIHNldEF1ZGlvXSA9IHVzZVN0YXRlPEJsb2IgfCBudWxsPihudWxsKSwgW2Vycm9yLCBzZXRFcnJvcl0gPSB1c2VTdGF0ZSgnJyk7CiAgY29uc3Qgb3BlcmF0aW9uID0gdXNlUmVmPEFib3J0Q29udHJvbGxlciB8IG51bGw+KG51bGwpOwogIGNvbnN0IFthdWRpb1VybCwgc2V0QXVkaW9VcmxdID0gdXNlU3RhdGUoJycpLCBbZnJhbWVkLCBzZXRGcmFtZWRdID0gdXNlU3RhdGUoZmFsc2UpOwogIHVzZUVmZmVjdCgoKSA9PiB7IHRyeSB7IHNldEZyYW1lZCh3aW5kb3cuc2VsZiAhPT0gd2luZG93LnRvcCk7IH0gY2F0Y2ggeyBzZXRGcmFtZWQodHJ1ZSk7IH0gfSwgW10pOwogIHVzZUVmZmVjdCgoKSA9PiB7IGlmICghYXVkaW8pIHsgc2V0QXVkaW9VcmwoJycpOyByZXR1cm47IH0gY29uc3QgdXJsID0gVVJMLmNyZWF0ZU9iamVjdFVSTChhdWRpbyk7IHNldEF1ZGlvVXJsKHVybCk7IHJldHVybiAoKSA9PiBVUkwucmV2b2tlT2JqZWN0VVJMKHVybCk7IH0sIFthdWRpb10pOwogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBvcGVyYXRpb24uY3VycmVudD8uYWJvcnQoKTsgc2V0QXVkaW8obnVsbCk7IHNldEVycm9yKCcnKTsgc2V0UHJvZ3Jlc3MoJycpOyBzZXRDaGVja2VkRm9yKCcnKTsKICAgIGxldCBkZWFkID0gZmFsc2U7CiAgICBjb25zdCBoYXNoID0gdGV4dEZpbmdlcnByaW50KHRleHQpLCBlbmdpbmUgPSB2b2ljZUVuZ2luZSA/PyAnc2FydmFtJzsKICAgIHZvaWQgKGF1ZGlvS2V5ID8gbGlzdE5hcnJhdGlvbkF1ZGlvKCkuY2F0Y2goKCkgPT4gW10pIDogUHJvbWlzZS5yZXNvbHZlKFtdKSkudGhlbihhbGwgPT4gewogICAgICBpZiAoZGVhZCkgcmV0dXJuOwogICAgICBjb25zdCBoaXQgPSBhbGwuZmluZChhID0+IGEua2V5ID09PSBhdWRpb0tleSAmJiBhLnRleHRIYXNoID09PSBoYXNoICYmIGEudm9pY2UgPT09IHZvaWNlICYmIGEuZW5naW5lID09PSBlbmdpbmUpOwogICAgICBpZiAoaGl0KSB7IHNldEF1ZGlvKGhpdC5ibG9iKTsgc2V0UHJvZ3Jlc3MoYOCkh+CkuCBwaG9uZSDgpK7gpYfgpIIgc2F2ZWQgwrcgJHsoaGl0LmJsb2Iuc2l6ZSAvIDEwNDg1NzYpLnRvRml4ZWQoMSl9IE1CYCk7IH0KICAgICAgc2V0Q2hlY2tlZEZvcihzaWduYXR1cmUpOwogICAgfSk7CiAgICByZXR1cm4gKCkgPT4geyBkZWFkID0gdHJ1ZTsgfTsKICB9LCBbc2lnbmF0dXJlXSk7IC8vIGVzbGludC1kaXNhYmxlLWxpbmUgcmVhY3QtaG9va3MvZXhoYXVzdGl2ZS1kZXBzCiAgLy8gTGlicmFyeSBEb3dubG9hZCB0YXA6IHNob3cgdGhpcyBzZWN0aW9uIGFuZCBzdGFydCBwcmVwYXJpbmcgb25jZSwgdW5sZXNzIHRoZSBhdWRpbyBpcyBhbHJlYWR5IHNhdmVkLgogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBpZiAoIXJlcXVlc3QgfHwgY2hlY2tlZEZvciAhPT0gc2lnbmF0dXJlKSByZXR1cm47CiAgICBvblJlcXVlc3RIYW5kbGVkPy4oKTsKICAgIGJveC5jdXJyZW50Py5zY3JvbGxJbnRvVmlldyh7IGJlaGF2aW9yOiAnc21vb3RoJywgYmxvY2s6ICdjZW50ZXInIH0pOwogICAgaWYgKCFhdWRpbyAmJiAhb3BlcmF0aW9uLmN1cnJlbnQgJiYgdGV4dC50cmltKCkpIHZvaWQgcHJlcGFyZSgpOwogIH0sIFtyZXF1ZXN0LCBjaGVja2VkRm9yLCBzaWduYXR1cmVdKTsgLy8gZXNsaW50LWRpc2FibGUtbGluZSByZWFjdC1ob29rcy9leGhhdXN0aXZlLWRlcHMKICB1c2VFZmZlY3QoKCkgPT4gKCkgPT4gb3BlcmF0aW9uLmN1cnJlbnQ/LmFib3J0KCksIFtdKTsKCiAgYXN5bmMgZnVuY3Rpb24gcHJlcGFyZSgpIHsKICAgIGNvbnN0IGNvbnRyb2xsZXIgPSBuZXcgQWJvcnRDb250cm9sbGVyKCk7IG9wZXJhdGlvbi5jdXJyZW50ID0gY29udHJvbGxlcjsKICAgIHNldEJ1c3kodHJ1ZSk7IG9uQnVzeUNoYW5nZSh0cnVlKTsgc2V0RXJyb3IoJycpOyBzZXRBdWRpbyhudWxsKTsKICAgIGxldCBjb250ZXh0OiBBdWRpb0NvbnRleHQgfCB1bmRlZmluZWQ7CiAgICB0cnkgewogICAgICBjb250ZXh0ID0gbmV3IEF1ZGlvQ29udGV4dCh7IHNhbXBsZVJhdGU6IFNQRUVDSF9TQU1QTEVfUkFURSB9KTsKICAgICAgY29uc3QgcGllY2VzID0gc3BsaXRGb3JTcGVlY2godGV4dCksIHBhcnRzOiBCbG9iW10gPSBbXTsKICAgICAgZm9yIChsZXQgaSA9IDA7IGkgPCBwaWVjZXMubGVuZ3RoOyBpKyspIHsKICAgICAgICBjb250cm9sbGVyLnNpZ25hbC50aHJvd0lmQWJvcnRlZCgpOwogICAgICAgIHNldFByb2dyZXNzKGBBdWRpbyDgpKTgpYjgpK/gpL7gpLAg4KS54KWLIOCksOCkueClgCDgpLngpYggwrcgJHtpICsgMX0vJHtwaWVjZXMubGVuZ3RofWApOwogICAgICAgIGNvbnN0IGJ1ZmZlciA9IGF3YWl0IGZldGNoRHViQXVkaW8ocGllY2VzW2ldID8/ICcnLCB2b2ljZSwgY29udGV4dCwgY29udHJvbGxlci5zaWduYWwsIHZvaWNlRW5naW5lKTsKICAgICAgICBwYXJ0cy5wdXNoKGVuY29kZVdhdihbYnVmZmVyLmdldENoYW5uZWxEYXRhKDApXSwgU1BFRUNIX1NBTVBMRV9SQVRFKS5zbGljZSg0NCkpOwogICAgICB9CiAgICAgIGNvbnN0IGJsb2IgPSBhd2FpdCBuYXJyYXRpb25XYXYocGFydHMpOyBjb250cm9sbGVyLnNpZ25hbC50aHJvd0lmQWJvcnRlZCgpOwogICAgICBpZiAob3BlcmF0aW9uLmN1cnJlbnQgPT09IGNvbnRyb2xsZXIpIHsKICAgICAgICBzZXRBdWRpbyhibG9iKTsgc2V0UHJvZ3Jlc3MoYCR7KGJsb2Iuc2l6ZSAvIDEwNDg1NzYpLnRvRml4ZWQoMSl9IE1CIMK3IFdBViDCtyDgpIXgpKwgRG93bmxvYWQg4KSm4KSs4KS+4KSP4KSBYCk7CiAgICAgICAgaWYgKGF1ZGlvS2V5KSB2b2lkIHNhdmVOYXJyYXRpb25BdWRpbyh7IGtleTogYXVkaW9LZXksIHNhdmVkQXQ6IERhdGUubm93KCksIHRleHRIYXNoOiB0ZXh0RmluZ2VycHJpbnQodGV4dCksIHZvaWNlLCBlbmdpbmU6IHZvaWNlRW5naW5lID8/ICdzYXJ2YW0nLCBibG9iIH0pLnRoZW4oKCkgPT4gb25TYXZlZD8uKCkpLmNhdGNoKCgpID0+IHt9KTsKICAgICAgfQogICAgfSBjYXRjaCAoZmFpbHVyZSkgewogICAgICBpZiAoIWNvbnRyb2xsZXIuc2lnbmFsLmFib3J0ZWQpIHNldEVycm9yKGZhaWx1cmUgaW5zdGFuY2VvZiBFcnJvciA/IGZhaWx1cmUubWVzc2FnZSA6ICdBdWRpbyDgpKTgpYjgpK/gpL7gpLAg4KSo4KS54KWA4KSCIOCkueClgeCkiOClpCcpOwogICAgICBzZXRQcm9ncmVzcygnJyk7CiAgICB9IGZpbmFsbHkgewogICAgICBhd2FpdCBjb250ZXh0Py5jbG9zZSgpLmNhdGNoKCgpID0+IHt9KTsKICAgICAgaWYgKG9wZXJhdGlvbi5jdXJyZW50ID09PSBjb250cm9sbGVyKSB7IG9wZXJhdGlvbi5jdXJyZW50ID0gbnVsbDsgc2V0QnVzeShmYWxzZSk7IG9uQnVzeUNoYW5nZShmYWxzZSk7IH0KICAgIH0KICB9CgogIHJldHVybiA8ZGl2IHJlZj17Ym94fSBpZD0iaGluZGktYXVkaW8tZG93bmxvYWQiIGNsYXNzTmFtZT0ibXQtNSBzY3JvbGwtbXQtMjAgc3BhY2UteS0yIGJvcmRlci10IHB0LTQiPgogICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZmxleC13cmFwIGl0ZW1zLWNlbnRlciBnYXAtMyI+CiAgICAgIHtidXN5ID8gPD4KICAgICAgICA8TG9hZGVyMiBjbGFzc05hbWU9InNpemUtNCBhbmltYXRlLXNwaW4gdGV4dC1wcmltYXJ5IiAvPgogICAgICAgIDxCdXR0b24gc2l6ZT0iaWNvbiIgdmFyaWFudD0ib3V0bGluZSIgYXJpYS1sYWJlbD0iQ2FuY2VsIGF1ZGlvIGRvd25sb2FkIHByZXBhcmF0aW9uIiB0aXRsZT0iQ2FuY2VsIiBvbkNsaWNrPXsoKSA9PiBvcGVyYXRpb24uY3VycmVudD8uYWJvcnQoKX0+PFNxdWFyZSBjbGFzc05hbWU9InNpemUtNCIgLz48L0J1dHRvbj4KICAgICAgPC8+IDogYXVkaW8gPyA8QnV0dG9uIGRpc2FibGVkPXtkaXNhYmxlZH0gb25DbGljaz17KCkgPT4gdm9pZCBkZWxpdmVyTmFycmF0aW9uKGF1ZGlvLCBgc25hcHNvbHZlLWhpbmRpLSR7dmlkZW9JZCA/PyAndHJhbnNjcmlwdCd9LndhdmApLmNhdGNoKCgpID0+IHNldEVycm9yKCdBdWRpbyBzYXZlIOCkqOCkueClgOCkgiDgpLngpYHgpIjgpaQg4KSm4KWL4KSs4KS+4KSw4KS+IOCkleCli+CktuCkv+CktiDgpJXgpLDgpYfgpILgpaQnKSl9PjxEb3dubG9hZCBjbGFzc05hbWU9InNpemUtNCIgLz5IaW5kaSBhdWRpbyBwaG9uZSDgpK7gpYfgpIIgZG93bmxvYWQg4KSV4KSw4KWLPC9CdXR0b24+CiAgICAgICAgOiA8QnV0dG9uIHZhcmlhbnQ9Im91dGxpbmUiIGRpc2FibGVkPXtkaXNhYmxlZCB8fCAhdGV4dC50cmltKCl9IG9uQ2xpY2s9eygpID0+IHZvaWQgcHJlcGFyZSgpfT48RG93bmxvYWQgY2xhc3NOYW1lPSJzaXplLTQiIC8+RG93bmxvYWQg4KSV4KWHIOCksuCkv+CkjyBhdWRpbyDgpKzgpKjgpL7gpJM8L0J1dHRvbj59CiAgICAgIDxzcGFuIHJvbGU9InN0YXR1cyIgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCI+e3Byb2dyZXNzfTwvc3Bhbj4KICAgICAgeyFhdWRpbyAmJiAhYnVzeSAmJiA8c3BhbiBjbGFzc05hbWU9InRleHQteHMgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kIj5Wb2ljZSBnZW5lcmF0aW9uIGNyZWRpdHMg4KSy4KS+4KSX4KWCPC9zcGFuPn0KICAgIDwvZGl2PgogICAge2F1ZGlvVXJsICYmIDxhdWRpbyBjb250cm9scyBzcmM9e2F1ZGlvVXJsfSBjbGFzc05hbWU9InctZnVsbCIgLz59CiAgICB7YXVkaW9VcmwgJiYgZnJhbWVkICYmIDxwIGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkLWZvcmVncm91bmQiPkVkaXRvciBwcmV2aWV3IOCkruClh+CkgiBicm93c2VyIGRvd25sb2FkIOCksOCli+CklSDgpKbgpYfgpKTgpL4g4KS54KWI4KWkIEFwcCDgpJXgpYsg4KSo4KSPIHRhYiDgpK7gpYfgpIIg4KSW4KWL4KSy4KWH4KSCICjgpK/gpL4gcHVibGlzaGVkIGxpbmspIOKAlCDgpLXgpLngpL7gpIEgRG93bmxvYWQg4KSV4KS+4KSuIOCkleCksOClh+Ckl+CkvuClpDwvcD59CiAgICB7ZXJyb3IgJiYgPHAgcm9sZT0iYWxlcnQiIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LWRlc3RydWN0aXZlIj57ZXJyb3J9PC9wPn0KICA8L2Rpdj47Cn0=
+import { useEffect, useRef, useState } from 'react';
+import { Download, Loader2, Square } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { type YouTubeVoiceEngine } from '@/lib/youtube-speech';
+import { fetchDubAudio } from '@/lib/youtube-audio';
+import { encodeWav } from '@/lib/record-wav';
+import { SPEECH_SAMPLE_RATE } from '@/lib/stream-speech';
+import { narrationWav, deliverNarration } from '@/lib/youtube-download';
+import { splitForSpeech } from '@/lib/youtube-hindi';
+import type { SarvamVoice } from '@/lib/sarvam-speech';
+import { listNarrationAudio, saveNarrationAudio, textFingerprint } from '@/lib/youtube-study-store';
+
+/** `audioKey` is the library key: finished audio is kept on the device under it. `request` starts preparation once (library Download tap). */
+export function YouTubeNarrationDownload({ text, voice, voiceEngine, videoId, disabled, onBusyChange, audioKey, request, onRequestHandled, onSaved }: {
+  text: string; voice: SarvamVoice; voiceEngine?: YouTubeVoiceEngine; videoId: string | null | undefined; disabled: boolean; onBusyChange(value: boolean): void;
+  audioKey?: string | null; request?: boolean; onRequestHandled?(): void; onSaved?(): void;
+}) {
+  const box = useRef<HTMLDivElement>(null);
+  const [checkedFor, setCheckedFor] = useState('');
+  const signature = `${audioKey ?? ''}|${textFingerprint(text)}|${voice}|${voiceEngine ?? 'sarvam'}`;
+  const [busy, setBusy] = useState(false), [progress, setProgress] = useState('');
+  const [audio, setAudio] = useState<Blob | null>(null), [error, setError] = useState('');
+  const operation = useRef<AbortController | null>(null);
+  const [audioUrl, setAudioUrl] = useState(''), [framed, setFramed] = useState(false);
+  useEffect(() => { try { setFramed(window.self !== window.top); } catch { setFramed(true); } }, []);
+  useEffect(() => { if (!audio) { setAudioUrl(''); return; } const url = URL.createObjectURL(audio); setAudioUrl(url); return () => URL.revokeObjectURL(url); }, [audio]);
+  useEffect(() => {
+    operation.current?.abort(); setAudio(null); setError(''); setProgress(''); setCheckedFor('');
+    let dead = false;
+    const hash = textFingerprint(text), engine = voiceEngine ?? 'sarvam';
+    void (audioKey ? listNarrationAudio().catch(() => []) : Promise.resolve([])).then(all => {
+      if (dead) return;
+      const hit = all.find(a => a.key === audioKey && a.textHash === hash && a.voice === voice && a.engine === engine);
+      if (hit) { setAudio(hit.blob); setProgress(`इस phone में saved · ${(hit.blob.size / 1048576).toFixed(1)} MB`); }
+      setCheckedFor(signature);
+    });
+    return () => { dead = true; };
+  }, [signature]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Library Download tap: show this section and start preparing once, unless the audio is already saved.
+  useEffect(() => {
+    if (!request || checkedFor !== signature) return;
+    onRequestHandled?.();
+    box.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!audio && !operation.current && text.trim()) void prepare();
+  }, [request, checkedFor, signature]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => operation.current?.abort(), []);
+
+  async function prepare() {
+    const controller = new AbortController(); operation.current = controller;
+    setBusy(true); onBusyChange(true); setError(''); setAudio(null);
+    let context: AudioContext | undefined;
+    try {
+      context = new AudioContext({ sampleRate: SPEECH_SAMPLE_RATE });
+      const pieces = splitForSpeech(text), parts: Blob[] = [];
+      for (let i = 0; i < pieces.length; i++) {
+        controller.signal.throwIfAborted();
+        setProgress(`Audio तैयार हो रही है · ${i + 1}/${pieces.length}`);
+        const buffer = await fetchDubAudio(pieces[i] ?? '', voice, context, controller.signal, voiceEngine);
+        parts.push(encodeWav([buffer.getChannelData(0)], SPEECH_SAMPLE_RATE).slice(44));
+      }
+      const blob = await narrationWav(parts); controller.signal.throwIfAborted();
+      if (operation.current === controller) {
+        setAudio(blob); setProgress(`${(blob.size / 1048576).toFixed(1)} MB · WAV · अब Download दबाएँ`);
+        if (audioKey) void saveNarrationAudio({ key: audioKey, savedAt: Date.now(), textHash: textFingerprint(text), voice, engine: voiceEngine ?? 'sarvam', blob }).then(() => onSaved?.()).catch(() => {});
+      }
+    } catch (failure) {
+      if (!controller.signal.aborted) setError(failure instanceof Error ? failure.message : 'Audio तैयार नहीं हुई।');
+      setProgress('');
+    } finally {
+      await context?.close().catch(() => {});
+      if (operation.current === controller) { operation.current = null; setBusy(false); onBusyChange(false); }
+    }
+  }
+
+  return <div ref={box} id="hindi-audio-download" className="mt-5 scroll-mt-20 space-y-2 border-t pt-4">
+    <div className="flex flex-wrap items-center gap-3">
+      {busy ? <>
+        <Loader2 className="size-4 animate-spin text-primary" />
+        <Button size="icon" variant="outline" aria-label="Cancel audio download preparation" title="Cancel" onClick={() => operation.current?.abort()}><Square className="size-4" /></Button>
+      </> : audio ? <Button disabled={disabled} onClick={() => void deliverNarration(audio, `snapsolve-hindi-${videoId ?? 'transcript'}.wav`).catch(() => setError('Audio save नहीं हुई। दोबारा कोशिश करें।'))}><Download className="size-4" />Hindi audio phone में download करो</Button>
+        : <Button variant="outline" disabled={disabled || !text.trim()} onClick={() => void prepare()}><Download className="size-4" />Download के लिए audio बनाओ</Button>}
+      <span role="status" className="text-xs text-muted-foreground">{progress}</span>
+      {!audio && !busy && <span className="text-xs text-muted-foreground">Voice generation credits लागू</span>}
+    </div>
+    {audioUrl && <audio controls src={audioUrl} className="w-full" />}
+    {audioUrl && framed && <p className="text-xs text-muted-foreground">Editor preview में browser download रोक देता है। App को नए tab में खोलें (या published link) — वहाँ Download काम करेगा।</p>}
+    {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
+  </div>;
+}

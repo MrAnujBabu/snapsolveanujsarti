@@ -1,1 +1,16 @@
-aW1wb3J0IHsgZXhwZWN0LCBpdCB9IGZyb20gJ3ZpdGVzdCc7CmltcG9ydCB7IHBhcnNlUGFzdGVkVHJhbnNjcmlwdCB9IGZyb20gJ0AvbGliL3RyYW5zY3JpcHQtY3Vlcyc7CmltcG9ydCB7IHdvcmRCdWRnZXQgfSBmcm9tICdAL2xpYi9pbnRlcnByZXRlci1tb2RlbHMnOwoKaXQoJ2dpdmVzIGFuIHVudGltZWQgbGFzdCBwYXN0ZWQgbGluZSBlbm91Z2ggdGltZSBmb3IgaXRzIHdvcmRzLCBub3QgYSBmaXhlZCA1IHNlY29uZHMnLCAoKSA9PiB7CiAgY29uc3QgbGFzdCA9ICdJbiB0aGUgZmlyc3QgY29sdW1uIEkgd3JpdGUgYSBxdWVzdGlvbiwgaW4gdGhlIHNlY29uZCBjb2x1bW4gdGhlIGFuc3dlciwgYW5kIHRoZW4gSSBoaWRlIHRoZSBhbnN3ZXIgY29sdW1uLiBJdCBpcyB3YXkgbW9yZSBlZmZpY2llbnQsIGFuZCBpdCBtYXNzaXZlbHkgaW1wcm92ZXMgcmV0ZW50aW9uLic7CiAgY29uc3QgY3VlcyA9IHBhcnNlUGFzdGVkVHJhbnNjcmlwdChgMDowMCBIZXkgZnJpZW5kcywgSSBhbSBBbGkuXG4wOjMwICR7bGFzdH1gKTsKICBjb25zdCBlbmQgPSBjdWVzLmF0KC0xKSE7CiAgZXhwZWN0KGVuZC5lbmQgLSBlbmQuc3RhcnQpLnRvQmVHcmVhdGVyVGhhbk9yRXF1YWwoMTMpOwogIGV4cGVjdCh3b3JkQnVkZ2V0KGVuZC5lbmQgLSBlbmQuc3RhcnQpKS50b0JlR3JlYXRlclRoYW5PckVxdWFsKDMwKTsKfSk7CgppdCgna2VlcHMgYSBzaG9ydCBsYXN0IGxpbmUgYXQgdGhlIHVzdWFsIDUgc2Vjb25kcycsICgpID0+IHsKICBjb25zdCBjdWVzID0gcGFyc2VQYXN0ZWRUcmFuc2NyaXB0KCcwOjAwIEhlbGxvLlxuMDoxMCBUaGFua3MuJyk7CiAgZXhwZWN0KGN1ZXMuYXQoLTEpIS5lbmQpLnRvQmUoMTUpOwp9KTsK
+import { expect, it } from 'vitest';
+import { parsePastedTranscript } from '@/lib/transcript-cues';
+import { wordBudget } from '@/lib/interpreter-models';
+
+it('gives an untimed last pasted line enough time for its words, not a fixed 5 seconds', () => {
+  const last = 'In the first column I write a question, in the second column the answer, and then I hide the answer column. It is way more efficient, and it massively improves retention.';
+  const cues = parsePastedTranscript(`0:00 Hey friends, I am Ali.\n0:30 ${last}`);
+  const end = cues.at(-1)!;
+  expect(end.end - end.start).toBeGreaterThanOrEqual(13);
+  expect(wordBudget(end.end - end.start)).toBeGreaterThanOrEqual(30);
+});
+
+it('keeps a short last line at the usual 5 seconds', () => {
+  const cues = parsePastedTranscript('0:00 Hello.\n0:10 Thanks.');
+  expect(cues.at(-1)!.end).toBe(15);
+});
