@@ -92,7 +92,7 @@ Return JSON only:
 - language: ISO 639-1 code of the main spoken language
 - domain: subject area, max 8 words, English
 - summary: what the video explains, max 45 words, in simple spoken Hindi (Devanagari) for students; keep widely used English technical terms in Latin script
-- glossary: up to 15 key terms exactly as said in the video, each with how a good Indian teacher would say it in simple Hindi (keep widely used English technical terms in Latin script, e.g. "DNA", "machine learning")
+- glossary: up to 15 key terms exactly as said in the video; hindi is a concise reusable spoken label, NOT a definition or explanatory clause. Keep familiar names and terms as-is (Google Sheets, Anki, Quizlet, active recall, DNA). A glossary is a consistency guide, not words to mechanically substitute on every mention.
 - corrections: up to 10 likely mis-heard words or names, each with the correct form (empty when the transcript is clean)
 Never invent content that is not in the transcript.`;
 
@@ -160,10 +160,10 @@ export async function makeBrief(title: string, transcript: string, signal: Abort
 const RULES = `Interpretation rules:
 1. Meaning first: convey what the speaker means, not word-by-word. Keep every fact, number, name, example, step and conclusion. Never add facts that were not said.
 2. Simplest spoken Hindi: use everyday words and short, naturally connected sentences that a beginner understands on first hearing. Prefer familiar words (यूज़र, प्रोडक्ट, सिस्टम, डेटा) over formal Sanskritised ones (उपयोगकर्ता, उत्पाद). Avoid textbook phrasing and literal English sentence structure. Simplify the wording, never the underlying facts or reasoning.
-3. Terms: keep established technical/subject terms, names and acronyms in English (Latin script) the way Indian teachers say them. Follow the glossary exactly when one is given.
+3. Terms: keep established technical/subject terms, names and acronyms in English (Latin script) the way Indian teachers say them. The glossary guides meaning and consistent naming; never mechanically substitute a long definition. Explain an unfamiliar term briefly only at its first occurrence if essential to understand the source; afterwards use its short label. Never repeatedly expand Google Sheets, flashcards, Anki, Quizlet, spreadsheet or column into dictionary definitions. Previously mentioned terms have already been introduced.
 4. Repair the source: transcripts may be automatic captions with mis-heard words. Use context, the title and the caption fixes to recover the intended meaning. Drop filler, false starts, repetition and [music]/[applause] tags.
 5. Culture: express idioms and jokes naturally in Hindi without replacing the speaker's actual examples, places or cultural references with invented ones.
-6. Voice: sound as if this speaker originally recorded the video in Hindi. Preserve their point of view (I/we/you), questions, uncertainty, emotion and conversational tone. Do not turn narration into an extra lesson, address the listener when the source does not, or insert "देखिए", "तो दोस्तों" or explanations not in the source. Use "आप" only where the speaker addresses the listener. The text is read aloud by text-to-speech: use natural punctuation and short pauses, no markdown, bullets, emojis or brackets.
+6. Voice: sound as if this speaker originally recorded the video in Hindi. Preserve their point of view (I/we/you), questions, uncertainty, emotion and conversational tone. Use the source opening to keep speaker identity and grammatical gender consistent throughout; never infer gender from a caption typo or change it between batches. If gender is not established, prefer natural gender-neutral constructions. Preserve names as supported by the source/title/brief; never invent a corrected identity. Do not turn narration into an extra lesson, address the listener when the source does not, or insert "देखिए", "तो दोस्तों" or explanations not in the source. Use "आप" only where the speaker addresses the listener. The text is read aloud by text-to-speech: use natural punctuation and short pauses, no markdown, bullets, emojis or brackets. Preserve uncertainty and self-corrections in doses/scientific claims; never convert a hesitant example into confident medical advice.
 7. Output only the numbered blocks, in order — no introductions, notes or explanations of your work.`;
 
 const TIMED_SYSTEM = `You are a senior professional interpreter and a gifted Indian teacher. You interpret recorded videos from ANY language into simple, natural spoken Hindi (Devanagari) for Indian students — faithful like a top conference interpreter, easy like the best teacher.
@@ -171,37 +171,51 @@ You receive numbered transcript segments, each with its video time window and a 
 ### <number>
 <Hindi interpretation of that segment>
 ${RULES}
-8. Timing: each block is spoken over its own video window. Stay within its word budget by condensing wording, never by dropping facts. Use neighbour context for a smooth transition, but interpret only this block's content: never move a fact to an earlier/later block or repeat it across boundaries. Keep natural short clauses when the source sentence continues into the next block; do not add an introduction or conclusion at a timestamp boundary.`;
+8. Timing: each block is spoken over its own video window. Stay within its word budget by condensing wording, never by dropping facts. Use neighbour context for a smooth transition, but interpret only this block's content: never move a fact to an earlier/later block or repeat it across boundaries. Prefer complete, speakable clauses with natural Hindi word order. If a sentence continues across blocks, connect it smoothly using neighbour context, without leaving a lone "अगर", "तो", "मेरी liver" or "Google" at the end or duplicating the continuation. Never fabricate an ending or add an introduction/conclusion at a timestamp boundary.`;
 
 const PROSE_SYSTEM = `You are a senior professional interpreter and a gifted Indian teacher. You interpret lecture transcripts from ANY language into simple, natural spoken Hindi (Devanagari) for Indian students.
 You receive consecutive numbered parts of one transcript. For EVERY part output exactly:
 ### <number>
 <Hindi interpretation of that whole part as flowing spoken paragraphs>
 ${RULES}
-8. Completeness: interpret each part fully — do not summarise it away. When a part is marked FIRST, begin with one short line introducing the topic. When a part is marked LAST, end with a short "सारांश" of the key points in spoken sentences.`;
+8. Completeness: interpret each part fully — do not summarise it away. FIRST and LAST indicate position only: do not invent an introduction or summary. Use neighbour context to connect sentences across parts naturally without repeating or translating the context itself.`;
 
 const fmt = (t: number) => { const s = Math.max(0, Math.round(t)); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = String(s % 60).padStart(2, '0'); return h ? `${h}:${String(m).padStart(2, '0')}:${x}` : `${m}:${x}`; };
 
-export type BatchContext = { title: string; language?: string; brief: InterpretBrief | null; before?: string; after?: string };
+export type BatchContext = { title: string; language?: string; brief: InterpretBrief | null; before?: string; after?: string; opening?: string; mentionedTerms?: string[] };
 
 function briefLines(c: BatchContext) {
   const lines = [`Video: ${c.title || 'untitled'}`, `Spoken language: ${c.brief?.language || c.language || 'detect automatically'}`];
   if (c.brief?.domain) lines.push(`Topic: ${c.brief.domain}`);
   if (c.brief?.summary) lines.push(`Summary: ${c.brief.summary}`);
-  if (c.brief?.glossary.length) lines.push(`Glossary (use exactly): ${c.brief.glossary.map(g => `${g.term} → ${g.hindi}`).join('; ')}`);
+  if (c.brief?.glossary.length) lines.push(`Glossary (meaning/short-label guide, not repeated definitions): ${c.brief.glossary.map(g => `${g.term} → ${g.hindi}`).join('; ')}`);
   if (c.brief?.corrections.length) lines.push(`Caption fixes: ${c.brief.corrections.map(x => `"${x.heard}" means "${x.correct}"`).join('; ')}`);
+  if (c.opening) lines.push(`Source opening (identity/style context only; do not interpret again): ${c.opening.slice(0, 1400)}`);
+  if (c.mentionedTerms?.length) lines.push(`Previously mentioned terms: ${c.mentionedTerms.join('; ')}. Use short labels, not definitions.`);
   return lines.join('\n');
+}
+
+function neighbourLines(c: BatchContext) {
+  return `${c.before ? `\nContext just before (do not interpret): ${c.before.slice(-900)}\n` : ''}${c.after ? `\nContext just after (do not interpret): ${c.after.slice(0, 900)}\n` : ''}`;
+}
+
+/** Source-derived, independent of concurrent batch completion order. */
+function continuityContext(texts: string[], start: number, count: number, context: BatchContext): BatchContext {
+  const previous = texts.slice(0, start).join(' ').toLowerCase();
+  const terms = [...new Set([...(context.brief?.glossary.map(g => g.term) ?? []), 'Google Sheets', 'flashcards', 'Anki', 'Quizlet', 'spreadsheet', 'column'])];
+  return { ...context, opening: texts.slice(0, 2).join(' ').slice(0, 1400), before: texts[start - 1] ?? '', after: texts[start + count] ?? '',
+    mentionedTerms: terms.filter(term => previous.includes(term.toLowerCase())) };
 }
 
 /** Builds one timed batch prompt with neighbour context and per-segment word budgets. */
 export function timedBatchPrompt(segs: TimedSegment[], c: BatchContext) {
   const body = segs.map((s, i) => `### ${i + 1} (${fmt(s.start)}–${fmt(s.end)} · ${Math.max(1, Math.round(s.end - s.start))}s · max ${wordBudget(s.end - s.start)} words)\n${s.text}`).join('\n\n');
-  return `${briefLines(c)}\n${c.before ? `\nContext just before (do not interpret): "…${c.before.slice(-300)}"\n` : ''}\n${body}\n${c.after ? `\nContext just after (do not interpret): "${c.after.slice(0, 300)}…"` : ''}`;
+  return `${briefLines(c)}\n${neighbourLines(c)}\n${body}`;
 }
 
 export function proseBatchPrompt(parts: { text: string; first: boolean; last: boolean }[], c: BatchContext) {
   const body = parts.map((p, i) => `### ${i + 1}${p.first ? ' (FIRST)' : ''}${p.last ? ' (LAST)' : ''}\n${p.text}`).join('\n\n');
-  return `${briefLines(c)}\n\n${body}`;
+  return `${briefLines(c)}\n${neighbourLines(c)}\n${body}`;
 }
 
 type Caller = (engine: InterpreterId, system: string, user: string, signal: AbortSignal, effort?: Effort) => Promise<string>;
@@ -233,9 +247,11 @@ export async function interpretBatch(o: { engine: InterpreterId; system: string;
 
 const REVIEW_SYSTEM = `You are the chief reviewer of a professional interpreting team. A colleague interpreted video transcript segments (any source language) into simple spoken Hindi for Indian students. Compare every Hindi interpretation with its source and fix only real problems:
 - a missing, added or changed fact, number, name, example, step or conclusion; any wrong meaning
-- glossary not followed, or a mis-heard caption word not repaired
+- inconsistent term meaning/naming, or a mis-heard caption word not repaired; a long glossary definition mechanically repeated instead of a short familiar label
 - unnecessarily formal, literal or awkward Hindi; prefer the simplest natural spoken phrasing a beginner understands, with established technical terms in English (Latin script)
-- changed speaker viewpoint, uncertainty, questions or tone; added teacher commentary, invented cultural examples or facts moved/repeated between timestamp blocks
+- changed speaker identity, grammatical gender, viewpoint, uncertainty, questions or tone; added teacher commentary, invented cultural examples or facts moved/repeated between timestamp blocks
+- repeated dictionary explanations of Google Sheets/flashcards/Anki/Quizlet/spreadsheet/column or already-introduced terms; remove unnecessary expansions without deleting a definition the source actually repeats
+- chopped Hindi clauses, dangling connectors and unnatural transitions across neighbouring blocks; restore fluent spoken Hindi while keeping every fact in its original block
 - longer than the word budget (condense wording, never drop facts)
 - markdown, brackets, emojis or notes; fix punctuation minimally, preserving natural questions and already-good wording
 For EVERY segment output exactly:
@@ -250,7 +266,7 @@ export function reviewerOrder(interpreter: InterpreterId): InterpreterId[] {
 
 export function reviewPrompt(items: { source: string; hindi: string; seconds?: number }[], c: BatchContext) {
   const body = items.map((it, i) => `### ${i + 1}${it.seconds ? ` (${Math.max(1, Math.round(it.seconds))}s · max ${wordBudget(it.seconds)} words)` : ''}\nSOURCE: ${it.source}\nHINDI: ${it.hindi}`).join('\n\n');
-  return `${briefLines(c)}\n\n${body}`;
+  return `${briefLines(c)}\n${neighbourLines(c)}\n${body}`;
 }
 
 /** Applies reviewer output: "OK" keeps the interpretation, anything else replaces it. */
@@ -323,7 +339,8 @@ export async function interpretTimed(o: {
   }
   await pool(batches, PARALLEL_BATCHES, async start => {
     const segs = o.segments.slice(start, start + TIMED_BATCH);
-    const user = timedBatchPrompt(segs, { ...o.context, before: o.segments[start - 1]?.text ?? '', after: o.segments[start + segs.length]?.text ?? '' });
+    const context = continuityContext(o.segments.map(s => s.text), start, segs.length, o.context);
+    const user = timedBatchPrompt(segs, context);
     const prior = o.saved?.length === o.segments.length ? o.saved.slice(start, start + segs.length) : [];
     // Device data is not proof of independent review. Recheck matching saved translations,
     // without retranslating them, whenever review is requested.
@@ -333,7 +350,7 @@ export async function interpretTimed(o: {
     used.add(interpreterInfo(first.engine).name);
     let out = first.lines;
     if (o.review !== false) {
-      const checked = await reviewBatch({ interpreter: first.engine, items: segs.map((s, i) => ({ source: s.text, hindi: out[i] ?? '', seconds: s.end - s.start })), context: o.context, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
+      const checked = await reviewBatch({ interpreter: first.engine, items: segs.map((s, i) => ({ source: s.text, hindi: out[i] ?? '', seconds: s.end - s.start })), context, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
       out = checked.lines; quality.reviewed += checked.reviewed; quality.corrected += checked.corrected;
       if (checked.reviewer && !quality.reviewers.includes(checked.reviewer)) quality.reviewers.push(checked.reviewer);
     }
@@ -355,11 +372,12 @@ export async function interpretProse(o: {
   for (let b = 0; b < o.chunks.length; b += PER) batches.push(b);
   await pool(batches, PARALLEL_BATCHES, async start => {
     const parts = o.chunks.slice(start, start + PER).map((text, i) => ({ text, first: start + i === 0, last: start + i === o.chunks.length - 1 }));
-    const first = await interpretBatch({ engine: o.engine, system: PROSE_SYSTEM, user: proseBatchPrompt(parts, o.context), count: parts.length, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
+    const context = continuityContext(o.chunks, start, parts.length, o.context);
+    const first = await interpretBatch({ engine: o.engine, system: PROSE_SYSTEM, user: proseBatchPrompt(parts, context), count: parts.length, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
     used.add(interpreterInfo(first.engine).name);
     let out = first.lines;
     if (o.review !== false) {
-      const checked = await reviewBatch({ interpreter: first.engine, items: parts.map((p, i) => ({ source: p.text, hindi: out[i] ?? '' })), context: o.context, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
+      const checked = await reviewBatch({ interpreter: first.engine, items: parts.map((p, i) => ({ source: p.text, hindi: out[i] ?? '' })), context, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
       out = checked.lines; quality.reviewed += checked.reviewed; quality.corrected += checked.corrected;
       if (checked.reviewer && !quality.reviewers.includes(checked.reviewer)) quality.reviewers.push(checked.reviewer);
     }
