@@ -65,6 +65,8 @@ export async function runDubPlayback(o: Options) {
     while (p.getPlayerState() !== 1) { signal.throwIfAborted(); await tick(); }
     let index = o.from;
     let preserveNativePause = false;
+    // Last observed video time between parts: only a real jump back (>1 s) may return to a finished part.
+    let watched = p.getCurrentTime();
     while (index < segments.length) {
       signal.throwIfAborted();
       while (preserveNativePause && p.getPlayerState() === 2) { signal.throwIfAborted(); await tick(); }
@@ -76,7 +78,10 @@ export async function runDubPlayback(o: Options) {
         if (o.paused()) p.pauseVideo();
         const now = p.getCurrentTime();
         const target = segmentAtTime(segments, now);
-        if (target !== index) { index = target < 0 ? segments.length : target; break; }
+        // Video still inside the part just spoken (voice finished early) is a silent wait, never a replay.
+        const back = now < watched - 1;
+        watched = now;
+        if (target > index || target < 0 || (back && target !== index)) { index = target < 0 ? segments.length : target; break; }
         if (p.getPlayerState() === 0) { index = segments.length; break; }
         await tick();
       }
@@ -121,7 +126,7 @@ export async function runDubPlayback(o: Options) {
         if (dubSeeked(lastVideo, time, (now - lastWall) / 1000, rate, state === 1)) {
           const target = segmentAtTime(segments, time);
           preserveNativePause = state === 2 && !overrun;
-          stopSource(); index = target < 0 ? segments.length : target; jumped = true; break;
+          stopSource(); index = target < 0 ? segments.length : target; jumped = true; watched = time; break;
         }
         lastVideo = time; lastWall = now;
         if (!overrun && state === 1 && now - lastCorrection >= 600) {
@@ -141,6 +146,7 @@ export async function runDubPlayback(o: Options) {
       }
       const nativePaused = !overrun && p.getPlayerState() === 2;
       stopSource(); o.holding(false);
+      if (!jumped) watched = p.getCurrentTime();
       if (!jumped) o.progress?.(index, 1);
       if (jumped) { if (!o.paused() && !preserveNativePause) p.playVideo(); continue; }
       // Don't undo a native pause merely because the audio reached its end.
