@@ -17,7 +17,7 @@ export function SourceBadges({ result }: { result: InterpretResult }) {
   return (
     <div className="flex flex-wrap gap-2">
       {s?.origin && <Badge variant="secondary" className="gap-1.5 font-normal"><Icon className="size-3.5" />{ORIGIN_LABEL[s.origin]}</Badge>}
-      {s?.language && <Badge variant="secondary" className="font-normal">{languageName(s.language)} → सरल Hindi</Badge>}
+      {s?.language && <Badge variant="secondary" className="font-normal">{languageName(s.language)} → {result.verbatim ? 'as it is Hindi' : 'सरल Hindi'}</Badge>}
       {duration ? <Badge variant="secondary" className="font-normal tabular-nums">{formatTime(duration)}</Badge> : null}
       {result.truncated && <Badge variant="outline" className="border-highlight/50 font-normal text-highlight">लंबी video — शुरुआती हिस्सा</Badge>}
     </div>

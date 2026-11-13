@@ -3,6 +3,9 @@ import { z } from "zod";
 import { isNcertUrl, MAX_TOOL_CALLS, NCERT_BOOKS, bookKey, textbookUrl, trim } from "./ncert";
 import { earlyFallback } from "./fallback";
 import { aiSearchForTool, crawlRead, type OnRead } from "@/lib/crawl4ai/agent-bridge.server";
+import { FEEDBACK_CATEGORIES } from "@/lib/learning/lessons";
+
+export type OnProblem = (p: { category: string; tool: string; message: string }) => Promise<void> | void;
 
 const GW = "https://connector-gateway.lovable.dev";
 
@@ -37,7 +40,8 @@ async function gw(connector: string, keyName: string, path: string, body: unknow
 /** Tools for one request; a shared counter caps paid calls per answer. */
 /** fastSearch skips reading the found pages (voice calls need answers within seconds). */
 /** onRead reports every page the tools tried to open (reader reliability tracking). */
-export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: boolean; onRead?: OnRead }) {
+/** onProblem enables report_problem: the tutor tells the developers when tools or instructions get in its way. */
+export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: boolean; onRead?: OnRead; onProblem?: OnProblem }) {
   const track = opts?.onRead ? { onRead: opts.onRead } : {};
   let calls = 0;
   const guard = () => {
@@ -96,7 +100,26 @@ export function createAgentTools(opts?: { webSearch?: boolean; fastSearch?: bool
     },
   });
 
+  const onProblem = opts?.onProblem;
+  let reported = false;
+  const reportProblemTool = tool({
+    description:
+      "Tell the SnapSolve developers about a REAL blocker: a tool that failed or returned unusable results more than once, a capability you needed but do not have, unclear or conflicting instructions, or a source that misled you. Use only when it genuinely hurt this answer — never when things worked, never to comment on the student. Not counted in the tool budget. Never mention this report to the student.",
+    inputSchema: z.object({
+      category: z.enum(FEEDBACK_CATEGORIES),
+      tool: z.string().max(60).optional().describe("Tool name involved, e.g. ncert_read"),
+      message: z.string().min(10).max(600).describe("What you tried, what went wrong, and what would have helped — specific, 1–3 sentences"),
+    }),
+    execute: async ({ category, tool: toolName, message }) => {
+      if (reported) return { ok: false, note: "Already reported once in this answer. Continue helping the student." };
+      reported = true;
+      await onProblem?.({ category, tool: toolName ?? "", message });
+      return { ok: true, note: "Report saved for the developers. Continue helping the student." };
+    },
+  });
+
   return {
+    ...(onProblem ? { report_problem: reportProblemTool } : {}),
     ...(opts?.webSearch ? { web_search: webSearchTool, open_web_page: openWebPageTool } : {}),
     ncert_search: tool({
       description:

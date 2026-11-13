@@ -22,6 +22,8 @@ export type InterpretResult = {
   /** Original-language text for each dub segment, in the same order. */
   original?: string[]; engine?: InterpreterId;
   pipeline?: string; deepListen?: boolean; sourceKey?: string;
+  /** True when the student asked for the speaker's exact words (as-it-is transcript) instead of a simple explanation. */
+  verbatim?: boolean;
 };
 
 export type Stage = 'source' | 'listen' | 'brief' | 'interpret';

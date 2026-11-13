@@ -116,6 +116,8 @@ export async function listenToMedia(o: { file?: File; url?: string; signal: Abor
 
 type RunOptions = {
   input: RunInput; engine: InterpreterId; quality: boolean; signal: AbortSignal; onState(state: RunState): void;
+  /** As-it-is transcript: the speaker's exact words instead of a simple Hindi explanation. */
+  verbatim?: boolean;
   /** Saved progress from an earlier run of the same source; finished parts are skipped. */
   checkpoint?: Checkpoint | null;
   /** Called whenever there is new progress worth saving on the device. */
@@ -141,7 +143,7 @@ export async function runInterpretation(o: RunOptions): Promise<InterpretResult>
   };
   const postOnce = async (body: Record<string, unknown>) => {
     const resume = resumeLines && resumeSourceKey ? { lines: resumeLines, sourceKey: resumeSourceKey, ...(resumeBrief?.brief ? { brief: resumeBrief.brief, briefModel: resumeBrief.model ?? '' } : {}) } : undefined;
-    const res = await fetch('/api/youtube-hindi', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ engine: o.engine, quality: o.quality, ...body, ...(resume ? { resume } : {}) }), signal: o.signal });
+    const res = await fetch('/api/youtube-hindi', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ engine: o.engine, quality: o.quality, ...(o.verbatim ? { verbatim: true } : {}), ...body, ...(resume ? { resume } : {}) }), signal: o.signal });
     return readInterpretStream(res, apply, o.signal);
   };
   /** Network drops and busy errors continue automatically (bounded) from the last finished part. */

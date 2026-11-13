@@ -14,6 +14,117 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_daily_stats: {
+        Row: {
+          day: string
+          recovered: number
+          stuck: number
+          turns: number
+        }
+        Insert: {
+          day: string
+          recovered?: number
+          stuck?: number
+          turns?: number
+        }
+        Update: {
+          day?: string
+          recovered?: number
+          stuck?: number
+          turns?: number
+        }
+        Relationships: []
+      }
+      agent_feedback: {
+        Row: {
+          category: string
+          count: number
+          fingerprint: string
+          first_seen: string
+          id: string
+          last_seen: string
+          message: string
+          status: string
+          tool: string
+        }
+        Insert: {
+          category: string
+          count?: number
+          fingerprint: string
+          first_seen?: string
+          id?: string
+          last_seen?: string
+          message: string
+          status?: string
+          tool?: string
+        }
+        Update: {
+          category?: string
+          count?: number
+          fingerprint?: string
+          first_seen?: string
+          id?: string
+          last_seen?: string
+          message?: string
+          status?: string
+          tool?: string
+        }
+        Relationships: []
+      }
+      agent_lessons: {
+        Row: {
+          created_at: string
+          example: string
+          fingerprint: string
+          guidance: string
+          held_ok: number
+          held_stuck: number
+          id: string
+          last_matched_at: string | null
+          problem: string
+          seen_count: number
+          shown_ok: number
+          shown_stuck: number
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          example?: string
+          fingerprint: string
+          guidance: string
+          held_ok?: number
+          held_stuck?: number
+          id?: string
+          last_matched_at?: string | null
+          problem?: string
+          seen_count?: number
+          shown_ok?: number
+          shown_stuck?: number
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          example?: string
+          fingerprint?: string
+          guidance?: string
+          held_ok?: number
+          held_stuck?: number
+          id?: string
+          last_matched_at?: string | null
+          problem?: string
+          seen_count?: number
+          shown_ok?: number
+          shown_stuck?: number
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       agent_settings: {
         Row: {
           brain: string
@@ -545,6 +656,35 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      agent_lesson_turn: {
+        Args: {
+          _held: boolean
+          _matched: string[]
+          _prev: string[]
+          _recovered: boolean
+          _stuck: boolean
+        }
+        Returns: undefined
+      }
+      agent_note_feedback: {
+        Args: {
+          _category: string
+          _fingerprint: string
+          _message: string
+          _tool: string
+        }
+        Returns: undefined
+      }
+      agent_note_lesson: {
+        Args: {
+          _example: string
+          _fingerprint: string
+          _guidance: string
+          _problem: string
+          _subject: string
+        }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

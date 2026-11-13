@@ -1,0 +1,3 @@
+# Learning
+- Tutor learning loop (doubt mode only): stuck = complaint or repeated ask; stuck → "got it" sends the stretch to a reviewer that drafts one general lesson, clustered by keyword fingerprint into `agent_lessons` as pending. Only admin-approved lessons are injected, small and capped, and a stable per-chat holdout skips them so the admin sees with/without stuck rates; nothing auto-activates or auto-retires.
+- `report_problem` is the tutor's vent tool (chat only, once per answer, outside the tool budget); reports dedupe by fingerprint into `agent_feedback`. All learning writes use service-role-only database functions and never block or fail an answer.

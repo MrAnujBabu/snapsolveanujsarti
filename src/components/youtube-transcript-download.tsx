@@ -13,7 +13,7 @@ export function YouTubeTranscriptDownload({ result, transcript, disabled }: {
   function download() {
     try {
       const title = result.title?.trim() || 'YouTube transcript';
-      const parts = [`# ${title}`, '', '## सरल Hindi explanation', '', result.hindi.trim()];
+      const parts = [`# ${title}`, '', result.verbatim ? '## Hindi transcript (as it is, शब्दशः)' : '## सरल Hindi explanation', '', result.hindi.trim()];
       const source = transcript.trim();
       if (source) parts.push('', '## Original transcript', '', source);
       const blob = new Blob([`${parts.join('\n')}\n`], { type: 'text/markdown;charset=utf-8' });

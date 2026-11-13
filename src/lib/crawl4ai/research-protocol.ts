@@ -21,6 +21,10 @@ export const researchRequestSchema = z.discriminatedUnion("mode", [
     site: z.string().trim().max(100).regex(/^$|^[a-z0-9.-]+\.[a-z]{2,}$/i, "Enter a site like ncert.nic.in").optional(),
     pages: z.number().int().min(1).max(RESEARCH_LIMITS.searchPages).default(4),
     answer: z.boolean().default(true),
+    /** Deep research: the AI thinks harder, searches wider and reads longer passages (more credits). */
+    deep: z.boolean().default(false),
+    /** Read scanned (photo) PDFs among the results with Lovable AI. */
+    ocr: z.boolean().default(true),
   }),
   z.object({
     mode: z.literal("read"),
@@ -32,6 +36,8 @@ export const researchRequestSchema = z.discriminatedUnion("mode", [
     /** "auto" uses the free browser reader only when the direct read fails or is too thin. */
     browser: z.enum(["auto", "always", "never"]).default("auto"),
     screenshot: z.boolean().default(false),
+    /** Read a scanned (photo) PDF with Lovable AI; credits are spent only when the PDF is scanned. */
+    ocr: z.boolean().default(false),
   }),
   z.object({
     mode: z.literal("deep"),
@@ -93,6 +99,9 @@ export type PageView = {
   /** direct read, free browser reader, or the web archive's saved copy */
   via?: "direct" | "browser" | "archive";
   archivedAt?: string;
+  /** A PDF made of scanned pages; `ocr` = its text was transcribed by Lovable AI. */
+  scanned?: boolean;
+  ocr?: boolean;
   screenshotUrl?: string;
   rawMarkdown: string;
   citedMarkdown: string;

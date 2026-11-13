@@ -204,6 +204,31 @@ You receive consecutive numbered parts of one transcript. For EVERY part output 
 ${RULES}
 8. Completeness: interpret each part fully — do not summarise it away. FIRST and LAST indicate position only: do not invent an introduction or summary. Use neighbour context to connect sentences across parts naturally without repeating or translating the context itself.`;
 
+// ---------- As-it-is (word-to-word) transcript ----------
+
+const VERBATIM_RULES = `As-it-is transcript rules — the student asked for the speaker's exact words, NOT an explanation:
+1. Word for word: keep every spoken word in the same order and the same sentence structure. Never paraphrase, simplify, summarise, explain, replace a word with a synonym (ख़्वाब stays ख़्वाब, कठिन stays कठिन, सबक stays सबक), change tense, person or number, or merge/split ideas. Never add anything that was not said.
+2. Source already in Hindi, Hindustani or Urdu (any script): write exactly what was said, in Devanagari, keeping the speaker's own grammar and verb forms (सीखेंगे stays सीखेंगे — never change it to सीखूँगी). The "Speaker gender" line never overrides words that were actually spoken. Hindi in Roman letters or Urdu script is only transliterated into Devanagari.
+3. Repair only mis-hearings: the source may be automatic captions or machine listening with sound-alike errors (for example "बाद़िये" heard for "बाँधिए", "उरजाने" for "उड़ जाने", "ख़ौब" for "ख़्वाब", "अरहार" for "अगर हार"). Restore the word the speaker really said using sound, context, rhyme and metre in poems or songs, the title and the caption fixes — never a "better" or simpler word. Spell correctly, with proper nukta and chandrabindu.
+4. Any other source language: translate literally, word for word, keeping the speaker's sentence order, word choices, repetitions and phrasing as closely as Hindi grammar allows; follow the "Speaker gender" line for the speaker's first-person forms. Do not simplify or explain.
+5. English words the speaker said inside Hindi stay those same English words, written in Devanagari as pronounced (टेस्ट, फ़ोन, रिवीज़न); names in Devanagari as pronounced. Keep English letters only for equations, formulas, units right after a number, code, URLs and email addresses.
+6. Drop only pure fillers (um, uh) and [music]/[applause] tags. Keep refrains, repetitions and self-corrections that were actually spoken. Use natural punctuation (। , ?) for text-to-speech; no markdown, bullets, emojis, brackets or notes.
+7. Output only the numbered blocks, in order — no introductions, notes or explanations of your work.`;
+
+const VERBATIM_TIMED_SYSTEM = `You are a senior professional transcriber and literal translator. You write an AS-IT-IS Hindi (Devanagari) transcript of recorded videos for Indian students: exactly what the speaker said, word for word.
+You receive numbered transcript segments, each with its video time window. For EVERY segment output exactly:
+### <number>
+<as-it-is Hindi of that segment>
+${VERBATIM_RULES}
+8. Blocks: write only this block's own words — never move words to an earlier/later block, repeat them across a boundary or complete a sentence the next block continues. Never shorten a block to fit its time window.`;
+
+const VERBATIM_PROSE_SYSTEM = `You are a senior professional transcriber and literal translator. You write an AS-IT-IS Hindi (Devanagari) transcript of lecture transcripts for Indian students: exactly what the speaker said, word for word.
+You receive consecutive numbered parts of one transcript. For EVERY part output exactly:
+### <number>
+<as-it-is Hindi of that whole part>
+${VERBATIM_RULES}
+8. Completeness: write each part fully, never summarise it. FIRST and LAST indicate position only. Neighbour context is for repairing words only; never copy it into a block.`;
+
 const fmt = (t: number) => { const s = Math.max(0, Math.round(t)); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = String(s % 60).padStart(2, '0'); return h ? `${h}:${String(m).padStart(2, '0')}:${x}` : `${m}:${x}`; };
 
 export type BatchContext = { title: string; language?: string; brief: InterpretBrief | null; before?: string; after?: string; opening?: string; mentionedTerms?: string[] };
@@ -233,8 +258,8 @@ function continuityContext(texts: string[], start: number, count: number, contex
 }
 
 /** Builds one timed batch prompt with neighbour context and per-segment word budgets. */
-export function timedBatchPrompt(segs: TimedSegment[], c: BatchContext) {
-  const body = segs.map((s, i) => `### ${i + 1} (${fmt(s.start)}–${fmt(s.end)} · ${Math.max(1, Math.round(s.end - s.start))}s · max ${wordBudget(s.end - s.start)} words)\n${s.text}`).join('\n\n');
+export function timedBatchPrompt(segs: TimedSegment[], c: BatchContext, budget = true) {
+  const body = segs.map((s, i) => `### ${i + 1} (${fmt(s.start)}–${fmt(s.end)} · ${Math.max(1, Math.round(s.end - s.start))}s${budget ? ` · max ${wordBudget(s.end - s.start)} words` : ''})\n${s.text}`).join('\n\n');
   return `${briefLines(c)}\n${neighbourLines(c)}\n${body}`;
 }
 
@@ -287,12 +312,29 @@ For EVERY segment output exactly:
 OK
 — when the interpretation is already faithful, simple, everyday in its English words and within budget — or otherwise the complete corrected Hindi interpretation and nothing else.`;
 
+const VERBATIM_REVIEW_SYSTEM = `You are the chief reviewer of a professional transcription team. A colleague wrote an AS-IT-IS Hindi (Devanagari) transcript of video segments: the speaker's exact words, word for word — not an explanation. Compare every HINDI block with its SOURCE and fix only real problems:
+- a spoken word missing, added, reordered, paraphrased, simplified or swapped for a synonym; a changed tense, person, number or grammar (a Hindi speaker's own सीखेंगे must not become सीखूँगी)
+- a mis-heard word not repaired, or repaired to the wrong word (use sound, context, rhyme/metre, the title and the caption fixes)
+- for a non-Hindi source: anything that is not a literal, word-for-word translation
+- English letters left for an English word (write it in Devanagari as pronounced), wrong spelling, nukta or chandrabindu
+- words moved or repeated across blocks; markdown, brackets, emojis or notes
+For EVERY segment output exactly:
+### <number>
+OK
+— when the block is already the exact as-it-is transcript — or otherwise the complete corrected Hindi block and nothing else.`;
+
 // ---------- English-letters check (last step) ----------
 
 const ENGLISH_FIX_SYSTEM = `You are the final copy editor of a professional Hindi interpreting team. Some finished Hindi blocks still contain words written in English letters. For each numbered block you get the HINDI text and the words to rewrite.
 Rewrite ONLY those words, by this rule:
 ${EVERYDAY_ENGLISH_RULE}
 Use the glossary's Devanagari spelling when it covers the word. Adjust only a postposition or verb ending right next to a replaced word if Hindi needs it. Do not rephrase, restructure, shorten or add anything: every other word, fact, number, punctuation mark and the sentence order stay exactly as given. Words the rule keeps in English letters (formulas, units right after numbers, code, links) stay unchanged.
+For EVERY block output exactly:
+### <number>
+<the complete corrected Hindi block, nothing else>`;
+
+const VERBATIM_ENGLISH_FIX_SYSTEM = `You are the final copy editor of an as-it-is Hindi transcript. Some blocks still contain words written in English letters. For each numbered block you get the HINDI text and the words to rewrite.
+Write ONLY those words in Devanagari exactly as they are pronounced (transliterate: test → टेस्ट, phone → फ़ोन, Google → गूगल) — never replace them with Hindi synonyms. Keep English letters only for equations, formulas, units right after a number, code, URLs and email addresses. Every other word, punctuation mark and the word order stay exactly as given.
 For EVERY block output exactly:
 ### <number>
 <the complete corrected Hindi block, nothing else>`;
@@ -318,14 +360,14 @@ export function acceptEnglishFix(original: string, fixed: string) {
 const devanagariWords = (text: string) => text.match(/[\u0900-\u097F]+/g)?.filter(word => !/^[।॥]+$/.test(word)) ?? [];
 
 /** Final pass for blocks still holding English-letter words; clean blocks cost nothing. */
-export async function finishEnglishWords(o: { lines: string[]; engine: InterpreterId; context: BatchContext; signal: AbortSignal; call?: Caller }) {
+export async function finishEnglishWords(o: { lines: string[]; engine: InterpreterId; context: BatchContext; signal: AbortSignal; call?: Caller; verbatim?: boolean }) {
   const pending = o.lines.map((hindi, index) => ({ index, hindi, words: latinWords(hindi) })).filter(it => it.hindi.trim() && it.words.length);
   if (!pending.length) return { lines: o.lines, fixed: 0 };
   const call = o.call ?? callInterpreter;
   for (const engine of interpreterOrder(o.engine)) {
     o.signal.throwIfAborted();
     try {
-      const raw = await call(engine, ENGLISH_FIX_SYSTEM, englishWordsPrompt(pending, o.context), o.signal, REVIEW_EFFORT);
+      const raw = await call(engine, o.verbatim ? VERBATIM_ENGLISH_FIX_SYSTEM : ENGLISH_FIX_SYSTEM, englishWordsPrompt(pending, o.context), o.signal, REVIEW_EFFORT);
       const blocks = parseNumberedBlocks(raw, pending.length);
       if (!blocks.some(b => b.trim())) { console.error(`[interpreter] ${engine} English-letters check returned nothing; trying backup`); continue; }
       const lines = [...o.lines];
@@ -375,13 +417,13 @@ export function applyReview(lines: string[], raw: string) {
   return { lines: out, corrected, reviewed };
 }
 
-export async function reviewBatch(o: { interpreter: InterpreterId; items: { source: string; hindi: string; seconds?: number }[]; context: BatchContext; signal: AbortSignal; call?: Caller }) {
+export async function reviewBatch(o: { interpreter: InterpreterId; items: { source: string; hindi: string; seconds?: number }[]; context: BatchContext; signal: AbortSignal; call?: Caller; verbatim?: boolean }) {
   const call = o.call ?? callInterpreter;
   const lines = o.items.map(it => it.hindi);
   for (const engine of reviewerOrder(o.interpreter)) {
     o.signal.throwIfAborted();
     try {
-      const raw = await call(engine, REVIEW_SYSTEM, reviewPrompt(o.items, o.context), o.signal, REVIEW_EFFORT);
+      const raw = await call(engine, o.verbatim ? VERBATIM_REVIEW_SYSTEM : REVIEW_SYSTEM, reviewPrompt(o.items, o.context), o.signal, REVIEW_EFFORT);
       const result = applyReview(lines, raw);
       if (result.reviewed === lines.length) return { ...result, reviewer: interpreterInfo(engine).name };
       console.error(`[interpreter] reviewer ${engine} answered ${result.reviewed}/${lines.length}; trying another reviewer`);
@@ -412,6 +454,8 @@ export const PARALLEL_BATCHES = 6;
 export async function interpretTimed(o: {
   segments: TimedSegment[]; context: Omit<BatchContext, 'before' | 'after'>; engine: InterpreterId; signal: AbortSignal;
   review?: boolean; onSegment(index: number, hindi: string): void; call?: Caller;
+  /** As-it-is mode: the speaker's exact words (word for word) instead of a simple Hindi explanation. */
+  verbatim?: boolean;
   /** Hindi already finished in an earlier (interrupted) run, aligned to segments; those batches are not paid for again. */
   saved?: string[];
 }) {
@@ -429,21 +473,22 @@ export async function interpretTimed(o: {
   await pool(batches, PARALLEL_BATCHES, async start => {
     const segs = o.segments.slice(start, start + TIMED_BATCH);
     const context = continuityContext(o.segments.map(s => s.text), start, segs.length, o.context);
-    const user = timedBatchPrompt(segs, context);
+    const verbatim = o.verbatim === true;
+    const user = timedBatchPrompt(segs, context, !verbatim);
     const prior = o.saved?.length === o.segments.length ? o.saved.slice(start, start + segs.length) : [];
     // Device data is not proof of independent review. Recheck matching saved translations,
     // without retranslating them, whenever review is requested.
     const first = prior.length === segs.length && prior.every(line => line.trim())
       ? { lines: prior, engine: o.engine }
-      : await interpretBatch({ engine: o.engine, system: TIMED_SYSTEM, user, count: segs.length, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
+      : await interpretBatch({ engine: o.engine, system: verbatim ? VERBATIM_TIMED_SYSTEM : TIMED_SYSTEM, user, count: segs.length, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
     used.add(interpreterInfo(first.engine).name);
     let out = first.lines;
     if (o.review !== false) {
-      const checked = await reviewBatch({ interpreter: first.engine, items: segs.map((s, i) => ({ source: s.text, hindi: out[i] ?? '', seconds: s.end - s.start })), context, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
+      const checked = await reviewBatch({ interpreter: first.engine, items: segs.map((s, i) => ({ source: s.text, hindi: out[i] ?? '', ...(verbatim ? {} : { seconds: s.end - s.start }) })), context, signal: o.signal, verbatim, ...(o.call ? { call: o.call } : {}) });
       out = checked.lines; quality.reviewed += checked.reviewed; quality.corrected += checked.corrected;
       if (checked.reviewer && !quality.reviewers.includes(checked.reviewer)) quality.reviewers.push(checked.reviewer);
     }
-    out = (await finishEnglishWords({ lines: out, engine: first.engine, context, signal: o.signal, ...(o.call ? { call: o.call } : {}) })).lines;
+    out = (await finishEnglishWords({ lines: out, engine: first.engine, context, signal: o.signal, verbatim, ...(o.call ? { call: o.call } : {}) })).lines;
     out.forEach((line, i) => { lines[start + i] = line; o.onSegment(start + i, line); });
   });
   return { lines, interpreters: [...used], quality };
@@ -452,7 +497,7 @@ export async function interpretTimed(o: {
 /** Untimed transcript chunks → simple Hindi paragraphs (same order). */
 export async function interpretProse(o: {
   chunks: string[]; context: Omit<BatchContext, 'before' | 'after'>; engine: InterpreterId; signal: AbortSignal;
-  review?: boolean; onChunk(index: number, hindi: string): void; call?: Caller;
+  review?: boolean; onChunk(index: number, hindi: string): void; call?: Caller; verbatim?: boolean;
 }) {
   const lines = Array<string>(o.chunks.length).fill('');
   const used = new Set<string>();
@@ -463,15 +508,16 @@ export async function interpretProse(o: {
   await pool(batches, PARALLEL_BATCHES, async start => {
     const parts = o.chunks.slice(start, start + PER).map((text, i) => ({ text, first: start + i === 0, last: start + i === o.chunks.length - 1 }));
     const context = continuityContext(o.chunks, start, parts.length, o.context);
-    const first = await interpretBatch({ engine: o.engine, system: PROSE_SYSTEM, user: proseBatchPrompt(parts, context), count: parts.length, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
+    const verbatim = o.verbatim === true;
+    const first = await interpretBatch({ engine: o.engine, system: verbatim ? VERBATIM_PROSE_SYSTEM : PROSE_SYSTEM, user: proseBatchPrompt(parts, context), count: parts.length, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
     used.add(interpreterInfo(first.engine).name);
     let out = first.lines;
     if (o.review !== false) {
-      const checked = await reviewBatch({ interpreter: first.engine, items: parts.map((p, i) => ({ source: p.text, hindi: out[i] ?? '' })), context, signal: o.signal, ...(o.call ? { call: o.call } : {}) });
+      const checked = await reviewBatch({ interpreter: first.engine, items: parts.map((p, i) => ({ source: p.text, hindi: out[i] ?? '' })), context, signal: o.signal, verbatim, ...(o.call ? { call: o.call } : {}) });
       out = checked.lines; quality.reviewed += checked.reviewed; quality.corrected += checked.corrected;
       if (checked.reviewer && !quality.reviewers.includes(checked.reviewer)) quality.reviewers.push(checked.reviewer);
     }
-    out = (await finishEnglishWords({ lines: out, engine: first.engine, context, signal: o.signal, ...(o.call ? { call: o.call } : {}) })).lines;
+    out = (await finishEnglishWords({ lines: out, engine: first.engine, context, signal: o.signal, verbatim, ...(o.call ? { call: o.call } : {}) })).lines;
     out.forEach((line, i) => { lines[start + i] = line; o.onChunk(start + i, line); });
   });
   return { lines, interpreters: [...used], quality };

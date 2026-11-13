@@ -76,6 +76,7 @@ function YouTubeHindi() {
   const [engine, setEngine] = useState<InterpreterId>(DEFAULT_INTERPRETER);
   const [quality, setQuality] = useState(true);
   const [deepListen, setDeepListen] = useState(false);
+  const [verbatim, setVerbatim] = useState(false);
   const [run, setRun] = useState<RunState | null>(null);
   const [error, setError] = useState('');
   const [result, setResult] = useState<YouTubeResult | null>(null);
@@ -114,6 +115,7 @@ function YouTubeHindi() {
         if (!saved) return;
         setUrl(saved.url); setTranscript(saved.transcript); setVoice(saved.voice); setResult(saved.result);
         if (saved.result.engine) setEngine(saved.result.engine);
+        setVerbatim(saved.result.verbatim === true);
         setActiveKey(libraryKey(saved.result, saved.url, saved.transcript));
         void freshInstagram(saved.result).then(r => { if (!dead && r) setResult(cur => (cur === saved.result ? r : cur)); });
         if (saved.result.source?.kind === 'upload') {
@@ -164,7 +166,7 @@ function YouTubeHindi() {
     if (attached?.kind === 'media') return { kind: 'file', file: attached.file };
     return transcript.trim() ? { kind: 'text', transcript, url } : null;
   }
-  const savedKey = (() => { const i = currentCheckpointInput(); return i ? checkpointKey(i, engine, quality, deepListen) : ''; })();
+  const savedKey = (() => { const i = currentCheckpointInput(); return i ? checkpointKey(i, engine, quality, deepListen, verbatim) : ''; })();
   useEffect(() => {
     if (!savedKey || busy) { if (!savedKey) setSaved(null); return; }
     let dead = false;
@@ -194,7 +196,7 @@ function YouTubeHindi() {
     }
     runIsFile.current = input.kind === 'file';
     const cached = input.kind === 'link' ? library.find(e => e.url.trim() === linkUrl.trim() && e.result.engine === engine
-      && e.result.pipeline === INTERPRET_PIPELINE && e.result.deepListen === deepListen
+      && e.result.pipeline === INTERPRET_PIPELINE && e.result.deepListen === deepListen && (e.result.verbatim === true) === verbatim
       && (!quality || (e.result.panel?.reviewRequested === true && e.result.panel.reviewed === e.result.panel.reviewTotal))) : undefined;
     if (cached) { openEntry(cached); return; }
 
@@ -205,7 +207,7 @@ function YouTubeHindi() {
       if (mediaObjectUrl) URL.revokeObjectURL(mediaObjectUrl);
       setMediaObjectUrl(URL.createObjectURL(input.file));
     }
-    const key = checkpointKey(input.kind === 'file' ? { kind: 'file', file: input.file } : input, engine, quality, deepListen);
+    const key = checkpointKey(input.kind === 'file' ? { kind: 'file', file: input.file } : input, engine, quality, deepListen, verbatim);
     const checkpoint = await loadCheckpoint(key).catch(() => null);
     // Save finished parts at most every 2 s (and once at the end) so a stop never loses paid work.
     let pending: Omit<Checkpoint, 'key' | 'savedAt'> | null = null, timer: ReturnType<typeof setTimeout> | null = null;
@@ -219,7 +221,7 @@ function YouTubeHindi() {
     const onCheckpoint = (cp: Omit<Checkpoint, 'key' | 'savedAt'>) => { pending = cp; timer ??= setTimeout(() => { void flush(); }, 2000); };
     let finished = false;
     try {
-      let r = await runInterpretation({ input, engine, quality, signal: ctl.signal, checkpoint, onCheckpoint, onState: s => { if (!ctl.signal.aborted) setRun(s); } });
+      let r = await runInterpretation({ input, engine, quality, verbatim, signal: ctl.signal, checkpoint, onCheckpoint, onState: s => { if (!ctl.signal.aborted) setRun(s); } });
       await flush();
       if (ctl.signal.aborted) return;
       setResult(r);
@@ -251,6 +253,7 @@ function YouTubeHindi() {
     stopRef.current(); setError(''); setResult(entry.result); setActiveKey(entry.key); setVoice(entry.voice);
     setMediaObjectUrl(null);
     if (entry.result.engine) setEngine(entry.result.engine);
+    setVerbatim(entry.result.verbatim === true);
     if (entry.url) setUrl(entry.url);
     void saveYouTubeStudy({ version: 1, url: entry.url, transcript: '', voice: entry.voice, result: entry.result }).catch(() => {});
     void freshInstagram(entry.result).then(r => { if (r) setResult(cur => (cur === entry.result ? r : cur)); });
@@ -418,8 +421,9 @@ function YouTubeHindi() {
           <span className="text-xs text-muted-foreground">{voiceEngine === 'sarvam' ? 'pehle Sarvam · fail hone par Lovable backup' : 'hamesha Lovable AI ki awaaz'}</span>
         </label>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-2"><Switch id="verbatim" checked={verbatim} onCheckedChange={setVerbatim} disabled={locked} /><Label htmlFor="verbatim" className="flex items-center gap-1.5 text-sm"><Captions className="size-4" />As it is transcript (शब्दशः)</Label></div>
           <div className="flex items-center gap-2"><Switch id="quality" checked={quality} onCheckedChange={setQuality} disabled={locked} /><Label htmlFor="quality" className="flex items-center gap-1.5 text-sm"><ShieldCheck className="size-4" />दूसरे model से दोबारा जाँच</Label></div>
-          <Button className="h-11 sm:ml-auto" onClick={() => void convert()} disabled={restoring || locked}><Languages className="size-4" />{saved && !busy ? 'जहाँ रुका वहीं से आगे' : 'Hindi में समझाओ'}</Button>
+          <Button className="h-11 sm:ml-auto" onClick={() => void convert()} disabled={restoring || locked}><Languages className="size-4" />{saved && !busy ? 'जहाँ रुका वहीं से आगे' : verbatim ? 'As it is Hindi transcript बनाओ' : 'Hindi में समझाओ'}</Button>
         </div>
         {saved && !busy && (
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg bg-accent/60 px-3 py-2 text-sm text-accent-foreground" data-testid="saved-progress">
@@ -435,7 +439,7 @@ function YouTubeHindi() {
       {/* One player slot for live and finished Hindi, so playback never restarts when the team finishes. */}
       {(run || result) && (
         <div className={showResult ? 'mt-10 border-t pt-6' : 'mt-8 space-y-4'}>
-          {run && <RunProgress state={run} interpreter={engineName} quality={quality} onCancel={cancel} />}
+          {run && <RunProgress state={run} interpreter={engineName} quality={quality} verbatim={verbatim} onCancel={cancel} />}
           {showResult && result && <>
             {result.title && <h2 className="mb-3 text-xl font-semibold">{result.title}</h2>}
             <SourceBadges result={result} />
@@ -450,7 +454,7 @@ function YouTubeHindi() {
               audioKey={activeKey} request={!!activeKey && audioRequest === activeKey} onRequestHandled={() => setAudioRequest(null)} onSaved={() => void refreshSavedAudio()} />
             <div className="mt-3"><YouTubeTranscriptDownload result={result} transcript={transcript} disabled={busy} /></div>
             <details className="mt-8 border-t pt-4" open={!result.dub?.length}>
-              <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium">सरल Hindi explanation<ChevronDown className="size-4" /></summary>
+              <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium">{result.verbatim ? 'Hindi transcript (as it is)' : 'सरल Hindi explanation'}<ChevronDown className="size-4" /></summary>
               <div className="mt-3 flex items-center gap-3">
                 {playing
                   ? <Button variant="outline" onClick={() => stopRef.current()}><Square className="size-4" />Stop</Button>

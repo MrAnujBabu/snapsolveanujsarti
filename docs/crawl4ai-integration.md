@@ -117,3 +117,10 @@ The browser keeps the last 300 outcomes on the device (`src/lib/reader-log.ts`) 
 (per-mode totals, reader mix, failure reasons, per-URL list, Copy report). Each outcome is also tracked as
 `project.page_read` (no full URLs; site host only). Known gap: ncert_read/read_link remote (Firecrawl) fallbacks are not
 counted, and sites that serve their homepage for unknown paths (e.g. springer.com) still count as opened.
+
+## Scanned PDFs, www twins and Deep research (Nov 13)
+
+- Scanned PDFs (at least half the pages without text) are reported as `scanned_pdf`, never as a blocking website. Web research can send them once to Lovable AI (`ocr.server.ts`, gpt-6-astra with the PDF as an input file) for a page-by-page transcription: on by default in Search, opt-in in Read page; ≤ 10 MB, ≤ 30 pages, ≤ 3 scanned PDFs per request; results carry "read from scan with AI". Tutor/voice reads stay free and never OCR.
+- A direct read that fails to connect retries once on the www/no-www twin host (www.nta.ac.in refuses, nta.ac.in works) before the browser/archive rescue.
+- Search "Deep research": web search with high context and high effort, extra search angles, 4 spare pages, 6000-char excerpts, a high-effort comparing answer (~450 words). Default stays the quick, cheaper setting.
+- Live check: "NEET 2026 exam date NTA" went from 2/6 to 6/6 pages read (one scanned notice transcribed).

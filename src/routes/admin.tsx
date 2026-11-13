@@ -15,6 +15,8 @@ import { pendingFirstMessage } from '@/lib/threads';
 import { useNumericAnswerLabels } from '@/lib/quiz-label-preference';
 import { AdminVoiceHistory } from '@/components/admin-voice-history';
 import { RagLibrary } from '@/components/rag-library';
+import { AdminAiKeys } from '@/components/admin-ai-keys';
+import { AdminLearning } from '@/components/admin-learning';
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -58,7 +60,7 @@ const PRESETS: { label: string; tab: Tab; fill: Partial<MemoryInput> }[] = [
 ];
 
 function AdminPage() {
-  const [section, setSection] = useState<'memory' | 'voice'>('memory');
+  const [section, setSection] = useState<'memory' | 'learning' | 'voice' | 'keys'>('memory');
   const [recoveryVersion, setRecoveryVersion] = useState(0);
   const [state, setState] = useState<"loading" | "out" | "denied" | "in">("loading");
   const check = useServerFn(amIAdmin);
@@ -81,7 +83,7 @@ function AdminPage() {
         {state === "loading" && <p className="text-muted-foreground">Loading…</p>}
         {state === "out" && <SignIn onDone={refresh} />}
         {state === "denied" && <p className="text-destructive">Access denied — this account is not an admin.</p>}
-        {state === "in" && <><nav aria-label="Admin sections" className="mb-8 flex gap-2 border-b border-border pb-3"><Button variant={section === 'memory' ? 'secondary' : 'ghost'} onClick={() => setSection('memory')}>Agent memory</Button><Button variant={section === 'voice' ? 'secondary' : 'ghost'} onClick={() => setSection('voice')}>Voice calls</Button></nav>{section === 'voice' ? <AdminVoiceHistory /> : <div className="space-y-10"><BrainSettings key={`brain-${recoveryVersion}`} /><Library key={`library-${recoveryVersion}`} /><RagLibrary /><AdminRecovery onChanged={() => setRecoveryVersion(v => v + 1)} /><PasswordChange /></div>}</>}
+        {state === "in" && <><nav aria-label="Admin sections" className="mb-8 flex flex-wrap gap-2 border-b border-border pb-3"><Button variant={section === 'memory' ? 'secondary' : 'ghost'} onClick={() => setSection('memory')}>Agent memory</Button><Button variant={section === 'learning' ? 'secondary' : 'ghost'} onClick={() => setSection('learning')}>Agent learning</Button><Button variant={section === 'voice' ? 'secondary' : 'ghost'} onClick={() => setSection('voice')}>Voice calls</Button><Button variant={section === 'keys' ? 'secondary' : 'ghost'} onClick={() => setSection('keys')}>API keys</Button></nav>{section === 'keys' ? <AdminAiKeys /> : section === 'learning' ? <AdminLearning /> : section === 'voice' ? <AdminVoiceHistory /> : <div className="space-y-10"><BrainSettings key={`brain-${recoveryVersion}`} /><Library key={`library-${recoveryVersion}`} /><RagLibrary /><AdminRecovery onChanged={() => setRecoveryVersion(v => v + 1)} /><PasswordChange /></div>}</>}
       </main>
     </div>
   );

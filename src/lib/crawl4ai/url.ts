@@ -126,3 +126,22 @@ export function urlContentType(url: string): string {
   const ext = u.pathname.split("/").pop()?.match(/\.([a-z0-9]{1,5})$/i)?.[1]?.toLowerCase();
   return ext ? FILE_TYPES[ext] ?? "unknown" : "text/html";
 }
+
+/**
+ * The same link on the "www." twin host (www.example.in ↔ example.in), or null for IPs, localhost
+ * and single-label hosts. Some sites (e.g. nta.ac.in) refuse connections on one of the two names.
+ */
+export function twinHostUrl(raw: string): string | null {
+  const u = parseHttpUrl(raw);
+  if (!u) return null;
+  const host = u.hostname.toLowerCase();
+  if (/^[\d.]+$/.test(host) || host.includes(":") || !host.includes(".")) return null;
+  if (host.startsWith("www.")) {
+    const bare = host.slice(4);
+    if (!bare.includes(".")) return null;
+    u.hostname = bare;
+  } else {
+    u.hostname = `www.${host}`;
+  }
+  return u.toString();
+}

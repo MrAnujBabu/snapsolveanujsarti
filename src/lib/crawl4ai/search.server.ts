@@ -3,7 +3,7 @@
  * search (gpt-6-astra + web_search tool, billed to Lovable AI credits). The found pages are then
  * crawled for free and BM25-filtered against the query, so answers rest on text actually read.
  */
-import { crawlMany, looksBlocked, type CrawlResult } from "./crawler.server";
+import { crawlMany, looksBlocked, type CrawlConfig, type CrawlResult } from "./crawler.server";
 import { rankPassages } from "./filters";
 import { runResponse, type UsageMeter } from "./llm.server";
 import { normalizeUrl, parseHttpUrl, urlContentType } from "./url";
@@ -36,11 +36,12 @@ function lineAround(text: string, start: number): string {
 
 export async function aiWebSearch(
   query: string,
-  opts: { allowedDomains?: string[]; maxResults?: number; contextSize?: "low" | "medium" | "high"; signal?: AbortSignal; meter?: UsageMeter; extraInstructions?: string } = {},
+  opts: { allowedDomains?: string[]; maxResults?: number; contextSize?: "low" | "medium" | "high"; effort?: "low" | "medium" | "high"; signal?: AbortSignal; meter?: UsageMeter; extraInstructions?: string } = {},
 ): Promise<WebSearchResult> {
   const r = await runResponse({
     instructions: SEARCH_INSTRUCTIONS + (opts.extraInstructions ? `\n${opts.extraInstructions}` : ""),
     input: query.slice(0, 600),
+    ...(opts.effort ? { effort: opts.effort } : {}),
     webSearch: { contextSize: opts.contextSize ?? "low", ...(opts.allowedDomains?.length ? { allowedDomains: opts.allowedDomains } : {}) },
     ...(opts.signal ? { signal: opts.signal } : {}),
     ...(opts.meter ? { meter: opts.meter } : {}),
@@ -124,6 +125,12 @@ export async function searchAndCrawl(
     maxResults?: number;
     excerptChars?: number;
     pageTimeoutMs?: number;
+    /** Search depth: "high" + "high" effort for Deep research. */
+    contextSize?: "low" | "medium" | "high";
+    effort?: "low" | "medium" | "high";
+    extraInstructions?: string;
+    /** Scanned-PDF reader (Lovable AI) for the pages read. */
+    scannedPdf?: CrawlConfig["scannedPdf"];
     signal?: AbortSignal;
     meter?: UsageMeter;
     onSearch?: (r: WebSearchResult) => void;
@@ -133,6 +140,9 @@ export async function searchAndCrawl(
   const search = await aiWebSearch(query, {
     ...(opts.allowedDomains ? { allowedDomains: opts.allowedDomains } : {}),
     maxResults: opts.maxResults ?? 10,
+    ...(opts.contextSize ? { contextSize: opts.contextSize } : {}),
+    ...(opts.effort ? { effort: opts.effort } : {}),
+    ...(opts.extraInstructions ? { extraInstructions: opts.extraInstructions } : {}),
     ...(opts.signal ? { signal: opts.signal } : {}),
     ...(opts.meter ? { meter: opts.meter } : {}),
   });
@@ -145,7 +155,7 @@ export async function searchAndCrawl(
     targets.map((t) => t.url),
     // Rank passages with the search's own queries too: they use the sources' wording
     // (e.g. "peripheral neuropathy prevalence") when the student's words differ ("nerve fibre cases").
-    { query: passageQuery, fetch: { timeoutMs: opts.pageTimeoutMs ?? 10000 } },
+    { query: passageQuery, fetch: { timeoutMs: opts.pageTimeoutMs ?? 10000 }, ...(opts.scannedPdf ? { scannedPdf: opts.scannedPdf } : {}) },
     {
       concurrency: 4,
       ...(opts.signal ? { signal: opts.signal } : {}),
