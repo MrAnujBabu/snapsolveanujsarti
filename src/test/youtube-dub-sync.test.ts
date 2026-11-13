@@ -128,3 +128,20 @@ describe('YouTube synchronized narration', () => {
     } finally { vi.useRealTimers(); }
   });
 });
+import { htmlMediaState } from '@/lib/html-media-player';
+
+describe('htmlMediaState', () => {
+  const el = (o: Partial<{ ended: boolean; paused: boolean; seeking: boolean; readyState: number }>) => ({ ended: false, paused: false, seeking: false, readyState: 4, ...o });
+  it('keeps a playing phone video "playing" during a brief readyState dip without a stall event', () => {
+    expect(htmlMediaState(el({ readyState: 2 }), false)).toBe(1);
+  });
+  it('reports buffering only on a real stall, seek or missing frame', () => {
+    expect(htmlMediaState(el({}), true)).toBe(3);
+    expect(htmlMediaState(el({ seeking: true }), false)).toBe(3);
+    expect(htmlMediaState(el({ readyState: 1 }), false)).toBe(3);
+  });
+  it('reports paused and ended', () => {
+    expect(htmlMediaState(el({ paused: true }), true)).toBe(2);
+    expect(htmlMediaState(el({ ended: true, paused: true }), false)).toBe(0);
+  });
+});

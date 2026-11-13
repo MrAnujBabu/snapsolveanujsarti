@@ -41,7 +41,7 @@ export type VideoCandidate =
   | { kind: 'youtube'; id: string }
   | { kind: 'vimeo'; id: string };
 
-const decodeAttr = (value: string) => value.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x2F;/gi, '/').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+const decodeAttr = (value: string) => value.replace(/&#x([0-9a-f]{1,6});/gi, (_, h: string) => String.fromCodePoint(Math.min(parseInt(h, 16), 0x10ffff))).replace(/&#(\d{1,7});/g, (_, d: string) => String.fromCodePoint(Math.min(Number(d), 0x10ffff))).replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x2F;/gi, '/').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
 
 function attrs(tag: string) {
   const out: Record<string, string> = {};
@@ -56,6 +56,39 @@ export function vimeoId(raw: string) {
     if (host !== 'vimeo.com' && host !== 'player.vimeo.com') return null;
     return url.pathname.match(/(?:^|\/)(?:video\/)?(\d{6,12})(?:$|\/)/)?.[1] ?? null;
   } catch { return null; }
+}
+
+const INSTAGRAM_HOSTS = /^(?:(?:www|m)\.)?(?:instagram\.com|instagr\.am)$/i;
+
+/** True for any instagram.com / instagr.am address (reels, posts, share links). */
+export function isInstagramUrl(raw: string) {
+  try { return INSTAGRAM_HOSTS.test(new URL(raw.trim().match(/^https?:\/\//i) ? raw.trim() : `https://${raw.trim()}`).hostname); } catch { return false; }
+}
+
+/** Reel/post/IGTV shortcode from links like /reel/X, /reels/X, /p/X, /tv/X or /user/reel/X (share params ignored). */
+export function instagramShortcode(raw: string) {
+  if (!isInstagramUrl(raw)) return null;
+  try {
+    const url = new URL(raw.trim().match(/^https?:\/\//i) ? raw.trim() : `https://${raw.trim()}`);
+    return url.pathname.match(/^\/(?:[\w.]+\/)?(?:reels?|p|tv)\/([\w-]{5,40})(?:\/|$)/)?.[1] ?? null;
+  } catch { return null; }
+}
+
+/** Instagram CDN text escapes: JSON slashes (possibly double-escaped), unicode ampersands and HTML entities. */
+function unescapeInstagram(value: string) {
+  return value.replace(/\\+\//g, '/').replace(/\\+u0026/gi, '&').replace(/&amp;/g, '&');
+}
+
+/** Finds the reel's playable MP4 in an Instagram page or embed page; video_versions first, then video_url. */
+export function instagramVideoUrl(html: string): string | null {
+  const patterns = [/"video_versions"\s*:\s*\[\s*\{[^\]]*?"url"\s*:\s*"([^"]+)"/, /video_url\\*"\s*:\s*\\*"(https?:[^"]+?)\\*"/];
+  for (const re of patterns) {
+    const raw = html.match(re)?.[1];
+    if (!raw) continue;
+    const url = unescapeInstagram(raw);
+    try { const u = new URL(url); if (u.protocol === 'https:' && /(?:^|\.)(?:cdninstagram\.com|fbcdn\.net)$/i.test(u.hostname)) return u.href; } catch { /* keep looking */ }
+  }
+  return null;
 }
 
 function absolute(value: string, base: string) {

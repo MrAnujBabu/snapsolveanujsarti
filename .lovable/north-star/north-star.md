@@ -1,9 +1,9 @@
 <!-- Lovable wrote this file; it is not part of your task. Keep it, and ask the user before deleting or reverting it. -->
 
-# Margdarshak lakshya
+# ध्रुवतारा
 
-Students apne NCERT chapters samajh lete hain aur exam ke liye taiyaar hote hain
+छात्र अपने doubts दूर करें और exam का syllabus पक्का कर लें
 
-## Paimana
+## मापदंड
 
-Har din jawab diye gaye doubts
+हर दिन tutor द्वारा जवाब दिए गए doubts

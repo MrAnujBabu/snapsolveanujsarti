@@ -1,12 +1,16 @@
 # Roadmap
 
 ## Current (Nov 11)
+- [x] Instagram reel links play and get Hindi transcript/voice-over (real reel tested)
+- [x] Phone browsers that can't open HE-AAC reel sound: three backup ways to open the audio (user's reel tested)
+- [x] Transcript blinking/jumping and voice-over glitch: no line re-wrap on highlight, player stays mounted when team finishes, brief phone buffering dips ignored
+- [x] Send Instagram + audio + blink fixes to GitHub (PR + merge), keeping the never-speak-twice fix from PR #11
 - [x] Project moved again (15:55 UTC): GitHub API connected in the new workspace and reaches MrAnujBabu/snapsolveanujsarti
 - [x] English words in Hindi transcripts written the everyday way (Devanagari as spoken: गूगल शीट्स, रिवीज़न; hard words in simple Hindi), checked word-by-word by the reviewer plus a final swap-only fix-up for leftover English letters
 - [x] Deeper thinking for every step (listening, word list, translation, review) — user OK with higher credit use
 - [x] Last line of a pasted transcript no longer squeezed into ~12 words (time estimated from its length)
 - [x] Real end-to-end check: full 13-min Ali Abdaal video (26 parts, male voice, 0 English-letter words left) plus pasted transcript on phone-size page
-- [x] Everyday-Hindi English words + deeper interpretation sent to GitHub: PR #9 merged into main (44127d6)
+- [x] Everyday-Hindi English words + deeper interpretation sent to GitHub: PR #9 merged into main (44127d6); PR #10 (79dca47) re-uploaded the same 42 files as real content after the first upload stored them base64-encoded; repo now matches the app byte for byte (535 files, 0 diffs)
 - [ ] Ready next: optional per-user switch for English words in English letters vs Devanagari, if the user wants both styles
 - [x] Interpret by speaker gender: auto-detected from self-introduction, channel name and heard voice; real male (Ali, misheard as Ellie) and female runs passed
 - [x] Transcript History page (/transcripts): search, read with timestamps, open with video, download, delete; linked from sidebar and library

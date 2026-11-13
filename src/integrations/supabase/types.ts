@@ -59,6 +59,42 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_provider_keys: {
+        Row: {
+          ciphertext: string
+          iv: string
+          key_version: number
+          last_check_at: string | null
+          last_check_note: string | null
+          last_check_ok: boolean | null
+          provider: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          ciphertext: string
+          iv: string
+          key_version?: number
+          last_check_at?: string | null
+          last_check_note?: string | null
+          last_check_ok?: boolean | null
+          provider: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          ciphertext?: string
+          iv?: string
+          key_version?: number
+          last_check_at?: string | null
+          last_check_note?: string | null
+          last_check_ok?: boolean | null
+          provider?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       memory_items: {
         Row: {
           active: boolean
