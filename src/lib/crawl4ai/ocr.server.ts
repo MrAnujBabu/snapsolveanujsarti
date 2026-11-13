@@ -23,17 +23,20 @@ function toBase64(bytes: Uint8Array): string {
 
 /** Splits "## Page N" sections into page texts; text before the first marker joins page 1. */
 export function splitOcrPages(text: string, pageCount: number): string[] {
+  if (!Number.isInteger(pageCount) || pageCount < 1 || pageCount > OCR_LIMITS.maxPages) return [];
   const parts = text.split(/^\s*#{1,3}\s*Page\s+(\d+)\s*$/im);
-  if (parts.length < 3) return [text.trim()];
-  const pages: string[] = new Array(Math.max(pageCount, 1)).fill("");
-  const lead = parts[0]!.trim();
+  if (parts.length < 3) return pageCount === 1 ? [text.trim()] : [];
+  const pages: string[] = new Array(pageCount).fill("");
+  const seen = new Set<number>();
+  const lead = (parts[0] ?? "").trim();
   for (let i = 1; i < parts.length; i += 2) {
     const n = Number(parts[i]);
     const body = (parts[i + 1] ?? "").trim();
-    const idx = Number.isFinite(n) && n >= 1 ? n - 1 : 0;
-    if (idx >= pages.length) pages.push(...new Array(idx - pages.length + 1).fill(""));
-    pages[idx] = pages[idx] ? `${pages[idx]}\n\n${body}` : body;
+    if (!Number.isInteger(n) || n < 1 || n > pageCount || seen.has(n)) return [];
+    seen.add(n);
+    pages[n - 1] = body;
   }
+  if (seen.size !== pageCount) return [];
   if (lead) pages[0] = pages[0] ? `${lead}\n\n${pages[0]}` : lead;
   return pages;
 }
@@ -41,18 +44,27 @@ export function splitOcrPages(text: string, pageCount: number): string[] {
 export type OcrResult = { pages: string[] } | { skipped: string };
 
 /** Transcribes a scanned PDF. Throws CrawlAiError for AI problems (pause, credits, Stop). */
-export async function ocrScannedPdf(bytes: Uint8Array, pageCount: number, opts: { filename?: string; signal?: AbortSignal; meter?: UsageMeter } = {}): Promise<OcrResult> {
+/** Prompt for the transcription; a mixed PDF names only its photo pages so readable pages cost nothing extra. */
+export function ocrRequestText(pageCount: number, photoPages?: number[]): string {
+  const only = [...new Set(photoPages ?? [])].filter((n) => Number.isInteger(n) && n >= 1 && n <= pageCount).sort((a, b) => a - b);
+  if (!only.length || only.length === pageCount) return `Transcribe all ${pageCount} page${pageCount === 1 ? "" : "s"} of this scanned PDF.`;
+  return `This PDF has ${pageCount} pages. Fully transcribe ONLY page${only.length === 1 ? "" : "s"} ${only.join(", ")} (photos without a text layer). For every other page write just its "## Page N" line followed by the single line [text layer kept], because that text is already available.`;
+}
+
+export async function ocrScannedPdf(bytes: Uint8Array, pageCount: number, opts: { filename?: string; signal?: AbortSignal; meter?: UsageMeter; photoPages?: number[] } = {}): Promise<OcrResult> {
+  if (!Number.isInteger(pageCount) || pageCount < 1) return { skipped: "The PDF page count could not be verified." };
   if (bytes.byteLength > OCR_LIMITS.maxBytes) return { skipped: `This scanned PDF is over ${OCR_LIMITS.maxBytes / 1_000_000} MB, too big to read with AI here.` };
   if (pageCount > OCR_LIMITS.maxPages) return { skipped: `This scanned PDF has ${pageCount} pages; AI reading here is limited to ${OCR_LIMITS.maxPages} pages.` };
   await assertAiAvailable();
   const r = await runResponse({
     instructions: OCR_INSTRUCTIONS,
-    input: `Transcribe all ${pageCount} page${pageCount === 1 ? "" : "s"} of this scanned PDF.`,
+    input: ocrRequestText(pageCount, opts.photoPages),
     files: [{ filename: (opts.filename || "scan.pdf").replace(/[^\w.-]+/g, "_").slice(0, 80) || "scan.pdf", dataUrl: `data:application/pdf;base64,${toBase64(bytes)}` }],
     effort: "low",
     ...(opts.signal ? { signal: opts.signal } : {}),
     ...(opts.meter ? { meter: opts.meter } : {}),
   });
   const pages = splitOcrPages(r.text, pageCount);
+  if (pages.length !== pageCount) return { skipped: "The AI transcription did not cover every PDF page reliably. Open the original to check it." };
   return pages.some((p) => p.trim()) ? { pages } : { skipped: "The AI could not find any text on these scanned pages." };
 }

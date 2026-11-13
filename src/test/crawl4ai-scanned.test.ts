@@ -1,10 +1,12 @@
 // @vitest-environment node
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { resetRendererPause } from "@/lib/crawl4ai/browser-reader.server";
-import { clearCrawlCache, crawl, looksBlocked } from "@/lib/crawl4ai/crawler.server";
-import { splitOcrPages } from "@/lib/crawl4ai/ocr.server";
+import { clearCrawlCache, crawl, isMostlyScannedPdf, isScannedPdf, looksBlocked } from "@/lib/crawl4ai/crawler.server";
+import { CrawlAiError } from "@/lib/crawl4ai/llm.server";
+import { ocrRequestText, splitOcrPages } from "@/lib/crawl4ai/ocr.server";
+import { pageLabelledMarkdown } from "@/lib/crawl4ai/search.server";
 import { outcomeFromCrawl } from "@/lib/crawl4ai/read-outcome";
-import { researchRequestSchema } from "@/lib/crawl4ai/research-protocol";
+import { researchRequestSchema, usesAi } from "@/lib/crawl4ai/research-protocol";
 import { twinHostUrl } from "@/lib/crawl4ai/url";
 
 afterEach(() => {
@@ -87,7 +89,54 @@ describe("scanned PDFs", () => {
 
   it("splits the AI transcription into pages by its '## Page N' lines", () => {
     expect(splitOcrPages("## Page 1\nA notice\n\n## Page 2\nSecond page", 2)).toEqual(["A notice", "Second page"]);
-    expect(splitOcrPages("No markers at all", 3)).toEqual(["No markers at all"]);
+    expect(splitOcrPages("No markers at all", 1)).toEqual(["No markers at all"]);
+  });
+
+  it("detects one photo page in a mostly readable PDF", () => {
+    expect(isScannedPdf(["Readable page with several real printed words", "Another readable page with real text here", ""])).toBe(true);
+    expect(isScannedPdf(["Readable page with several real printed words"])).toBe(false);
+    expect(isMostlyScannedPdf(["Readable page with several real printed words", "Another readable page with real text here", ""])).toBe(false);
+    expect(isMostlyScannedPdf(["Readable page with several real printed words", "", ""])).toBe(true);
+  });
+
+  it("rejects missing, duplicate or out-of-range OCR page markers", () => {
+    expect(splitOcrPages("No markers at all", 3)).toEqual([]);
+    expect(splitOcrPages("## Page 1\nText", 2)).toEqual([]);
+    expect(splitOcrPages("## Page 1\nText\n## Page 1\nRepeated", 2)).toEqual([]);
+    expect(splitOcrPages("## Page 999999999\nText", 1)).toEqual([]);
+  });
+
+  it("does not count incomplete OCR as a successful read", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => pdfResponse()));
+    const r = await crawl("https://nta.ac.in/incomplete.pdf", { scannedPdf: async () => ({ pages: ["Text", "Invented extra page"] }) });
+    expect(r.success).toBe(false);
+    expect(r.ocr).toBeUndefined();
+    expect(r.error).toContain("every PDF page");
+  });
+
+  it("asks AI to transcribe only the photo pages of a mixed PDF", () => {
+    expect(ocrRequestText(18, [1])).toContain("ONLY page 1 ");
+    expect(ocrRequestText(2, [1, 2])).toBe("Transcribe all 2 pages of this scanned PDF.");
+  });
+
+  it("never uses the skipped-page marker as the photo page's text", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => pdfResponse()));
+    const r = await crawl("https://nta.ac.in/marker.pdf", { scannedPdf: async () => ({ pages: ["[text layer kept]"] }) });
+    expect(r.success).toBe(false);
+    expect(r.ocr).toBeUndefined();
+  });
+
+  it("keeps PDF page numbers on every paragraph used for answers", () => {
+    const md = pageLabelledMarkdown({ kind: "pdf", pages: ["Notice heading\n\nSyllabus line", "Signed by Director"], markdown: { rawMarkdown: "", markdownWithCitations: "", referencesMarkdown: "", fitMarkdown: "", fitHtml: "" } });
+    expect(md).toBe("[Page 1] Notice heading\n\n[Page 1] Syllabus line\n\n[Page 2] Signed by Director");
+  });
+
+  it("propagates AI credits failures without a twin retry or browser rescue", async () => {
+    const fetchMock = vi.fn(async () => pdfResponse());
+    vi.stubGlobal("fetch", fetchMock);
+    const failure = new CrawlAiError("credits", "Credits used up", 402);
+    await expect(crawl("https://nta.ac.in/credits.pdf", { scannedPdf: async () => { throw failure; } })).rejects.toBe(failure);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -99,5 +148,7 @@ describe("research options", () => {
 
   it("a plain page read stays free: scanned-PDF AI reading is off unless switched on", () => {
     expect(researchRequestSchema.parse({ mode: "read", url: "https://a.in/x.pdf" })).toMatchObject({ ocr: false });
+    expect(usesAi(researchRequestSchema.parse({ mode: "read", url: "https://a.in/x.pdf" }))).toBe(false);
+    expect(usesAi(researchRequestSchema.parse({ mode: "read", url: "https://a.in/x.pdf", ocr: true }))).toBe(true);
   });
 });

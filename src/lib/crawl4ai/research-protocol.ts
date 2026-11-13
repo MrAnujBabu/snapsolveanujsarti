@@ -73,7 +73,7 @@ export function usesAi(req: ResearchRequest): boolean {
     case "search":
       return true;
     case "read":
-      return req.aiClean || !!req.question?.trim();
+      return req.ocr || req.aiClean || !!req.question?.trim();
     case "deep":
       return req.summarize;
     case "extract":

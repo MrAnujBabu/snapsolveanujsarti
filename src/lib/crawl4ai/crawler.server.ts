@@ -7,6 +7,7 @@ import { canRead, canWrite, LruCache, type CacheMode } from "./cache";
 import { CrawlError, fetchPage, type FetchedPage, type FetchOptions } from "./fetcher.server";
 import { bm25Filter, pruningFilter, rankPassages } from "./filters";
 import { generateMarkdown, type MarkdownResult } from "./markdown";
+import { CrawlAiError } from "./llm.server";
 import { pdfPagesToMarkdown, pdfToText } from "./pdf.server";
 import { scrapeHtml, type PageLink, type PageMedia, type PageMetadata, type PageTable, type ScrapeOptions } from "./scrape";
 import { wordCount } from "./text";
@@ -37,9 +38,9 @@ export type CrawlConfig = {
   /**
    * Reader for scanned PDFs (pages that are photos, no text layer). Web research passes the Lovable AI
    * transcriber here; without it a scanned PDF is reported honestly as scanned (never as "blocked").
-   * It returns page texts, or `skipped` with a reason; it throws only for Stop.
+   * It returns page texts, or `skipped` with a reason; Stop and AI failures propagate.
    */
-  scannedPdf?: (bytes: Uint8Array, info: { pageCount: number; url: string }) => Promise<{ pages: string[] } | { skipped: string }>;
+  scannedPdf?: (bytes: Uint8Array, info: { pageCount: number; url: string; photoPages: number[] }) => Promise<{ pages: string[] } | { skipped: string }>;
 };
 
 /** How the text was obtained: a direct read, the free browser renderer, or the web archive's copy. */
@@ -124,11 +125,15 @@ function fromHtml(page: FetchedPage, config: CrawlConfig): CrawlResult {
   };
 }
 
-/** True when at least half the pages carry (almost) no text: the PDF is photos of pages. */
+/** Mixed PDFs also need OCR when even one page carries almost no text. */
 export function isScannedPdf(pages: string[]): boolean {
+  return pages.some((t) => wordCount(t) < 5);
+}
+
+/** At least half the pages are photos: without OCR the PDF is not a usable source. */
+export function isMostlyScannedPdf(pages: string[]): boolean {
   if (!pages.length) return false;
-  const empty = pages.filter((t) => wordCount(t) < 5).length;
-  return empty >= Math.ceil(pages.length / 2);
+  return pages.filter((t) => wordCount(t) < 5).length >= Math.ceil(pages.length / 2);
 }
 
 async function fromPdf(page: FetchedPage, config: CrawlConfig): Promise<CrawlResult> {
@@ -136,15 +141,24 @@ async function fromPdf(page: FetchedPage, config: CrawlConfig): Promise<CrawlRes
   // The PDF parser may take over (detach) the buffer it is given; keep the original for the scan reader.
   const pdf = await pdfToText(bytes.slice());
   const scanned = isScannedPdf(pdf.pages);
+  const mostlyScanned = isMostlyScannedPdf(pdf.pages);
   let ocr = false;
   let scanNote = "";
   if (scanned && config.scannedPdf) {
-    const read = await config.scannedPdf(bytes, { pageCount: pdf.pageCount, url: page.url });
-    if ("pages" in read) {
-      pdf.pages = read.pages.slice(0, Math.max(pdf.pages.length, read.pages.length));
+    const photoPages = pdf.pages.flatMap((t, i) => (wordCount(t) < 5 ? [i + 1] : []));
+    const read = await config.scannedPdf(bytes, { pageCount: pdf.pageCount, url: page.url, photoPages });
+    // "[text layer kept]" is the AI's marker for readable pages it was told to skip; never page text.
+    const ocrPages = "pages" in read ? read.pages.map((t) => t.replace(/^\s*\[text layer kept\]\s*$/gim, "").trim()) : [];
+    const photoRead = photoPages.some((n) => (ocrPages[n - 1] ?? "").trim());
+    if ("pages" in read && read.pages.length === pdf.pageCount && photoRead) {
+      // Keep accurate embedded text on readable pages; replace only the photo pages.
+      pdf.pages = ocrPages.map((text, i) => {
+        const original = pdf.pages[i] ?? "";
+        return wordCount(original) >= 5 ? original : text;
+      });
       ocr = true;
     } else {
-      scanNote = read.skipped;
+      scanNote = "skipped" in read ? read.skipped : "The AI transcription did not cover every PDF page reliably.";
     }
   }
   const textWords = wordCount(pdf.pages.join("\n"));
@@ -158,17 +172,18 @@ async function fromPdf(page: FetchedPage, config: CrawlConfig): Promise<CrawlRes
   // Only real page text counts: the "(no text on this page)" placeholders are not words of the PDF.
   const words = textWords;
   const unreadScan = scanned && !ocr;
-  const failed = page.status >= 400 || words === 0 || unreadScan;
+  // A mostly readable PDF with a blank/photo page stays usable, but is marked incomplete.
+  const failed = page.status >= 400 || words === 0 || (unreadScan && mostlyScanned);
   const scanError = `This PDF is made of scanned pages (photos), so it has no text layer to read.${scanNote ? ` ${scanNote}` : ""}`;
   return {
     url: page.requestedUrl, finalUrl: page.url, success: !failed, status: page.status,
-    ...(unreadScan ? { error: scanError, errorCode: "scanned" } : words === 0 ? { error: "This PDF has no readable text.", errorCode: "empty" } : {}),
+    ...(unreadScan && failed ? { error: scanError, errorCode: "scanned" } : words === 0 ? { error: "This PDF has no readable text.", errorCode: "empty" } : {}),
     ...(scanned ? { scanned: true } : {}), ...(ocr ? { ocr: true } : {}),
     kind: "pdf", metadata: { title: pdf.title ?? page.url.split("/").pop() ?? "PDF" },
     markdown: { rawMarkdown: cap(raw), markdownWithCitations: cap(raw), referencesMarkdown: "", fitMarkdown: cap(fit), fitHtml: "" },
     links: { internal: [], external: [] }, media: { images: [], videos: [], audios: [] }, tables: [], pages: pdf.pages,
     wordCount: words, fitWordCount: wordCount(fit), needsBrowser: false, cached: false, elapsedMs: page.elapsedMs, redirects: page.redirects,
-    truncated: pdf.truncatedPages, via: "direct",
+    truncated: pdf.truncatedPages || (unreadScan && !failed), via: "direct",
   };
 }
 
@@ -269,7 +284,10 @@ async function rescue(url: string, current: CrawlResult, config: CrawlConfig): P
   if (needsRescue(best)) {
     const archived = await fetchArchived(url, { timeoutMs, ...(signal ? { signal } : {}) });
     if (archived) {
-      const r = await fromPage(archived.page, config).catch(() => null);
+      const r = await fromPage(archived.page, config).catch((error: unknown) => {
+        if (error instanceof CrawlAiError || (error instanceof CrawlError && error.code === "cancelled")) throw error;
+        return null;
+      });
       const fromArchive = r ? { ...r, via: "archive" as const, archivedAt: archived.archivedAt } : null;
       if (isBetterRead(fromArchive, best)) best = fromArchive;
     }
@@ -290,6 +308,7 @@ export async function crawl(url: string, config: CrawlConfig = {}): Promise<Craw
   try {
     result = await fromPage(await fetchPage(url, config.fetch), config);
   } catch (error) {
+    if (error instanceof CrawlAiError) throw error;
     if (error instanceof CrawlError && error.code === "cancelled") throw error;
     result = failedResult(url, error, Date.now() - started);
   }
@@ -301,6 +320,7 @@ export async function crawl(url: string, config: CrawlConfig = {}): Promise<Craw
       const alt = await fromPage(await fetchPage(twin, config.fetch), config);
       if (alt.success) result = { ...alt, url, elapsedMs: Date.now() - started };
     } catch (error) {
+      if (error instanceof CrawlAiError) throw error;
       if (error instanceof CrawlError && error.code === "cancelled") throw error;
     }
   }
