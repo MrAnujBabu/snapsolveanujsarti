@@ -1,5 +1,5 @@
 // Server-only: resolves any public page or media link to a YouTube id, a playable media file and optional captions.
-import { extractVideoCandidates, isMediaContentType, MEDIA_EXTENSION, publicHttpUrl, vimeoId } from './web-video';
+import { extractVideoCandidates, instagramShortcode, instagramVideoUrl, isInstagramUrl, isMediaContentType, MEDIA_EXTENSION, publicHttpUrl, vimeoId } from './web-video';
 import { parseYouTubeId } from './youtube-hindi';
 
 export const BROWSER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36';
@@ -60,6 +60,40 @@ async function resolveVimeo(id: string, pageUrl: string, signal: AbortSignal): P
   return { kind: 'media', url: media, title: config.video?.title ?? 'Vimeo video', pageUrl, ...(captionsUrl ? { captionsUrl } : {}) };
 }
 
+// Instagram serves the full reel data (with its MP4) to search crawlers without login; the embed page is the backup.
+const CRAWLER_UA = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+const PREVIEW_UA = 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)';
+const INSTAGRAM_ERROR = 'यह Instagram video नहीं खुली — शायद account private है, post photo है या Instagram ने रोका है। Reel download करके "Phone से" upload करें।';
+
+async function instagramPage(url: string, ua: string, signal: AbortSignal) {
+  const { response, url: finalUrl } = await safeFetch(url, { signal, headers: { 'User-Agent': ua, Accept: 'text/html,*/*;q=0.8', 'Accept-Language': 'en-IN,en;q=0.9' } });
+  if (!response.ok) { await response.body?.cancel().catch(() => {}); return { html: '', finalUrl }; }
+  return { html: await readText(response, 3_000_000), finalUrl };
+}
+
+async function resolveInstagram(raw: string, signal: AbortSignal): Promise<ResolvedVideo> {
+  const timeout = AbortSignal.any([signal, AbortSignal.timeout(20000)]);
+  let code = instagramShortcode(raw);
+  try {
+    // Share links (instagram.com/share/…) only reveal the reel after a redirect.
+    const first = await instagramPage(code ? `https://www.instagram.com/reel/${code}/` : raw, CRAWLER_UA, timeout);
+    code ??= instagramShortcode(first.finalUrl);
+    const pageUrl = code ? `https://www.instagram.com/reel/${code}/` : first.finalUrl;
+    const titleOf = (html: string) => extractVideoCandidates(html, pageUrl).title.replace(/\s+on Instagram:\s*/, ': ').slice(0, 200) || 'Instagram reel';
+    let media = instagramVideoUrl(first.html), title = titleOf(first.html);
+    if (!media && code) {
+      const embed = await instagramPage(`https://www.instagram.com/p/${code}/embed/captioned/`, PREVIEW_UA, timeout);
+      media = instagramVideoUrl(embed.html);
+      if (title === 'Instagram reel' || title === 'Instagram') title = titleOf(embed.html);
+    }
+    if (!media) throw new WebVideoError(INSTAGRAM_ERROR);
+    return { kind: 'media', url: media, title: title === 'Instagram' ? 'Instagram reel' : title, pageUrl };
+  } catch (error) {
+    if (signal.aborted || error instanceof WebVideoError) throw error;
+    throw new WebVideoError(INSTAGRAM_ERROR);
+  }
+}
+
 /** Resolves a page/media link. HTML pages are read up to 2 MB; media bodies are never downloaded here. */
 export async function resolveWebVideo(raw: string, signal: AbortSignal): Promise<ResolvedVideo> {
   const yt = parseYouTubeId(raw);
@@ -68,6 +102,7 @@ export async function resolveWebVideo(raw: string, signal: AbortSignal): Promise
   if (!start) throw new WebVideoError('सही video link paste करें (https://…)।', 400);
   const vm = vimeoId(start.href);
   if (vm) return resolveVimeo(vm, start.href, signal);
+  if (isInstagramUrl(start.href)) return resolveInstagram(start.href, signal);
   const timeout = AbortSignal.any([signal, AbortSignal.timeout(15000)]);
   let fetched: Awaited<ReturnType<typeof safeFetch>>;
   try {

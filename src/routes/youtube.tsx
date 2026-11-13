@@ -27,6 +27,7 @@ import { runInterpretation, liveDub, IDLE_STATE, type RunInput, type RunState } 
 import { InterpretStreamError } from '@/lib/interpret-protocol';
 import { INTERPRET_PIPELINE } from '@/lib/interpret-identity';
 import { checkpointKey, doneCount, isRecoverable, loadCheckpoint, removeCheckpoint, saveCheckpoint, type Checkpoint, type CheckpointInput } from '@/lib/interpret-checkpoint';
+import { isInstagramUrl } from '@/lib/web-video';
 import { INTERPRETERS, DEFAULT_INTERPRETER, interpreterInfo, type InterpreterId } from '@/lib/interpreter-models';
 import {
   loadYouTubeStudy, saveYouTubeStudy, saveToLibrary, listLibrary, removeFromLibrary, libraryKey,
@@ -48,6 +49,16 @@ export const Route = createFileRoute('/youtube')({
 
 type Mode = 'link' | 'file' | 'text';
 const proxied = (url: string) => `/api/media-proxy?url=${encodeURIComponent(url)}`;
+
+/** Instagram video addresses expire within about a day, so a reopened saved reel gets a fresh one. */
+async function freshInstagram(r: YouTubeResult): Promise<YouTubeResult | null> {
+  const source = r.source;
+  if (source?.kind !== 'web' || !source.pageUrl || !isInstagramUrl(source.pageUrl)) return null;
+  const res = await fetch(`/api/instagram-video?url=${encodeURIComponent(source.pageUrl)}`).catch(() => null);
+  if (!res?.ok) return null;
+  const j = await res.json().catch(() => null) as { mediaUrl?: unknown } | null;
+  return typeof j?.mediaUrl === 'string' && /^https:/.test(j.mediaUrl) ? { ...r, source: { ...source, mediaUrl: j.mediaUrl } } : null;
+}
 
 function YouTubeHindi() {
   const { open: openKey } = Route.useSearch();
@@ -104,6 +115,7 @@ function YouTubeHindi() {
         setUrl(saved.url); setTranscript(saved.transcript); setVoice(saved.voice); setResult(saved.result);
         if (saved.result.engine) setEngine(saved.result.engine);
         setActiveKey(libraryKey(saved.result, saved.url, saved.transcript));
+        void freshInstagram(saved.result).then(r => { if (!dead && r) setResult(cur => (cur === saved.result ? r : cur)); });
         if (saved.result.source?.kind === 'upload') {
           const media = await loadUploadedMedia().catch(() => undefined);
           if (!dead && media?.id && media.id === saved.result.source.mediaId) setMediaObjectUrl(URL.createObjectURL(media.blob));
@@ -241,6 +253,7 @@ function YouTubeHindi() {
     if (entry.result.engine) setEngine(entry.result.engine);
     if (entry.url) setUrl(entry.url);
     void saveYouTubeStudy({ version: 1, url: entry.url, transcript: '', voice: entry.voice, result: entry.result }).catch(() => {});
+    void freshInstagram(entry.result).then(r => { if (r) setResult(cur => (cur === entry.result ? r : cur)); });
     if (entry.result.source?.kind === 'upload') void loadUploadedMedia().then(m => {
       if (m?.id && m.id === entry.result.source?.mediaId) setMediaObjectUrl(URL.createObjectURL(m.blob));
     }).catch(() => {});
@@ -319,6 +332,10 @@ function YouTubeHindi() {
   const liveMedia = run?.mediaUrl ?? (run?.origin === 'listened' && runIsFile.current ? mediaObjectUrl : null);
   const resultMedia = result?.source?.kind === 'upload' ? mediaObjectUrl : result?.source?.mediaUrl ?? null;
   const fallbackFor = (src: string | null) => (src && /^https?:/.test(src) ? proxied(src) : null);
+  const showResult = !!result && !run;
+  const dub = run
+    ? (live && (liveVideoId || liveMedia) ? { videoId: liveVideoId, mediaSrc: liveMedia, segments: live, original: run.timeline.map(s => s.text) } : null)
+    : result?.dub?.length && (result.videoId || resultMedia) ? { videoId: result.videoId ?? null, mediaSrc: resultMedia, segments: result.dub, original: result.original } : null;
   const engineName = interpreterInfo(engine).name;
 
   return (
@@ -341,8 +358,8 @@ function YouTubeHindi() {
         </Tabs>
 
         {mode === 'link' && <>
-          <label className="block text-sm font-medium" htmlFor="video-link">YouTube या किसी website की video का link</label>
-          <Input id="video-link" disabled={locked} className="h-12" value={url} onChange={e => setUrl(e.target.value)} placeholder="https://www.youtube.com/watch?v=…" />
+          <label className="block text-sm font-medium" htmlFor="video-link">YouTube, Instagram reel या किसी website की video का link</label>
+          <Input id="video-link" disabled={locked} className="h-12" value={url} onChange={e => setUrl(e.target.value)} placeholder="YouTube या Instagram reel link (https://…)" />
           <div className="flex items-center gap-2"><Switch id="deep-listen" checked={deepListen} onCheckedChange={setDeepListen} disabled={locked} /><Label htmlFor="deep-listen" className="flex items-center gap-1.5 text-sm"><Ear className="size-4" />Captions छोड़कर Gemini से पूरी आवाज़ सुनवाओ</Label></div>
         </>}
         {mode === 'file' && <>
@@ -415,38 +432,35 @@ function YouTubeHindi() {
 
       {mode === 'link' && !busy && <div className="mt-8"><ChannelPicker disabled={locked} onPick={v => { const u = `https://www.youtube.com/watch?v=${v.id}`; setUrl(u); void convert({ url: u }); }} /></div>}
 
-      {run && (
-        <div className="mt-8 space-y-4">
-          <RunProgress state={run} interpreter={engineName} quality={quality} onCancel={cancel} />
-          {live && (liveVideoId || liveMedia) ? (
-            <YouTubeDub videoId={liveVideoId} mediaSrc={liveMedia} mediaFallbackSrc={fallbackFor(liveMedia)} segments={live} original={run.timeline.map(s => s.text)} voice={voice} voiceEngine={voiceEngine} onRunningChange={setDubbing} />
+      {/* One player slot for live and finished Hindi, so playback never restarts when the team finishes. */}
+      {(run || result) && (
+        <div className={showResult ? 'mt-10 border-t pt-6' : 'mt-8 space-y-4'}>
+          {run && <RunProgress state={run} interpreter={engineName} quality={quality} onCancel={cancel} />}
+          {showResult && result && <>
+            {result.title && <h2 className="mb-3 text-xl font-semibold">{result.title}</h2>}
+            <SourceBadges result={result} />
+            {result.truncated && <p className="mt-2 text-xs text-muted-foreground">Video लंबा है — शुरुआती हिस्सा ही समझाया गया है।</p>}
+          </>}
+          {dub ? (
+            <div className={showResult ? 'mt-4' : undefined}><YouTubeDub videoId={dub.videoId} mediaSrc={dub.mediaSrc} mediaFallbackSrc={fallbackFor(dub.mediaSrc)} segments={dub.segments} {...(dub.original ? { original: dub.original } : {})} voice={voice} voiceEngine={voiceEngine} onRunningChange={setDubbing} /></div>
           ) : null}
+          {showResult && result && <>
+            <div className="mt-4 grid gap-4 md:grid-cols-2"><TeamCard result={result} /><BriefCard result={result} /></div>
+            <YouTubeNarrationDownload text={result.hindi} voice={voice} voiceEngine={voiceEngine} videoId={result.videoId ?? null} disabled={busy || dubbing || playing} onBusyChange={setExporting}
+              audioKey={activeKey} request={!!activeKey && audioRequest === activeKey} onRequestHandled={() => setAudioRequest(null)} onSaved={() => void refreshSavedAudio()} />
+            <div className="mt-3"><YouTubeTranscriptDownload result={result} transcript={transcript} disabled={busy} /></div>
+            <details className="mt-8 border-t pt-4" open={!result.dub?.length}>
+              <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium">सरल Hindi explanation<ChevronDown className="size-4" /></summary>
+              <div className="mt-3 flex items-center gap-3">
+                {playing
+                  ? <Button variant="outline" onClick={() => stopRef.current()}><Square className="size-4" />Stop</Button>
+                  : <Button onClick={play} disabled={dubbing || exporting}><Play className="size-4" />Hindi audio सुनो</Button>}
+                <span className="text-xs text-muted-foreground">{progress}</span>
+              </div>
+              <p className="mt-4 whitespace-pre-wrap leading-relaxed">{result.hindi}</p>
+            </details>
+          </>}
         </div>
-      )}
-
-      {result && !run && (
-        <section className="mt-10 border-t pt-6">
-          {result.title && <h2 className="mb-3 text-xl font-semibold">{result.title}</h2>}
-          <SourceBadges result={result} />
-          {result.truncated && <p className="mt-2 text-xs text-muted-foreground">Video लंबा है — शुरुआती हिस्सा ही समझाया गया है।</p>}
-          {result.dub?.length && (result.videoId || resultMedia) ? (
-            <div className="mt-4"><YouTubeDub videoId={result.videoId ?? null} mediaSrc={resultMedia} mediaFallbackSrc={fallbackFor(resultMedia)} segments={result.dub} {...(result.original ? { original: result.original } : {})} voice={voice} voiceEngine={voiceEngine} onRunningChange={setDubbing} /></div>
-          ) : null}
-          <div className="mt-4 grid gap-4 md:grid-cols-2"><TeamCard result={result} /><BriefCard result={result} /></div>
-          <YouTubeNarrationDownload text={result.hindi} voice={voice} voiceEngine={voiceEngine} videoId={result.videoId ?? null} disabled={busy || dubbing || playing} onBusyChange={setExporting}
-            audioKey={activeKey} request={!!activeKey && audioRequest === activeKey} onRequestHandled={() => setAudioRequest(null)} onSaved={() => void refreshSavedAudio()} />
-          <div className="mt-3"><YouTubeTranscriptDownload result={result} transcript={transcript} disabled={busy} /></div>
-          <details className="mt-8 border-t pt-4" open={!result.dub?.length}>
-            <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium">सरल Hindi explanation<ChevronDown className="size-4" /></summary>
-            <div className="mt-3 flex items-center gap-3">
-              {playing
-                ? <Button variant="outline" onClick={() => stopRef.current()}><Square className="size-4" />Stop</Button>
-                : <Button onClick={play} disabled={dubbing || exporting}><Play className="size-4" />Hindi audio सुनो</Button>}
-              <span className="text-xs text-muted-foreground">{progress}</span>
-            </div>
-            <p className="mt-4 whitespace-pre-wrap leading-relaxed">{result.hindi}</p>
-          </details>
-        </section>
       )}
 
       {!run && <StudyLibrary entries={library} activeKey={activeKey} disabled={locked} onOpen={openEntry} onRemove={e => void removeEntry(e)} audioReady={new Set(savedAudio.keys())} onDownload={downloadEntryAudio} />}

@@ -1,0 +1,14 @@
+[
+ {"capability":"code","source":"github MrAnujBabu/snapsolveanujsarti","outcome":"migrate","status":"verified","next_action":"none; typecheck + 705 tests pass, pages load"},
+ {"capability":"schema","source":"supabase/migrations (replayed via drizzle journal)","outcome":"migrate","status":"verified","next_action":"none; 12 tables present"},
+ {"capability":"storage bucket","source":"agent-memory","outcome":"migrate","status":"verified","next_action":"bucket created private 25MB"},
+ {"capability":"records","source":"old Lovable Cloud database","outcome":"migrate","status":"pending","next_action":"user exports old project's data (CSV/JSON per table)"},
+ {"capability":"auth identities","source":"old Lovable Cloud auth","outcome":"migrate","status":"pending","next_action":"owner signs up again at /admin (owner email auto-gets admin) or provides user export"},
+ {"capability":"storage file bytes","source":"agent-memory files","outcome":"migrate","status":"pending","next_action":"user re-uploads admin files"},
+ {"capability":"GitHub API connector","source":"connector","outcome":"preserve","status":"verified","next_action":"linked"},
+ {"capability":"other connectors","source":"Firecrawl, Parallel, Perplexity, Google Sheets, Telegram, Sarvam","outcome":"preserve","status":"pending","next_action":"link when user confirms"},
+ {"capability":"secrets","source":"VEDANTU_LOGIN_ID, VEDANTU_PASSWORD, STUDIO_TELEGRAM_SIGNING_KEY","outcome":"preserve","status":"pending","next_action":"secure secret form when user is ready"},
+ {"capability":"schedules","source":"GitHub Action vedantu-daily-sync","outcome":"preserve","status":"blocked","next_action":"Action targets old database; service key not available on Lovable Cloud"},
+ {"capability":"git sync","source":"existing GitHub repo","outcome":"cutover","status":"blocked","next_action":"Lovable Git sync cannot link an existing repo; it can create a new one"},
+ {"capability":"verification","source":"-","outcome":"verify","status":"partial","next_action":"live AI chat, sign-in and admin not exercised"}
+]

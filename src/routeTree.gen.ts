@@ -21,6 +21,7 @@ import { Route as VoiceRouteImport } from './routes/voice'
 import { Route as YoutubeRouteImport } from './routes/youtube'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiCrawlRouteImport } from './routes/api/crawl'
+import { Route as ApiInstagramVideoRouteImport } from './routes/api/instagram-video'
 import { Route as ApiMediaListenRouteImport } from './routes/api/media-listen'
 import { Route as ApiMediaProxyRouteImport } from './routes/api/media-proxy'
 import { Route as ApiNcertDiagramRouteImport } from './routes/api/ncert-diagram'
@@ -98,6 +99,11 @@ const ApiChatRoute = ApiChatRouteImport.update({
 const ApiCrawlRoute = ApiCrawlRouteImport.update({
   id: '/api/crawl',
   path: '/api/crawl',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiInstagramVideoRoute = ApiInstagramVideoRouteImport.update({
+  id: '/api/instagram-video',
+  path: '/api/instagram-video',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiMediaListenRoute = ApiMediaListenRouteImport.update({
@@ -204,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/youtube': typeof YoutubeRoute
   '/api/chat': typeof ApiChatRoute
   '/api/crawl': typeof ApiCrawlRoute
+  '/api/instagram-video': typeof ApiInstagramVideoRoute
   '/api/media-listen': typeof ApiMediaListenRoute
   '/api/media-proxy': typeof ApiMediaProxyRoute
   '/api/ncert-diagram': typeof ApiNcertDiagramRoute
@@ -236,6 +243,7 @@ export interface FileRoutesByTo {
   '/youtube': typeof YoutubeRoute
   '/api/chat': typeof ApiChatRoute
   '/api/crawl': typeof ApiCrawlRoute
+  '/api/instagram-video': typeof ApiInstagramVideoRoute
   '/api/media-listen': typeof ApiMediaListenRoute
   '/api/media-proxy': typeof ApiMediaProxyRoute
   '/api/ncert-diagram': typeof ApiNcertDiagramRoute
@@ -269,6 +277,7 @@ export interface FileRoutesById {
   '/youtube': typeof YoutubeRoute
   '/api/chat': typeof ApiChatRoute
   '/api/crawl': typeof ApiCrawlRoute
+  '/api/instagram-video': typeof ApiInstagramVideoRoute
   '/api/media-listen': typeof ApiMediaListenRoute
   '/api/media-proxy': typeof ApiMediaProxyRoute
   '/api/ncert-diagram': typeof ApiNcertDiagramRoute
@@ -303,6 +312,7 @@ export interface FileRouteTypes {
     | '/youtube'
     | '/api/chat'
     | '/api/crawl'
+    | '/api/instagram-video'
     | '/api/media-listen'
     | '/api/media-proxy'
     | '/api/ncert-diagram'
@@ -335,6 +345,7 @@ export interface FileRouteTypes {
     | '/youtube'
     | '/api/chat'
     | '/api/crawl'
+    | '/api/instagram-video'
     | '/api/media-listen'
     | '/api/media-proxy'
     | '/api/ncert-diagram'
@@ -367,6 +378,7 @@ export interface FileRouteTypes {
     | '/youtube'
     | '/api/chat'
     | '/api/crawl'
+    | '/api/instagram-video'
     | '/api/media-listen'
     | '/api/media-proxy'
     | '/api/ncert-diagram'
@@ -400,6 +412,7 @@ export interface RootRouteChildren {
   YoutubeRoute: typeof YoutubeRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiCrawlRoute: typeof ApiCrawlRoute
+  ApiInstagramVideoRoute: typeof ApiInstagramVideoRoute
   ApiMediaListenRoute: typeof ApiMediaListenRoute
   ApiMediaProxyRoute: typeof ApiMediaProxyRoute
   ApiNcertDiagramRoute: typeof ApiNcertDiagramRoute
@@ -504,6 +517,13 @@ declare module '@tanstack/react-router' {
       path: '/api/crawl'
       fullPath: '/api/crawl'
       preLoaderRoute: typeof ApiCrawlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/instagram-video': {
+      id: '/api/instagram-video'
+      path: '/api/instagram-video'
+      fullPath: '/api/instagram-video'
+      preLoaderRoute: typeof ApiInstagramVideoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/media-listen': {
@@ -648,6 +668,7 @@ const rootRouteChildren: RootRouteChildren = {
   YoutubeRoute: YoutubeRoute,
   ApiChatRoute: ApiChatRoute,
   ApiCrawlRoute: ApiCrawlRoute,
+  ApiInstagramVideoRoute: ApiInstagramVideoRoute,
   ApiMediaListenRoute: ApiMediaListenRoute,
   ApiMediaProxyRoute: ApiMediaProxyRoute,
   ApiNcertDiagramRoute: ApiNcertDiagramRoute,

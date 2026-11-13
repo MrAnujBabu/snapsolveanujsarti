@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Loader2, Play, Square, Pause, AudioLines, Languages, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -13,11 +13,33 @@ import type { DubSegment } from '@/lib/youtube-hindi';
 import type { SarvamVoice } from '@/lib/sarvam-speech';
 import { spokenWords, spokenWordCount } from '@/lib/word-highlight';
 
-/** Karaoke-style caption: spoken words turn primary, the word being spoken is marked. */
-function SpokenCaption({ text, spoken, className }: { text: string; spoken: number; className?: string }) {
-  return <span className={className}>{spokenWords(text).map((word, i) =>
-    <span key={i} className={i < spoken ? 'text-primary' : i === spoken ? 'rounded bg-primary/15 px-0.5 font-medium text-primary' : undefined}>{word} </span>)}</span>;
-}
+/**
+ * Karaoke-style caption: spoken words turn primary, the word being spoken is marked.
+ * The mark only changes colour/background (no padding or weight), so lines never re-wrap word by word.
+ */
+const SpokenCaption = memo(function SpokenCaption({ text, spoken, className }: { text: string; spoken: number; className?: string }) {
+  const words = useMemo(() => spokenWords(text), [text]);
+  return <span className={className}>{words.map((word, i) =>
+    <span key={i} className={i < spoken ? 'text-primary' : i === spoken ? 'rounded-sm bg-primary/15 text-primary' : undefined}>{word} </span>)}</span>;
+});
+
+/** One transcript row; only the playing row re-renders as words are spoken. */
+const TranscriptRow = memo(function TranscriptRow({ start, hindi, index, current, spoken, ready, original, onPlay }: {
+  start: number; hindi: string; index: number; current: boolean; spoken: number; ready: boolean; original?: string | undefined; onPlay(index: number): void;
+}) {
+  return <li>
+    <Button variant="ghost" disabled={!ready} onClick={() => onPlay(index)} data-current={current}
+      className="h-auto w-full items-start justify-start gap-3 rounded-none border-l-2 border-transparent px-4 py-3 text-left whitespace-normal transition-none data-[current=true]:border-primary data-[current=true]:bg-accent">
+      <span className="mt-0.5 shrink-0 rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] text-primary tabular-nums">{formatTime(start)}</span>
+      <span className="min-w-0 space-y-1">
+        {hindi.trim()
+          ? <SpokenCaption text={hindi} spoken={current ? spoken : -1} className="block text-sm leading-relaxed text-foreground" />
+          : <span className="flex items-center gap-2 text-sm text-muted-foreground"><Languages className="size-3.5 text-primary" />समझा रहा हूँ…</span>}
+        {original !== undefined && <span className="block text-xs leading-relaxed text-muted-foreground">{original}</span>}
+      </span>
+    </Button>
+  </li>;
+});
 
 type YTPlayer = DubPlayer & { destroy(): void };
 declare global { interface Window { YT?: { Player: new (el: HTMLElement, o: object) => YTPlayer }; onYouTubeIframeAPIReady?: () => void } }
@@ -178,6 +200,8 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
       if (!ctl.signal.aborted && generation.current === id) setError(e instanceof Error ? e.message : 'Voice-over failed.');
     } finally { finish(); }
   }
+  const startRef = useRef(start); startRef.current = start;
+  const playFrom = useMemo(() => (i: number) => { void startRef.current(i); }, []);
   function togglePause() {
     intentPaused.current = !intentPaused.current; setPaused(intentPaused.current);
     if (intentPaused.current) player.current?.pauseVideo();
@@ -210,20 +234,8 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
         {error && <p role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm text-destructive">{error}</p>}
       </div>
       <ol id={transcriptId} hidden={!transcriptOpen} ref={timestamps} className="max-h-[26rem] divide-y overflow-y-auto border-t" aria-label="Timestamped Hindi voice-over">
-        {segments.map((seg, i) => <li key={i}>
-          <Button variant="ghost" disabled={!ready} onClick={() => start(i)} data-current={i === current}
-            className="h-auto w-full items-start justify-start gap-3 rounded-none border-l-2 border-transparent px-4 py-3 text-left whitespace-normal data-[current=true]:border-primary data-[current=true]:bg-accent">
-            <span className="mt-0.5 shrink-0 rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] text-primary tabular-nums">{formatTime(seg.start)}</span>
-            <span className="min-w-0 space-y-1">
-              {seg.hindi.trim()
-                ? i === current
-                  ? <SpokenCaption text={seg.hindi} spoken={spokenCount} className="block text-sm leading-relaxed text-foreground" />
-                  : <span className="block text-sm leading-relaxed text-foreground">{seg.hindi}</span>
-                : <span className="flex items-center gap-2 text-sm text-muted-foreground"><Languages className="size-3.5 animate-pulse text-primary" />समझा रहा हूँ…</span>}
-              {showOriginal && hasOriginal && <span className="block text-xs leading-relaxed text-muted-foreground">{original?.[i]}</span>}
-            </span>
-          </Button>
-        </li>)}
+        {segments.map((seg, i) => <TranscriptRow key={i} start={seg.start} hindi={seg.hindi} index={i} current={i === current} spoken={i === current ? spokenCount : 0}
+          ready={ready} onPlay={playFrom} {...(showOriginal && hasOriginal ? { original: original?.[i] ?? '' } : {})} />)}
       </ol>
       {current >= 0 && segments[current]?.hindi && <p className="border-t border-l-4 border-l-primary bg-muted/60 px-4 py-3 text-sm leading-relaxed" data-testid="dub-caption"><SpokenCaption text={segments[current]?.hindi ?? ''} spoken={spokenCount} /></p>}
     </div>
