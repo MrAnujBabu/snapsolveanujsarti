@@ -107,9 +107,21 @@ export function focusedExcerpt(markdown: string, query: string, maxChars: number
 
 export function pageExcerpt(r: CrawlResult, maxChars = 1200, query = ""): string {
   const fit = plainText(r.markdown.fitMarkdown);
-  if (query.trim()) return focusedExcerpt(r.markdown.rawMarkdown, query, maxChars);
+  if (query.trim()) return focusedExcerpt(pageLabelledMarkdown(r), query, maxChars);
   const body = fit.length >= 120 ? fit : plainText(r.markdown.rawMarkdown);
   return body.length > maxChars ? `${body.slice(0, maxChars)}…` : body;
+}
+
+/**
+ * PDF text with "[Page N]" on every paragraph, so focused excerpts keep page numbers (the
+ * "## Page N" headings are too short to survive passage ranking). Other pages are unchanged.
+ */
+export function pageLabelledMarkdown(r: Pick<CrawlResult, "kind" | "pages" | "markdown">): string {
+  if (r.kind !== "pdf" || !r.pages?.length) return r.markdown.rawMarkdown;
+  return r.pages
+    .map((t, i) => t.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean).map((p) => `[Page ${i + 1}] ${p}`).join("\n\n"))
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 export { looksBlocked } from "./crawler.server";

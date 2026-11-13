@@ -13,7 +13,7 @@ import { CrawlError } from "./fetcher.server";
 import { CrawlAiError, runResponse, UsageMeter } from "./llm.server";
 import { ocrScannedPdf } from "./ocr.server";
 import { RESEARCH_LIMITS, type PageView, type ResearchEvent, type ResearchRequest, type SourceRef } from "./research-protocol";
-import { focusedExcerpt, pageExcerpt, searchAndCrawl } from "./search.server";
+import { focusedExcerpt, pageExcerpt, pageLabelledMarkdown, searchAndCrawl } from "./search.server";
 
 type Emit = (e: ResearchEvent) => void;
 
@@ -62,14 +62,16 @@ const MAX_OCR_PER_REQUEST = 3;
 /** The Lovable AI transcriber for scanned PDFs in this request (bounded; Stop always propagates). */
 function scannedReader(emit: Emit, meter: UsageMeter, signal: AbortSignal): NonNullable<CrawlConfig["scannedPdf"]> {
   let used = 0;
-  return async (bytes, { pageCount, url }) => {
+  return async (bytes, { pageCount, url, photoPages }) => {
     if (used >= MAX_OCR_PER_REQUEST) return { skipped: `Only ${MAX_OCR_PER_REQUEST} scanned PDFs are read with AI per request.` };
     used += 1;
-    emit({ type: "status", message: `Reading a scanned PDF with Lovable AI (${pageCount} page${pageCount === 1 ? "" : "s"})…` });
+    const photo = photoPages.length && photoPages.length < pageCount ? photoPages.length : pageCount;
+    emit({ type: "status", message: `Reading ${photo} photo page${photo === 1 ? "" : "s"} of a PDF with Lovable AI…` });
     try {
-      return await ocrScannedPdf(bytes, pageCount, { filename: url.split("/").pop() ?? "scan.pdf", signal, meter });
+      return await ocrScannedPdf(bytes, pageCount, { filename: url.split("/").pop() ?? "scan.pdf", signal, meter, photoPages });
     } catch (error) {
       if (signal.aborted || (error instanceof CrawlAiError && error.kind === "cancelled")) throw new CrawlError("cancelled", "Stopped.");
+      if (error instanceof CrawlAiError) throw error;
       return { skipped: `Lovable AI could not read it: ${error instanceof CrawlAiError ? error.message : "the AI step failed."}` };
     }
   };
@@ -142,7 +144,7 @@ async function readFlow(req: Extract<ResearchRequest, { mode: "read" }>, emit: E
   emit({ type: "page", page: toPageView(r, { ...(aiMarkdown ? { aiMarkdown } : {}), ...(screenshotUrl ? { screenshotUrl } : {}) }) });
   if (!r.success) return;
   if (req.question?.trim()) {
-    const text = focusedExcerpt(aiMarkdown || r.markdown.rawMarkdown, req.question, 14000);
+    const text = focusedExcerpt(aiMarkdown || pageLabelledMarkdown(r), req.question, 14000);
     await answer(req.question, [{ n: 1, url: r.finalUrl, title: r.metadata.title || r.finalUrl, text }], emit, meter, signal);
   }
 }

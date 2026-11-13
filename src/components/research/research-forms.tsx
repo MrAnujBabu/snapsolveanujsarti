@@ -165,7 +165,7 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
 
   const ai =
     mode === "search" ||
-    (mode === "read" && (aiClean || !!question.trim())) ||
+    (mode === "read" && (readOcr || aiClean || !!question.trim())) ||
     (mode === "deep" && summarize) ||
     (mode === "extract" && METHODS.find((m) => m.id === method)!.ai);
 
