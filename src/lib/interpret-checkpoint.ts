@@ -31,11 +31,11 @@ function hash(text: string) {
 }
 
 /** Same source + same interpreter + same review setting → same checkpoint. */
-export function checkpointKey(input: CheckpointInput, engine: InterpreterId, quality: boolean, deepListen = false) {
+export function checkpointKey(input: CheckpointInput, engine: InterpreterId, quality: boolean, deepListen = false, verbatim = false) {
   const src = input.kind === 'link' ? `link|${input.url.trim()}`
     : input.kind === 'file' ? `file|${input.file.name}|${input.file.size}|${input.file.lastModified}`
     : `text|${hash(input.transcript.trim())}|${(input.url ?? '').trim()}`;
-  return `${src}|${engine}|${quality ? 'review' : 'fast'}|${deepListen ? 'listen' : 'captions'}`;
+  return `${src}|${engine}|${quality ? 'review' : 'fast'}|${deepListen ? 'listen' : 'captions'}${verbatim ? '|verbatim' : ''}`;
 }
 
 export function doneCount(lines: string[]) { return lines.filter(l => l.trim()).length; }

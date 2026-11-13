@@ -162,6 +162,7 @@ export function PageCard({ page, defaultOpen }: { page: PageView; defaultOpen: b
             {page.cached && <span>from memory</span>}
             {page.via === "browser" && <span className="text-primary">read with browser</span>}
             {page.via === "archive" && <span className="text-primary">web archive copy{page.archivedAt ? ` (${page.archivedAt})` : ""}</span>}
+            {page.ocr ? <span className="text-primary">read from scan with AI</span> : page.scanned && <span>scanned PDF</span>}
           </span>
         </span>
       </summary>
@@ -176,6 +177,7 @@ export function PageCard({ page, defaultOpen }: { page: PageView; defaultOpen: b
         ) : (
           <>
             {page.via === "archive" && <p className="mb-2 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">The website blocked readers, so this is the Internet Archive's saved copy{page.archivedAt ? ` from ${page.archivedAt}` : ""}. It may be older than the live page.</p>}
+            {page.ocr && <p className="mb-2 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">This PDF is photos of paper pages, so Lovable AI read the text from the pictures. Check important numbers and dates against the original.</p>}
             {page.needsBrowser && <p className="mb-2 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">This site builds most of its text with JavaScript, so only part of the page could be read.</p>}
             {page.truncated && <p className="mb-2 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">This page was very large; only the first part was read.</p>}
             <div className="flex flex-wrap items-center gap-1">

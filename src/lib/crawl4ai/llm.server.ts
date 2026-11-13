@@ -93,6 +93,8 @@ export type WebSearchTool = { allowedDomains?: string[]; contextSize?: "low" | "
 export type RunOptions = {
   instructions: string;
   input: string;
+  /** Files (e.g. a scanned PDF) sent before the text input, as data: URLs. */
+  files?: Array<{ filename: string; dataUrl: string }>;
   effort?: "low" | "medium" | "high";
   /** Strict JSON schema (object root, every property required, additionalProperties:false). */
   schema?: { name: string; schema: Record<string, unknown> };
@@ -134,7 +136,12 @@ export async function runResponse(opts: RunOptions): Promise<RunResult> {
         model: CRAWL_MODEL,
         reasoning: { effort: opts.effort ?? "low" },
         instructions: opts.instructions,
-        input: [{ role: "user", content: opts.input }],
+        input: [{
+          role: "user",
+          content: opts.files?.length
+            ? [...opts.files.map((f) => ({ type: "input_file" as const, filename: f.filename, file_data: f.dataUrl })), { type: "input_text" as const, text: opts.input }]
+            : opts.input,
+        }],
         ...(opts.maxOutputTokens ? { max_output_tokens: opts.maxOutputTokens } : {}),
         ...(opts.schema ? { text: { format: { type: "json_schema", name: opts.schema.name, strict: true, schema: opts.schema.schema } } } : {}),
         ...(opts.webSearch

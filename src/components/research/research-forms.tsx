@@ -96,6 +96,9 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
   const [site, setSite] = useState("");
   const [pages, setPages] = useState(4);
   const [answer, setAnswer] = useState(true);
+  const [deepResearch, setDeepResearch] = useState(false);
+  const [searchOcr, setSearchOcr] = useState(true);
+  const [readOcr, setReadOcr] = useState(false);
   // read / deep / extract share the link
   const [url, setUrl] = useState("");
   const [focus, setFocus] = useState("");
@@ -130,8 +133,8 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let raw: unknown;
-    if (mode === "search") raw = { mode, query, ...(site.trim() ? { site: site.trim().replace(/^https?:\/\//, "").replace(/\/.*$/, "") } : {}), pages, answer };
-    else if (mode === "read") raw = { mode, url, ...(focus.trim() ? { focus } : {}), aiClean, ...(question.trim() ? { question } : {}), browser: browserMode, screenshot };
+    if (mode === "search") raw = { mode, query, ...(site.trim() ? { site: site.trim().replace(/^https?:\/\//, "").replace(/\/.*$/, "") } : {}), pages, answer, deep: deepResearch, ocr: searchOcr };
+    else if (mode === "read") raw = { mode, url, ...(focus.trim() ? { focus } : {}), aiClean, ...(question.trim() ? { question } : {}), browser: browserMode, screenshot, ocr: readOcr };
     else if (mode === "deep") raw = { mode, url, strategy, maxDepth: depth, maxPages, ...(keywords.trim() ? { keywords } : {}), ...(include.trim() ? { include } : {}), ...(exclude.trim() ? { exclude } : {}), includeExternal: external, sitemap, adaptive, summarize };
     else raw = { mode, url, method, ...(instruction.trim() ? { instruction } : {}), ...(method === "ai-fields" ? { fields: fields.filter((f) => f.name.trim()) } : {}), ...(method === "css-schema" ? { schema } : {}) };
     const parsed = researchRequestSchema.safeParse(raw);
@@ -183,6 +186,8 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
             </Field>
           </div>
           <Toggle id="research-answer" label="Write an answer with sources" hint="Uses only the pages that were actually read." checked={answer} onChange={setAnswer} ai />
+          <Toggle id="research-deep" label="Deep research" hint="AI thinks harder, searches from more angles, reads longer parts of each page and compares sources. Slower and uses more credits." checked={deepResearch} onChange={setDeepResearch} ai />
+          <Toggle id="research-ocr" label="Read scanned PDFs with AI" hint="Notices that are photos of paper (no text) are read by AI. Credits are used only when such a PDF is found." checked={searchOcr} onChange={setSearchOcr} ai />
         </>
       )}
 
@@ -194,6 +199,7 @@ export function ResearchForm({ mode, busy, cooldown, onSubmit, reuseSchema }: Pr
           </Field>
           <Toggle id="research-browser" label="Always open in a browser" hint="Reads the page as Chrome shows it, even when a direct read works. Slower." checked={browserMode === "always"} onChange={(v) => setBrowserMode(v ? "always" : "auto")} />
           <Toggle id="research-shot" label="Take a screenshot" hint="A picture of the page as it looks in a browser. Free." checked={screenshot} onChange={setScreenshot} />
+          <Toggle id="research-read-ocr" label="Read scanned PDFs with AI" hint="If the link is a PDF of photographed pages, AI reads the text. Credits are used only for such PDFs." checked={readOcr} onChange={setReadOcr} ai />
           <Toggle id="research-clean" label="Clean up with AI" hint="AI removes menus and clutter and keeps the study content." checked={aiClean} onChange={setAiClean} ai />
           <Field label={<span className="flex items-center gap-2">Ask about this page (optional) <AiBadge /></span>} htmlFor="research-question">
             <Input id="research-question" placeholder="e.g. What are the key dates?" value={question} onChange={(e) => setQuestion(e.target.value)} autoComplete="off" />

@@ -4,7 +4,7 @@
  */
 export type ReadMode = "web_research" | "chat" | "voice";
 export type ReaderSource = "direct" | "browser" | "archive" | "none";
-export type ReadFailure = "blocked_site" | "not_found" | "empty" | "timeout" | "network" | "http_error" | "unsupported" | "too_large" | "cancelled" | "other";
+export type ReadFailure = "blocked_site" | "not_found" | "empty" | "scanned_pdf" | "timeout" | "network" | "http_error" | "unsupported" | "too_large" | "cancelled" | "other";
 
 export type ReadOutcome = {
   url: string;
@@ -48,6 +48,8 @@ export function failureReason(errorCode: string | undefined, status: number | un
       return "blocked_site";
     case "empty":
       return "empty";
+    case "scanned":
+      return "scanned_pdf";
     case "timeout":
       return "timeout";
     case "network":
@@ -81,6 +83,7 @@ export const FAILURE_LABEL: Record<ReadFailure, string> = {
   blocked_site: "Website blocked the reader",
   not_found: "Dead link (page not found)",
   empty: "No readable text",
+  scanned_pdf: "Scanned PDF (photo pages)",
   timeout: "Took too long",
   network: "Could not connect",
   http_error: "Website error",

@@ -11,7 +11,7 @@ import { encodeEvent, type InterpretBrief, type InterpretEvent, type InterpretRe
 import { isSpeakerGender, type SpeakerGender } from '@/lib/speaker-gender';
 
 type Send = (event: InterpretEvent) => void;
-type Body = { url?: unknown; transcript?: unknown; engine?: unknown; deepListen?: unknown; quality?: unknown; segments?: unknown; title?: unknown; language?: unknown; source?: unknown; resume?: unknown; speaker?: unknown };
+type Body = { url?: unknown; transcript?: unknown; engine?: unknown; deepListen?: unknown; quality?: unknown; segments?: unknown; title?: unknown; language?: unknown; source?: unknown; resume?: unknown; speaker?: unknown; verbatim?: unknown };
 
 const text = (value: unknown, max: number) => typeof value === 'string' ? value.trim().slice(0, max) : '';
 
@@ -157,7 +157,10 @@ async function run(body: Body, engine: InterpreterId, signal: AbortSignal, send:
   if (language) source.language = language;
   const chunks = timed.length ? [] : chunkProse(prose, 2500);
   const review = body.quality !== false;
-  const sourceKey = await interpretationIdentity(timed, language, JSON.stringify([url, source, prose]), engine, review, body.deepListen === true);
+  const verbatim = body.verbatim === true;
+  // As-it-is runs get their own identity; simple-Hindi identities stay exactly as before.
+  const identitySource = JSON.stringify(verbatim ? [url, source, prose, 'verbatim'] : [url, source, prose]);
+  const sourceKey = await interpretationIdentity(timed, language, identitySource, engine, review, body.deepListen === true);
   send({ type: 'source', title, language, origin, segments: timed.length || chunks.length, duration: timed.at(-1)?.end ?? 0, truncated, videoId, sourceKey, ...(timed.length ? { timeline: timed } : {}) });
 
   const resume = matchingResume(body.resume, timed.length, sourceKey);
@@ -173,14 +176,14 @@ async function run(body: Body, engine: InterpreterId, signal: AbortSignal, send:
   }
   send({ type: 'brief', brief, ...(briefModel ? { model: briefModel } : {}) });
 
-  send({ type: 'stage', stage: 'interpret', message: `${interpreterInfo(engine).name} सरल Hindi बना रहा है${review ? ', दूसरा premium model हर हिस्सा जाँच रहा है' : ''}…` });
+  send({ type: 'stage', stage: 'interpret', message: `${interpreterInfo(engine).name} ${verbatim ? 'शब्दशः (as it is) Hindi transcript' : 'सरल Hindi'} बना रहा है${review ? ', दूसरा premium model हर हिस्सा जाँच रहा है' : ''}…` });
   const context = { title, language, brief };
   const panel = { ...(origin === 'listened' ? { listener: LISTENER.name } : {}), ...(briefModel ? { terminologist: briefModel } : {}) };
   let result: InterpretResult;
   if (timed.length) {
     let done = 0;
     const { lines, interpreters, quality } = await interpretTimed({
-      segments: timed, context, engine, signal, review, ...(resume ? { saved: resume.lines } : {}),
+      segments: timed, context, engine, signal, review, verbatim, ...(resume ? { saved: resume.lines } : {}),
       onSegment: (index, hindi) => {
         const seg = timed[index]; done++;
         if (seg) send({ type: 'segment', index, start: seg.start, end: seg.end, hindi, original: seg.text });
@@ -191,10 +194,10 @@ async function run(body: Body, engine: InterpreterId, signal: AbortSignal, send:
     result = { title, hindi, truncated, videoId, dub, sourceChars: sourceText.length, source, brief, panel: { ...panel, interpreters, ...qualityPanel(quality) }, original: timed.map(s => s.text), engine };
   } else {
     let done = 0;
-    const { lines, interpreters, quality } = await interpretProse({ chunks, context, engine, signal, review, onChunk: () => { done++; send({ type: 'progress', done, total: chunks.length }); } });
+    const { lines, interpreters, quality } = await interpretProse({ chunks, context, engine, signal, review, verbatim, onChunk: () => { done++; send({ type: 'progress', done, total: chunks.length }); } });
     result = { title, hindi: lines.join('\n\n'), truncated, videoId, sourceChars: sourceText.length, source, brief, panel: { ...panel, interpreters, ...qualityPanel(quality) }, engine };
   }
-  result = { ...result, pipeline: INTERPRET_PIPELINE, sourceKey, deepListen: body.deepListen === true,
+  result = { ...result, pipeline: INTERPRET_PIPELINE, sourceKey, deepListen: body.deepListen === true, ...(verbatim ? { verbatim: true } : {}),
     panel: { interpreters: [], ...result.panel, reviewRequested: review, reviewTotal: timed.length || chunks.length, reviewed: result.panel?.reviewed ?? 0 } };
   send({ type: 'quality', reviewed: result.panel?.reviewed ?? 0, corrected: result.panel?.corrected ?? 0 });
   send({ type: 'done', result });

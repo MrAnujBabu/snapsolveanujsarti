@@ -15,6 +15,11 @@ import { getAiPause, noteAiSuccess, setAiPause } from '@/lib/ai/pause.server';
 import { loadTeacherMemory, loadAgentBrain } from '@/lib/memory.server';
 import { NCERT_REFERENCE_INSTRUCTION } from '@/lib/agent/ncert-reference-prompt';
 import { isAiCancellation } from '@/lib/ai/cancellation';
+import { findRecovery, isStuckTurn, messageText } from '@/lib/learning/signals';
+import { formatLessons, isHoldout, pickLessons } from '@/lib/learning/lessons';
+import { learnFromRecovery, loadActiveLessons, noteAgentFeedback, recordLessonTurn } from '@/lib/learning/lessons.server';
+
+const REPORT_NOTE = `\n\n## Report real blockers (allowed in every mode)\nIf a tool keeps failing, a capability you need is missing, or your instructions conflict so you cannot help the student properly, call report_problem once with a short, specific note (what you tried, what broke, what would have helped), then keep helping. Never use it when things worked, and never mention it to the student.`;
 
 const SYSTEM = `You are "SnapSolve", a NEET 2027 doubt-solving tutor for Indian students (Physics, Chemistry, Biology).
 
@@ -154,8 +159,24 @@ export const Route = createFileRoute("/api/chat")({
         });
 
         // Short follow-ups retain chapter context without ranking against the entire chat.
-        const queryText = messages.slice(-4).map((m) => m.parts.map((p) => p.type === "text" ? p.text : "").join(" ").slice(0, 2000)).join(" ");
-        const [memory, brain] = await Promise.all([loadTeacherMemory(queryText), loadAgentBrain()]);
+        const recentText = (list: UIMessage[]) => list.map((m) => m.parts.map((p) => p.type === "text" ? p.text : "").join(" ").slice(0, 2000)).join(" ");
+        const queryText = recentText(messages.slice(-4));
+        // Learning loop (doubt mode): lessons from past stuck → unstuck moments, a stable 20% holdout per chat
+        // to measure whether lessons help, and new lesson candidates when the student just got unstuck.
+        const learning = body.mode !== "quiz";
+        const [memory, brain, lessons] = await Promise.all([loadTeacherMemory(queryText), loadAgentBrain(), learning ? loadActiveLessons() : Promise.resolve([])]);
+        const background: Promise<void>[] = [];
+        let lessonBlock = "";
+        if (learning) {
+          const held = isHoldout(messageText(messages.find((m) => m.role === "user")));
+          const matched = pickLessons(lessons, queryText);
+          const answeredBefore = messages.length >= 3 && messages[messages.length - 2]?.role === "assistant";
+          const prev = answeredBefore ? pickLessons(lessons, recentText(messages.slice(-6, -2))) : [];
+          const recovery = findRecovery(messages);
+          if (!held && matched.length) lessonBlock = `\n\n## Lessons from past tutoring (learned when earlier students got stuck — apply when relevant)\n${formatLessons(matched)}`;
+          background.push(recordLessonTurn({ matched: matched.map((l) => l.id), prev: prev.map((l) => l.id), held, stuck: isStuckTurn(messages), recovered: !!recovery }));
+          if (recovery) background.push(learnFromRecovery(recovery.excerpt, AbortSignal.timeout(25_000)));
+        }
         const searchOn = body.search === true;
         const searchNote = !searchOn
           ? ""
@@ -183,9 +204,9 @@ export const Route = createFileRoute("/api/chat")({
           searchNote +
           (body.mode !== "quiz" ? `\n\n## Student PDFs\nPDF text arrives inside <doc name="…"> with [Page N] markers. If it holds questions plus an answer key/solutions (same or separate PDF), solve the asked questions, compare with the key, cite page numbers, and flag any key answer that conflicts with NCERT${searchOn ? " (verify doubtful facts with web_search)" : ""}.` : "");
 
-        const systemPrompt = memory
+        const systemPrompt = (memory
           ? `${basePrompt}\n\n## Teacher memory (from the admin — follow it: syllabus scope, known mistake patterns, habits to reinforce or correct)\n${memory}`
-          : basePrompt;
+          : basePrompt) + REPORT_NOTE + lessonBlock;
         // Page-read outcomes go to the browser as transient data parts (reliability tracking only:
         // never saved in the conversation, never shown to the model). Reads before the stream opens wait here.
         const pendingReads: ReadOutcome[] = [];
@@ -196,7 +217,7 @@ export const Route = createFileRoute("/api/chat")({
           // Cache the large stable prefix (rules + memory) and the conversation so far; later turns re-read it cheaply.
           system: [{ role: 'system', content: systemPrompt, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' } } } }],
           messages: markLastForCache(await convertToModelMessages(body.mode === 'quiz' ? trimQuizHistory(messages) : messages)),
-          tools: { ...createAgentTools({ webSearch: searchOn, onRead: (o) => sendRead(o) }), ...batchTools },
+          tools: { ...createAgentTools({ webSearch: searchOn, onRead: (o) => sendRead(o), onProblem: (p) => noteAgentFeedback(p.category, p.tool, p.message) }), ...batchTools },
           stopWhen: stepCountIs(50),
           maxOutputTokens: selected.id === DEFAULT_MODEL ? CLAUDE_OUTPUT_BUDGET : 12000,
           maxRetries: 0,
@@ -244,12 +265,14 @@ export const Route = createFileRoute("/api/chat")({
         };
         const stream = createUIMessageStream({
           onError: onStreamError,
-          execute: ({ writer }) => {
+          execute: async ({ writer }) => {
             sendRead = (o) => {
               try { writer.write({ type: 'data-reader', data: o, transient: true }); } catch { /* stream already closed */ }
             };
             for (const o of pendingReads.splice(0)) sendRead(o);
             writer.merge(result.toUIMessageStream({ originalMessages: messages, sendReasoning: true, onError: onStreamError }));
+            // Keep the worker alive for the small learning writes (started at request time, usually done already).
+            await Promise.allSettled(background);
           },
         });
         const response = createUIMessageStreamResponse({ stream });

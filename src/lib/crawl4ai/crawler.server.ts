@@ -10,7 +10,7 @@ import { generateMarkdown, type MarkdownResult } from "./markdown";
 import { pdfPagesToMarkdown, pdfToText } from "./pdf.server";
 import { scrapeHtml, type PageLink, type PageMedia, type PageMetadata, type PageTable, type ScrapeOptions } from "./scrape";
 import { wordCount } from "./text";
-import { normalizeUrl } from "./url";
+import { normalizeUrl, twinHostUrl } from "./url";
 
 export type ContentFilterChoice = "auto" | "pruning" | "bm25" | "none";
 
@@ -34,6 +34,12 @@ export type CrawlConfig = {
    * browser renderer and then the web archive; "always" renders every HTML page; "never" = direct only.
    */
   browser?: "auto" | "always" | "never";
+  /**
+   * Reader for scanned PDFs (pages that are photos, no text layer). Web research passes the Lovable AI
+   * transcriber here; without it a scanned PDF is reported honestly as scanned (never as "blocked").
+   * It returns page texts, or `skipped` with a reason; it throws only for Stop.
+   */
+  scannedPdf?: (bytes: Uint8Array, info: { pageCount: number; url: string }) => Promise<{ pages: string[] } | { skipped: string }>;
 };
 
 /** How the text was obtained: a direct read, the free browser renderer, or the web archive's copy. */
@@ -65,6 +71,10 @@ export type CrawlResult = {
   via: ReadVia;
   /** Date of the web archive copy when via = "archive". */
   archivedAt?: string;
+  /** A PDF made of scanned pages (no text layer). */
+  scanned?: boolean;
+  /** The text was transcribed from scanned pages by AI (check numbers against the original). */
+  ocr?: boolean;
 };
 
 const EMPTY_MD: MarkdownResult = { rawMarkdown: "", markdownWithCitations: "", referencesMarkdown: "", fitMarkdown: "", fitHtml: "" };
@@ -73,7 +83,7 @@ const MAX_MARKDOWN_CHARS = 250_000;
 const cache = new LruCache<CrawlResult>(150);
 
 function cacheKey(url: string, c: CrawlConfig) {
-  return JSON.stringify([normalizeUrl(url) ?? url, c.query ?? "", c.contentFilter ?? "auto", c.bm25Threshold ?? null, c.pruningThreshold ?? null, c.thresholdType ?? null, c.scrape ?? null, !!c.ignoreLinks, !!c.ignoreImages, c.citations !== false, !!c.keepHtml, c.browser ?? "auto"]);
+  return JSON.stringify([normalizeUrl(url) ?? url, c.query ?? "", c.contentFilter ?? "auto", c.bm25Threshold ?? null, c.pruningThreshold ?? null, c.thresholdType ?? null, c.scrape ?? null, !!c.ignoreLinks, !!c.ignoreImages, c.citations !== false, !!c.keepHtml, c.browser ?? "auto", !!c.scannedPdf]);
 }
 
 export function failedResult(url: string, error: unknown, elapsedMs = 0): CrawlResult {
@@ -114,8 +124,30 @@ function fromHtml(page: FetchedPage, config: CrawlConfig): CrawlResult {
   };
 }
 
+/** True when at least half the pages carry (almost) no text: the PDF is photos of pages. */
+export function isScannedPdf(pages: string[]): boolean {
+  if (!pages.length) return false;
+  const empty = pages.filter((t) => wordCount(t) < 5).length;
+  return empty >= Math.ceil(pages.length / 2);
+}
+
 async function fromPdf(page: FetchedPage, config: CrawlConfig): Promise<CrawlResult> {
-  const pdf = await pdfToText(page.bytes ?? new Uint8Array());
+  const bytes = page.bytes ?? new Uint8Array();
+  // The PDF parser may take over (detach) the buffer it is given; keep the original for the scan reader.
+  const pdf = await pdfToText(bytes.slice());
+  const scanned = isScannedPdf(pdf.pages);
+  let ocr = false;
+  let scanNote = "";
+  if (scanned && config.scannedPdf) {
+    const read = await config.scannedPdf(bytes, { pageCount: pdf.pageCount, url: page.url });
+    if ("pages" in read) {
+      pdf.pages = read.pages.slice(0, Math.max(pdf.pages.length, read.pages.length));
+      ocr = true;
+    } else {
+      scanNote = read.skipped;
+    }
+  }
+  const textWords = wordCount(pdf.pages.join("\n"));
   const raw = pdfPagesToMarkdown(pdf.pages);
   let fit = "";
   if (config.query?.trim() && config.contentFilter !== "none") {
@@ -123,10 +155,15 @@ async function fromPdf(page: FetchedPage, config: CrawlConfig): Promise<CrawlRes
     const ranked = rankPassages(passages.map((p) => p.text), config.query).filter((r) => r.score >= (config.bm25Threshold ?? 1.0)).slice(0, 40);
     fit = ranked.sort((a, b) => a.index - b.index).map((r) => `[Page ${passages[r.index]!.page}] ${r.text}`).join("\n\n");
   }
-  const words = wordCount(raw);
+  // Only real page text counts: the "(no text on this page)" placeholders are not words of the PDF.
+  const words = textWords;
+  const unreadScan = scanned && !ocr;
+  const failed = page.status >= 400 || words === 0 || unreadScan;
+  const scanError = `This PDF is made of scanned pages (photos), so it has no text layer to read.${scanNote ? ` ${scanNote}` : ""}`;
   return {
-    url: page.requestedUrl, finalUrl: page.url, success: page.status < 400 && words > 0, status: page.status,
-    ...(words === 0 ? { error: "This PDF has no readable text (it may be scanned images).", errorCode: "empty" } : {}),
+    url: page.requestedUrl, finalUrl: page.url, success: !failed, status: page.status,
+    ...(unreadScan ? { error: scanError, errorCode: "scanned" } : words === 0 ? { error: "This PDF has no readable text.", errorCode: "empty" } : {}),
+    ...(scanned ? { scanned: true } : {}), ...(ocr ? { ocr: true } : {}),
     kind: "pdf", metadata: { title: pdf.title ?? page.url.split("/").pop() ?? "PDF" },
     markdown: { rawMarkdown: cap(raw), markdownWithCitations: cap(raw), referencesMarkdown: "", fitMarkdown: cap(fit), fitHtml: "" },
     links: { internal: [], external: [] }, media: { images: [], videos: [], audios: [] }, tables: [], pages: pdf.pages,
@@ -168,7 +205,8 @@ const STRONG_BLOCK = /are you a robot|verify (?:that )?you are (?:a )?human|conf
 
 /** Bot-check and "access denied" pages; they are not readable sources. */
 export function looksBlocked(r: CrawlResult): boolean {
-  if (!r.success) return false;
+  // Bot checks are web pages; a short PDF or text file is just short, never "blocked".
+  if (!r.success || r.kind !== "html") return false;
   if (STRONG_BLOCK.test(r.metadata.title ?? "") || STRONG_BLOCK.test(plainHead(r.markdown.rawMarkdown))) return true;
   if (r.wordCount >= 80) return false;
   return BLOCK_PAGE.test(r.metadata.title ?? "") || BLOCK_PAGE.test(r.markdown.rawMarkdown.slice(0, 1500)) || r.wordCount < 25;
@@ -254,6 +292,17 @@ export async function crawl(url: string, config: CrawlConfig = {}): Promise<Craw
   } catch (error) {
     if (error instanceof CrawlError && error.code === "cancelled") throw error;
     result = failedResult(url, error, Date.now() - started);
+  }
+  // Some sites refuse connections on one of their two names (www.nta.ac.in resets, nta.ac.in works):
+  // one free retry on the www/no-www twin before the slower browser and archive rescue.
+  const twin = !result.success && result.errorCode === "network" ? twinHostUrl(url) : null;
+  if (twin) {
+    try {
+      const alt = await fromPage(await fetchPage(twin, config.fetch), config);
+      if (alt.success) result = { ...alt, url, elapsedMs: Date.now() - started };
+    } catch (error) {
+      if (error instanceof CrawlError && error.code === "cancelled") throw error;
+    }
   }
   const browser = config.browser ?? "auto";
   if (browser !== "never" && (needsRescue(result) || (browser === "always" && result.success && result.kind === "html"))) {

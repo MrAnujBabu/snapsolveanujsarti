@@ -9,7 +9,7 @@ import { speakerGenderLabel } from '@/lib/speaker-gender';
 
 type Step = { key: string; label: string; icon: typeof Ear; state: 'done' | 'active' | 'todo'; detail?: string | undefined };
 
-function steps(s: RunState, interpreter: string, quality: boolean): Step[] {
+function steps(s: RunState, interpreter: string, quality: boolean, verbatim: boolean): Step[] {
   const order = ['source', 'listen', 'brief', 'interpret'] as const;
   const at = s.stage === 'idle' ? -1 : order.indexOf(s.stage);
   const state = (i: number): Step['state'] => (at > i ? 'done' : at === i ? 'active' : 'todo');
@@ -19,13 +19,13 @@ function steps(s: RunState, interpreter: string, quality: boolean): Step[] {
   list.push({ key: 'brief', label: 'GPT-6 Astra: विषय और ज़रूरी शब्द', icon: BookOpenText, state: state(2),
     detail: [s.brief?.glossary.length ? `${s.brief.glossary.length} शब्द · ${s.brief.domain}` : '',
       s.brief?.speaker && s.brief.speaker.gender !== 'unknown' ? `बोलने वाला: ${speakerGenderLabel(s.brief.speaker.gender)}` : ''].filter(Boolean).join(' · ') || undefined });
-  list.push({ key: 'interpret', label: `${interpreter}: सरल Hindi`, icon: Languages, state: state(3), detail: s.total ? `${s.done}/${s.total} हिस्से` : undefined });
+  list.push({ key: 'interpret', label: `${interpreter}: ${verbatim ? 'शब्दशः Hindi transcript' : 'सरल Hindi'}`, icon: Languages, state: state(3), detail: s.total ? `${s.done}/${s.total} हिस्से` : undefined });
   if (quality) list.push({ key: 'review', label: 'दूसरा premium model हर हिस्सा जाँच रहा है', icon: ShieldCheck, state: s.stage === 'interpret' ? 'active' : 'todo',
     detail: s.quality ? `${s.quality.corrected} सुधार` : undefined });
   return list;
 }
 
-export function RunProgress({ state, interpreter, quality, onCancel }: { state: RunState; interpreter: string; quality: boolean; onCancel(): void }) {
+export function RunProgress({ state, interpreter, quality, verbatim = false, onCancel }: { state: RunState; interpreter: string; quality: boolean; verbatim?: boolean; onCancel(): void }) {
   const pct = state.stage === 'listen' && state.listen?.total ? (state.listen.reached / state.listen.total) * 100
     : state.stage === 'interpret' && state.total ? (state.done / state.total) * 100 : null;
   const [open, setOpen] = useState(false);
@@ -60,7 +60,7 @@ export function RunProgress({ state, interpreter, quality, onCancel }: { state: 
       </div>
       {pct !== null && <Progress value={pct} className="mt-4 h-1.5" aria-label="Progress" />}
       <ol className="mt-4 space-y-2.5">
-        {steps(state, interpreter, quality).map(step => (
+        {steps(state, interpreter, quality, verbatim).map(step => (
           <li key={step.key} className="flex items-center gap-3 text-sm" data-state={step.state}>
             <span className="flex size-7 shrink-0 items-center justify-center rounded-full border data-[s=done]:border-primary data-[s=done]:bg-primary data-[s=done]:text-primary-foreground data-[s=active]:border-primary data-[s=active]:text-primary" data-s={step.state}>
               {step.state === 'done' ? <Check className="size-3.5" /> : step.state === 'active' ? <Loader2 className="size-3.5 animate-spin" /> : <step.icon className="size-3.5 text-muted-foreground" />}
