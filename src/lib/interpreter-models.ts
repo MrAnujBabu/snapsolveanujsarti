@@ -33,8 +33,9 @@ export function interpreterName(model: string) {
   return INTERPRETERS.find(item => item.model === model)?.name ?? model;
 }
 
-/** Natural spoken Hindi runs about 2.4 words per second; every timed line must fit its window. */
-export const HINDI_WORDS_PER_SECOND = 2.4;
+/** Clear spoken Hindi needs about 2.6 words per second of video; every timed line should fit its window
+ * (the dub's video-rate correction absorbs the small overrun allowed for clarity). */
+export const HINDI_WORDS_PER_SECOND = 2.6;
 export function wordBudget(seconds: number) {
   return Math.max(6, Math.floor(Math.max(0, seconds) * HINDI_WORDS_PER_SECOND));
 }
