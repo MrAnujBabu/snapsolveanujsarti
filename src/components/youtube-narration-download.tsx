@@ -5,7 +5,8 @@ import { type YouTubeVoiceEngine } from '@/lib/youtube-speech';
 import { fetchDubAudio } from '@/lib/youtube-audio';
 import { encodeWav } from '@/lib/record-wav';
 import { SPEECH_SAMPLE_RATE } from '@/lib/stream-speech';
-import { narrationWav, deliverNarration } from '@/lib/youtube-download';
+import { narrationWav, deliverNarration, mapInOrder, NARRATION_PARALLEL, withPieceRetry } from '@/lib/youtube-download';
+import { downloadBlob } from '@/lib/transcript-export';
 import { splitForSpeech } from '@/lib/youtube-hindi';
 import type { SarvamVoice } from '@/lib/sarvam-speech';
 import { listNarrationAudio, saveNarrationAudio, textFingerprint } from '@/lib/youtube-study-store';
@@ -21,6 +22,8 @@ export function YouTubeNarrationDownload({ text, voice, voiceEngine, videoId, di
   const [busy, setBusy] = useState(false), [progress, setProgress] = useState('');
   const [audio, setAudio] = useState<Blob | null>(null), [error, setError] = useState('');
   const operation = useRef<AbortController | null>(null);
+  // Finished pieces for the current text/voice: a failed or stopped run continues from here instead of paying again.
+  const madeParts = useRef<{ signature: string; parts: Map<number, Blob> }>({ signature: '', parts: new Map() });
   const [audioUrl, setAudioUrl] = useState(''), [framed, setFramed] = useState(false);
   useEffect(() => { try { setFramed(window.self !== window.top); } catch { setFramed(true); } }, []);
   useEffect(() => { if (!audio) { setAudioUrl(''); return; } const url = URL.createObjectURL(audio); setAudioUrl(url); return () => URL.revokeObjectURL(url); }, [audio]);
@@ -51,20 +54,32 @@ export function YouTubeNarrationDownload({ text, voice, voiceEngine, videoId, di
     let context: AudioContext | undefined;
     try {
       context = new AudioContext({ sampleRate: SPEECH_SAMPLE_RATE });
-      const pieces = splitForSpeech(text), parts: Blob[] = [];
-      for (let i = 0; i < pieces.length; i++) {
+      const pieces = splitForSpeech(text), ctx = context;
+      if (madeParts.current.signature !== signature) madeParts.current = { signature, parts: new Map() };
+      const made = madeParts.current.parts, already = made.size;
+      setProgress(`Audio तैयार हो रही है · ${already}/${pieces.length}`);
+      // Several pieces are made at once (each only once, joined in order) so long videos finish much faster.
+      // A cut-off stream retries only that piece; finished pieces are kept even if another one fails.
+      const parts = await mapInOrder(pieces, NARRATION_PARALLEL, async (piece, i) => {
+        const saved = made.get(i);
+        if (saved) return saved;
         controller.signal.throwIfAborted();
-        setProgress(`Audio तैयार हो रही है · ${i + 1}/${pieces.length}`);
-        const buffer = await fetchDubAudio(pieces[i] ?? '', voice, context, controller.signal, voiceEngine);
-        parts.push(encodeWav([buffer.getChannelData(0)], SPEECH_SAMPLE_RATE).slice(44));
-      }
+        const buffer = await withPieceRetry(() => fetchDubAudio(piece, voice, ctx, controller.signal, voiceEngine), controller.signal);
+        const part = encodeWav([buffer.getChannelData(0)], SPEECH_SAMPLE_RATE).slice(44);
+        if (madeParts.current.parts === made) made.set(i, part);
+        return part;
+      }, () => { if (!controller.signal.aborted) setProgress(`Audio तैयार हो रही है · ${made.size}/${pieces.length}`); });
       const blob = await narrationWav(parts); controller.signal.throwIfAborted();
       if (operation.current === controller) {
-        setAudio(blob); setProgress(`${(blob.size / 1048576).toFixed(1)} MB · WAV · अब Download दबाएँ`);
+        const name = `snapsolve-hindi-${videoId ?? 'transcript'}.wav`;
+        setAudio(blob); setProgress(`${(blob.size / 1048576).toFixed(1)} MB · WAV · Download शुरू हो गई`);
+        // One tap is enough: the finished file saves itself; the button below stays for another copy or sharing.
+        try { downloadBlob(name, blob); } catch { setProgress(`${(blob.size / 1048576).toFixed(1)} MB · WAV · अब Download दबाएँ`); }
         if (audioKey) void saveNarrationAudio({ key: audioKey, savedAt: Date.now(), textHash: textFingerprint(text), voice, engine: voiceEngine ?? 'sarvam', blob }).then(() => onSaved?.()).catch(() => {});
       }
     } catch (failure) {
-      if (!controller.signal.aborted) setError(failure instanceof Error ? failure.message : 'Audio तैयार नहीं हुई।');
+      const kept = madeParts.current.signature === signature ? madeParts.current.parts.size : 0;
+      if (!controller.signal.aborted) setError(`${failure instanceof Error ? failure.message : 'Audio तैयार नहीं हुई।'}${kept ? ` ${kept} हिस्से बन चुके हैं — दोबारा दबाने पर सिर्फ़ बाकी बनेंगे।` : ''}`);
       setProgress('');
     } finally {
       await context?.close().catch(() => {});
