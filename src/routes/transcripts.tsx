@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
+import { asciiDigits, readableHindi } from '@/lib/hindi-readability';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { ArrowLeft, ChevronDown, History, PlayCircle, Search, Trash2, Youtube } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -93,10 +94,10 @@ function HistoryItem({ entry, onRemove }: { entry: LibraryEntry; onRemove(): voi
           ? <ol className="max-h-[28rem] divide-y overflow-y-auto" aria-label={`${r.title || 'Video'} का transcript`}>
               {r.dub.map((s, i) => <li key={i} className="flex items-start gap-3 px-4 py-3">
                 <span className="mt-0.5 shrink-0 rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] text-primary tabular-nums">{formatTime(s.start)}</span>
-                <span className="min-w-0 text-sm leading-relaxed">{s.hindi}</span>
+                <span className="min-w-0 text-sm leading-relaxed">{asciiDigits(s.hindi)}</span>
               </li>)}
             </ol>
-          : <p className="max-h-[28rem] overflow-y-auto whitespace-pre-wrap px-4 py-3 text-sm leading-relaxed">{r.hindi}</p>}
+          : <p className="max-h-[28rem] overflow-y-auto whitespace-pre-wrap px-4 py-3 text-sm leading-relaxed">{readableHindi(r.hindi)}</p>}
         <div className="flex flex-wrap items-center gap-2 border-t p-3">
           <Button asChild size="sm"><Link to="/youtube" search={{ open: entry.key }}><PlayCircle className="size-4" />Video के साथ खोलें</Link></Button>
           <YouTubeTranscriptDownload result={r} transcript="" disabled={false} />

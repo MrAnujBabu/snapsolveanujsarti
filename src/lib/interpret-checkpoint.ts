@@ -119,3 +119,24 @@ export async function saveCheckpoint(cp: Checkpoint) {
 }
 
 export async function removeCheckpoint(key: string) { await tx('readwrite', s => s.delete(key)); }
+
+/** All unfinished saved work on this device, newest first — so a student whose link box got cleared can find it again. */
+export async function listCheckpoints(): Promise<Checkpoint[]> {
+  const all = await tx('readonly', s => s.getAll() as IDBRequest<unknown[]>);
+  return all.filter(valid).filter(isResumable).sort((a, b) => b.savedAt - a.savedAt);
+}
+
+export type CheckpointSettings = { kind: 'link' | 'text' | 'file'; url: string; fileName: string; engine: string; quality: boolean; deepListen: boolean; verbatim: boolean };
+/** Reads source + settings back out of a checkpoint key (inverse of checkpointKey). */
+export function parseCheckpointKey(key: string): CheckpointSettings | null {
+  const parts = key.split('|');
+  const verbatim = parts[parts.length - 1] === 'verbatim';
+  if (verbatim) parts.pop();
+  if (parts.length < 4) return null;
+  const listen = parts.pop(), review = parts.pop(), engine = parts.pop()!;
+  const kind = parts.shift() as CheckpointSettings['kind'];
+  if (kind !== 'link' && kind !== 'text' && kind !== 'file') return null;
+  const url = kind === 'link' ? parts.join('|') : kind === 'text' ? parts.slice(1).join('|') : '';
+  const fileName = kind === 'file' ? parts.slice(0, -2).join('|') : '';
+  return { kind, url, fileName, engine, quality: review === 'review', deepListen: listen === 'listen', verbatim };
+}

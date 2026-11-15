@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { readableHindi } from '@/lib/hindi-readability';
 import { FileDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { downloadBlob } from '@/lib/transcript-export';
@@ -13,7 +14,7 @@ export function YouTubeTranscriptDownload({ result, transcript, disabled }: {
   function download() {
     try {
       const title = result.title?.trim() || 'YouTube transcript';
-      const parts = [`# ${title}`, '', result.verbatim ? '## Hindi transcript (as it is, शब्दशः)' : '## सरल Hindi explanation', '', result.hindi.trim()];
+      const parts = [`# ${title}`, '', result.verbatim ? '## Hindi transcript (as it is, शब्दशः)' : '## सरल Hindi explanation', '', readableHindi(result.hindi).trim()];
       const source = transcript.trim();
       if (source) parts.push('', '## Original transcript', '', source);
       const blob = new Blob([`${parts.join('\n')}\n`], { type: 'text/markdown;charset=utf-8' });

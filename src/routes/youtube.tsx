@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
+import { readableHindi } from '@/lib/hindi-readability';
 import { useEffect, useRef, useState } from 'react';
 import { createParser } from 'eventsource-parser';
 import { Play, Square, Youtube, AudioLines, ArrowLeft, Languages, Captions, ChevronDown, Link2, Upload, FileText, Ear, ShieldCheck, Paperclip, Loader2, X } from 'lucide-react';
@@ -26,7 +27,7 @@ import { SourceBadges, TeamCard, BriefCard } from '@/components/interpreter/resu
 import { runInterpretation, liveDub, IDLE_STATE, type RunInput, type RunState } from '@/lib/interpret-client';
 import { InterpretStreamError } from '@/lib/interpret-protocol';
 import { INTERPRET_PIPELINE } from '@/lib/interpret-identity';
-import { checkpointKey, doneCount, isRecoverable, loadCheckpoint, removeCheckpoint, saveCheckpoint, type Checkpoint, type CheckpointInput } from '@/lib/interpret-checkpoint';
+import { checkpointKey, doneCount, isRecoverable, listCheckpoints, parseCheckpointKey, loadCheckpoint, removeCheckpoint, saveCheckpoint, type Checkpoint, type CheckpointInput } from '@/lib/interpret-checkpoint';
 import { isInstagramUrl } from '@/lib/web-video';
 import { INTERPRETERS, DEFAULT_INTERPRETER, interpreterInfo, type InterpreterId } from '@/lib/interpreter-models';
 import {
@@ -90,6 +91,7 @@ function YouTubeHindi() {
   const [exporting, setExporting] = useState(false);
   const [progress, setProgress] = useState('');
   const [saved, setSaved] = useState<Checkpoint | null>(null);
+  const [unfinished, setUnfinished] = useState<Checkpoint[]>([]);
   const stopRef = useRef<() => void>(() => {});
   const runCtl = useRef<AbortController | null>(null);
   const busy = run !== null;
@@ -202,7 +204,7 @@ function YouTubeHindi() {
 
     stopRef.current(); runCtl.current?.abort();
     const ctl = new AbortController(); runCtl.current = ctl;
-    setError(''); setResult(null); setRun({ ...IDLE_STATE, stage: 'source', message: 'शुरू कर रहा हूँ…' });
+    setError(''); setResult(null); setRun({ ...IDLE_STATE, stage: 'source', message: 'शुरू कर रही हूँ…' });
     if (input.kind === 'file') {
       if (mediaObjectUrl) URL.revokeObjectURL(mediaObjectUrl);
       setMediaObjectUrl(URL.createObjectURL(input.file));
@@ -245,6 +247,18 @@ function YouTubeHindi() {
       }
       if (runCtl.current === ctl) { runCtl.current = null; setRun(null); }
     }
+  }
+
+  useEffect(() => { if (busy) return; void listCheckpoints().then(setUnfinished).catch(() => {}); }, [busy, saved]);
+
+  function reopenUnfinished(cp: Checkpoint) {
+    const k = parseCheckpointKey(cp.key); if (!k) return;
+    setError('');
+    if (INTERPRETERS.some(m => m.id === k.engine)) setEngine(k.engine as InterpreterId);
+    setQuality(k.quality); setDeepListen(k.deepListen); setVerbatim(k.verbatim);
+    if (k.kind === 'link') { setMode('link'); setUrl(k.url); }
+    else if (k.kind === 'text') { setMode('text'); if (k.url) setUrl(k.url); setError('यह काम paste किए गए transcript का है — वही transcript दोबारा paste करें, फिर "जहाँ रुका वहीं से आगे" दबाएँ।'); }
+    else { setMode('file'); setError(`यह काम "${k.fileName}" file का है — वही file दोबारा चुनें, फिर "जहाँ रुका वहीं से आगे" दबाएँ।`); }
   }
 
   function cancel() { runCtl.current?.abort(); runCtl.current = null; setRun(null); }
@@ -434,6 +448,20 @@ function YouTubeHindi() {
         {error && <p role="alert" className="rounded-lg border border-destructive px-3 py-2 text-sm text-destructive">{error}</p>}
       </div>
 
+      {!busy && unfinished.length > 0 && (
+        <section className="mt-6 rounded-xl border bg-card p-3" aria-label="अधूरे videos">
+          <h2 className="mb-2 text-sm font-semibold">इस device पर अधूरे काम</h2>
+          <ul className="space-y-2">{unfinished.map(cp => { const k = parseCheckpointKey(cp.key); return (
+            <li key={cp.key} className="flex items-center gap-2 text-sm">
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-medium">{cp.title || k?.url || k?.fileName || 'Video'}</p>
+                <p className="truncate text-xs text-muted-foreground">{doneCount(cp.lines)}/{cp.lines.length} हिस्से · {k?.url || k?.fileName || 'transcript'}</p>
+              </div>
+              <Button type="button" size="sm" variant="outline" disabled={locked} onClick={() => reopenUnfinished(cp)}>वापस लाओ</Button>
+            </li>); })}</ul>
+        </section>
+      )}
+
       {mode === 'link' && !busy && <div className="mt-8"><ChannelPicker disabled={locked} onPick={v => { const u = `https://www.youtube.com/watch?v=${v.id}`; setUrl(u); void convert({ url: u }); }} /></div>}
 
       {/* One player slot for live and finished Hindi, so playback never restarts when the team finishes. */}
@@ -461,7 +489,7 @@ function YouTubeHindi() {
                   : <Button onClick={play} disabled={dubbing || exporting}><Play className="size-4" />Hindi audio सुनो</Button>}
                 <span className="text-xs text-muted-foreground">{progress}</span>
               </div>
-              <p className="mt-4 whitespace-pre-wrap leading-relaxed">{result.hindi}</p>
+              <p className="mt-4 whitespace-pre-wrap leading-relaxed">{readableHindi(result.hindi)}</p>
             </details>
           </>}
         </div>
