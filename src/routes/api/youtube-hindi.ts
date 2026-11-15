@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { readableParagraphs } from '@/lib/hindi-readability';
 import {
   parseYouTubeId, timedTextCues, MAX_TRANSCRIPT_CHARS, MAX_TIMED_CHARS, MAX_TIMED_SEGMENTS, MAX_MEDIA_SECONDS, type TimedSegment,
 } from '@/lib/youtube-hindi';
@@ -195,7 +196,7 @@ async function run(body: Body, engine: InterpreterId, signal: AbortSignal, send:
   } else {
     let done = 0;
     const { lines, interpreters, quality } = await interpretProse({ chunks, context, engine, signal, review, verbatim, onChunk: () => { done++; send({ type: 'progress', done, total: chunks.length }); } });
-    result = { title, hindi: lines.join('\n\n'), truncated, videoId, sourceChars: sourceText.length, source, brief, panel: { ...panel, interpreters, ...qualityPanel(quality) }, engine };
+    result = { title, hindi: readableParagraphs(lines.join('\n\n')), truncated, videoId, sourceChars: sourceText.length, source, brief, panel: { ...panel, interpreters, ...qualityPanel(quality) }, engine };
   }
   result = { ...result, pipeline: INTERPRET_PIPELINE, sourceKey, deepListen: body.deepListen === true, ...(verbatim ? { verbatim: true } : {}),
     panel: { interpreters: [], ...result.panel, reviewRequested: review, reviewTotal: timed.length || chunks.length, reviewed: result.panel?.reviewed ?? 0 } };
