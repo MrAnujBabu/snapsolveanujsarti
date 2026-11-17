@@ -1,5 +1,5 @@
 import { memo, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Loader2, Play, Square, Pause, AudioLines, Languages, ChevronDown } from 'lucide-react';
+import { Loader2, Play, Square, Pause, AudioLines, Languages, ChevronDown, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
@@ -40,6 +40,11 @@ const TranscriptRow = memo(function TranscriptRow({ start, hindi, index, current
     </Button>
   </li>;
 });
+
+/** Device choice: with the voice off, playback only follows the Hindi text and never asks for speech (no voice credits). */
+const DUB_VOICE_KEY = 'snapsolve.youtube-dub-voice';
+export function readDubVoiceOn() { try { return localStorage.getItem(DUB_VOICE_KEY) !== 'off'; } catch { return true; } }
+function saveDubVoiceOn(on: boolean) { try { localStorage.setItem(DUB_VOICE_KEY, on ? 'on' : 'off'); } catch { /* keep */ } }
 
 type YTPlayer = DubPlayer & { destroy(): void };
 declare global { interface Window { YT?: { Player: new (el: HTMLElement, o: object) => YTPlayer }; onYouTubeIframeAPIReady?: () => void } }
@@ -82,6 +87,10 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
   const [current, setCurrent] = useState(-1), [error, setError] = useState('');
   const [spokenCount, setSpokenCount] = useState(0);
   const [showOriginal, setShowOriginal] = useState(false);
+  const [voiceOn, setVoiceOn] = useState(true);
+  const voiceOnRef = useRef(true); voiceOnRef.current = voiceOn;
+  const currentRef = useRef(-1); currentRef.current = current;
+  useEffect(() => { setVoiceOn(readDubVoiceOn()); }, []);
   const [transcriptOpen, setTranscriptOpen] = useState(true);
   const transcriptId = useId();
   const [src, setSrc] = useState(mediaSrc ?? null);
@@ -160,6 +169,11 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
       const existing = pending.get(i); if (existing) return existing;
       if (!segments[i]) return Promise.reject(new Error('Missing segment.'));
       // The previous part may hand its unfinished last words to this part, so its text is needed first.
+      // Voice off: a silent part as long as the video part, so the text still follows the video with no speech request.
+      if (!voiceOnRef.current) {
+        const seg = segments[i];
+        return waitForText(i).then(() => ctx.createBuffer(1, Math.max(1, Math.round(Math.max(0.1, seg.end - seg.start) * SPEECH_SAMPLE_RATE)), SPEECH_SAMPLE_RATE));
+      }
       const promise = Promise.all([waitForText(i), i > 0 ? waitForText(i - 1) : Promise.resolve('')]).then(([text]) => {
         // Same Hindi line as the previous part (interpreter repeat): stay silent instead of speaking it twice.
         const previous = i > 0 ? latest.current[i - 1]?.hindi : undefined;
@@ -207,6 +221,12 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
     if (intentPaused.current) player.current?.pauseVideo();
     else if (!holding.current) player.current?.playVideo();
   }
+  function toggleVoice() {
+    const next = !voiceOn;
+    setVoiceOn(next); voiceOnRef.current = next; saveDubVoiceOn(next);
+    // Restart from the current part so the change applies at once; already-made voice parts stay reusable.
+    if (running) { const from = Math.max(0, currentRef.current); stopRef.current(); void startRef.current(from); }
+  }
   const hasOriginal = !!original?.length && original.length === segments.length;
   return (
     <div data-soft-touch="off" className="overflow-hidden rounded-2xl border bg-card shadow-[0_24px_60px_-40px_color-mix(in_oklab,var(--foreground)_45%,transparent)]">
@@ -219,7 +239,11 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
           {running ? <>
             <Button variant="secondary" className="touch-btn" onClick={togglePause} aria-label={paused ? 'Resume Hindi voice-over' : 'Pause Hindi voice-over'}>{paused ? <Play className="size-4" /> : <Pause className="size-4" />}{paused ? 'जारी रखें' : 'Pause'}</Button>
             <Button variant="outline" size="icon" className="touch-btn" aria-label="Stop Hindi voice-over" title="Stop" onClick={() => stopRef.current()}><Square className="size-4" /></Button>
-          </> : <Button className="touch-btn" onClick={() => start(0)} disabled={!ready || !segments.length}>{ready ? <Play className="size-4" /> : <Loader2 className="size-4 animate-spin" />}Hindi voice-over चलाओ</Button>}
+          </> : <Button className="touch-btn" onClick={() => start(0)} disabled={!ready || !segments.length}>{ready ? <Play className="size-4" /> : <Loader2 className="size-4 animate-spin" />}{voiceOn ? 'Hindi voice-over चलाओ' : 'Video + Hindi text चलाओ'}</Button>}
+          <Button type="button" variant={voiceOn ? 'outline' : 'secondary'} className="touch-btn" aria-pressed={!voiceOn} onClick={toggleVoice}
+            aria-label={voiceOn ? 'Awaaz band karo' : 'Awaaz chalu karo'} title={voiceOn ? 'Awaaz band karo (voice credits bachao)' : 'Awaaz chalu karo'}>
+            {voiceOn ? <Volume2 className="size-4" /> : <VolumeX className="size-4" />}{voiceOn ? 'Awaaz chalu' : 'Awaaz band'}
+          </Button>
           <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground" data-testid="dub-status" role="status">{paused ? 'Paused' : status}</span>
           <Button type="button" variant="ghost" size="icon" className="shrink-0" aria-expanded={transcriptOpen} aria-controls={transcriptId}
             aria-label={transcriptOpen ? 'Transcript बंद करें' : 'Transcript खोलें'} title={transcriptOpen ? 'Transcript बंद करें' : 'Transcript खोलें'} onClick={() => setTranscriptOpen(value => !value)}>
@@ -227,7 +251,7 @@ export function YouTubeDub({ videoId, mediaSrc, mediaFallbackSrc, segments, orig
           </Button>
         </div>
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1.5"><AudioLines className="size-4 text-primary" />{provider}</span>
+          <span className="flex items-center gap-1.5"><AudioLines className="size-4 text-primary" />{voiceOn ? provider : 'Awaaz band · sirf Hindi text (voice credit nahi lagta)'}</span>
           <span className="tabular-nums">{readyCount < segments.length ? `${readyCount}/${segments.length} हिस्से तैयार` : `${segments.length} हिस्से`} · {formatTime(segments.at(-1)?.end ?? 0)}</span>
           {hasOriginal && <span className="flex items-center gap-2"><Switch id="show-original" checked={showOriginal} onCheckedChange={setShowOriginal} /><Label htmlFor="show-original" className="text-xs font-normal">Original भी दिखाओ</Label></span>}
         </div>
